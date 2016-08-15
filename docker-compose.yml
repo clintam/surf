@@ -1,0 +1,21 @@
+version: '2'
+services:
+  server:
+    build: .
+    image: server
+    command: npm run dev
+    ports:
+     - 8080:8080
+     - 5858:5858
+    volumes:
+     - ./src:/work/src
+  mongo:
+    image: mongo:3.3.10
+    ports:
+     - 27017:27017
+  wait:
+    image: wait-for-http
+    depends_on:
+      - server
+      - mongo
+    command: http://server:8080/items/
