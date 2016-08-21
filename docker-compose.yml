@@ -4,6 +4,7 @@ services:
     build: .
     image: server
     command: npm run dev
+    restart: always
     ports:
      - 8080:8080
      - 5858:5858
@@ -13,7 +14,7 @@ services:
     image: mongo:3.3.10
     ports:
      - 27017:27017
-  wait:
+  healthcheck:
     image: wait-for-http
     depends_on:
       - server

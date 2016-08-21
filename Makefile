@@ -1,4 +1,4 @@
-all: docker fvt
+all: docker fvt lint
 
 images:
 	cd images && make
@@ -6,9 +6,11 @@ images:
 docker:
 	docker build -t server ./
 
+lint: docker
+	docker run --rm server npm run lint
+
 up: docker
-	docker-compose up -d
-	docker-compose run wait
+	docker-compose run --rm healthcheck
 
 dev: docker
 	docker-compose up
