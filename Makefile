@@ -7,7 +7,7 @@ docker:
 	docker build -t server ./
 
 lint: docker
-	docker run --rm server npm run lint
+	docker run --rm server npm run lint --silent
 
 up: docker
 	docker-compose run --rm healthcheck
@@ -16,7 +16,7 @@ dev: docker
 	docker-compose up
 
 fvt: up
-	docker-compose exec server npm run fvt
+	docker-compose exec server npm run fvt --silent
 
 down:
 	docker-compose down -v

@@ -1,5 +1,5 @@
 
-A simple nodejs/mongo stack managed with docker and make.
+A simple react/mongo stack managed with docker and make.
 
 Goals:
 * Modern and simple

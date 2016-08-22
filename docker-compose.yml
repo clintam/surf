@@ -9,7 +9,7 @@ services:
      - 8080:8080
      - 5858:5858
     volumes:
-     - ./src:/work/src
+     - ./:/work
   mongo:
     image: mongo:3.3.10
     ports:

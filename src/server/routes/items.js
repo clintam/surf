@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-mongoose.connect(`mongodb://${process.env.MOGO_HOST || 'mongo'}/test`)
+mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'mongo'}/test`)
 
 var Item = mongoose.model('Item', {
   name: String,

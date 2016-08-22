@@ -4,6 +4,4 @@ RUN mkdir /work
 WORKDIR /work
 
 RUN npm install -g \
-    jshint \
-    nodemon \
-    typescript
+    nodemon

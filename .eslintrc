@@ -25,6 +25,7 @@
     "generator-star-spacing": 0,
     "babel/generator-star-spacing": 1,
     "jsx-quotes": [2, "prefer-single"],
-    "space-before-function-paren": 0
+    "space-before-function-paren": 0,
+    "react/jsx-curly-spacing": 0
   }
 }
