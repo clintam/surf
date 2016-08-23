@@ -22,3 +22,12 @@ OR
 #### Make + Docker 
 
 Simple make files where all the complex deps are managed by docker/docker-compose abstractions.
+ 
+TODO: why is this a win?
+
+
+#### React
+
+* prefer functional components
+
+TODO: evaluation

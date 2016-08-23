@@ -6,7 +6,7 @@ module.exports = {
   devtool: '#inline-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, 'src/server/app/main.js')
+    path.join(__dirname, 'src/web/app/main.js')
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/server/app/index.tpl.html',
+      template: 'src/web/app/index.tpl.html',
       inject: 'body',
       filename: 'index.html'
     }),
