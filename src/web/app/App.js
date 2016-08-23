@@ -1,6 +1,6 @@
 import React from 'react'
-import ItemList from './components/ItemList'
-import ItemForm from './components/ItemForm'
+import ItemList from '../components/ItemList'
+import ItemForm from '../components/ItemForm'
 import ItemClient from '../../client/itemClient'
 
 const client = new ItemClient('items')
