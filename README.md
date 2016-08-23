@@ -7,7 +7,7 @@ Goals:
 * Isomorphic codebase runs in server and clients
 * Supports effecient CI/CD practices
 
-#### Development
+#### Quickstart
 
 * Install Docker
 * Build and test in parallel `make -j`
@@ -18,3 +18,7 @@ OR
 * Install Nodejs
 * Build with `npm install`
 * Run with `npm run dev`
+
+#### Make + Docker 
+
+Simple make files where all the complex deps are managed by docker/docker-compose abstractions.

@@ -10,6 +10,7 @@ lint: docker
 	docker run --rm server npm run lint --silent
 
 up: docker
+	docker-compose up -d
 	docker-compose run --rm healthcheck
 
 dev: docker
