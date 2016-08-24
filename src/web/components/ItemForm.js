@@ -8,7 +8,7 @@ const ItemForm = (props) => {
     const item = {
       name: input.value.trim()
     }
-    props.createItem(item)
+    props.actions.createItem(item)
       .then(() => { input.value = '' })
   }
   return (
@@ -30,7 +30,7 @@ const ItemForm = (props) => {
 }
 
 ItemForm.propTypes = {
-  createItem: React.PropTypes.func.isRequired
+  actions: React.PropTypes.object.isRequired
 }
 
 export default ItemForm

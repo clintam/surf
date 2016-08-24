@@ -6,7 +6,7 @@ module.exports = {
   devtool: '#inline-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, 'src/web/app/main.js')
+    path.join(__dirname, 'src/web/index.js')
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
@@ -15,16 +15,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/web/app/index.tpl.html',
+      template: 'src/web/index.tpl.html',
       inject: 'body',
       filename: 'index.html'
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    })
+    new webpack.HotModuleReplacementPlugin()
   ],
   module: {
     loaders: [{
@@ -34,9 +30,6 @@ module.exports = {
       query: {
         'presets': ['react', 'es2015', 'stage-0', 'react-hmre']
       }
-    }, {
-      test: /\.json?$/,
-      loader: 'json'
     }]
   }
 }

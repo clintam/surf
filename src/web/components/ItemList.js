@@ -2,6 +2,8 @@ import React from 'react'
 import Item from './Item'
 
 const ItemList = (props) => {
+  const deleteItem = (item) => (e) => props.actions.deleteItem(item)
+
   return (
     <div>
       {props.items.length} items are tracked!!!
@@ -9,7 +11,7 @@ const ItemList = (props) => {
         {props.items.map((item, i) => (
           <Item key={i}
             itemName={item.name}
-            deleteItem={props.deleteItem(item) } />
+            deleteItem={ deleteItem(item) } />
         )) }
       </ul>
     </div>
@@ -18,7 +20,7 @@ const ItemList = (props) => {
 
 ItemList.propTypes = {
   items: React.PropTypes.array.isRequired,
-  deleteItem: React.PropTypes.func.isRequired
+  actions: React.PropTypes.object.isRequired
 }
 
 export default ItemList
