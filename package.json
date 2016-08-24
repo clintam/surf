@@ -53,6 +53,7 @@
     "nodemon": "^1.10.2",
     "react-transform-hmr": "^1.0.4",
     "wdio-mocha-framework": "^0.4.0",
+    "wdio-spec-reporter": "0.0.3",
     "webdriverio": "^4.2.8",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.6.1",

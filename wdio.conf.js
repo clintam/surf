@@ -9,8 +9,9 @@ exports.config = {
     browserName: 'chrome'
   }],
   sync: true,
-  logLevel: 'result',
+  logLevel: 'silent',
   coloredLogs: true,
+  reporters: ['dot', 'spec'],
   screenshotPath: './errorShots/',
   baseUrl: 'http://server:8080',
   waitforTimeout: 10000,
