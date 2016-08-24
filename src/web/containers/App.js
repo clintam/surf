@@ -8,10 +8,10 @@ import * as Actions from '../actions'
 
 class App extends Component { // TODO make pure function
   render() {
-    const { items, actions } = this.props
+    const { items, form, actions } = this.props
     return (
       <div className='container'>
-        <ItemForm actions={actions} />
+        <ItemForm actions={actions} form={form} />
         <ItemList actions={actions} items={items} />
       </div>
     )
@@ -20,12 +20,14 @@ class App extends Component { // TODO make pure function
 
 App.propTypes = {
   items: PropTypes.array.isRequired,
+  form: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
   return {
-    items: state.items.items
+    items: state.items.items,
+    form: state.items.form
   }
 }
 

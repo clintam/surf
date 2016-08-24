@@ -1,12 +1,25 @@
 import ItemClient from '../../client/itemClient'
 const client = new ItemClient('items')
 
+export function updateForm(item) {
+  return { type: 'UPDATE_FORM', item }
+}
+
 export function createItem(item) {
-  return { type: 'CREATE_ITEM', item }
+  return (dispatch) => {
+    client.create(item)
+      .then(() => {
+        dispatch(listItems())
+        dispatch({ type: 'CREATED_ITEM' })
+      })
+  }
 }
 
 export function deleteItem(item) {
-  return { type: 'DELETE_ITEM', item }
+  return (dispatch) => {
+    client.delete(item)
+      .then(() => dispatch(listItems()))
+  }
 }
 
 export function loadItems(items) {
@@ -21,25 +34,3 @@ export function listItems() {
   }
 }
 
-
-//   refresh() {
-//     client.list().then((items) => {
-//       this.setState({ items: items })
-//     })
-//   }
-
-//   updateName(e) {
-//     this.setState({ itemName: e.target.value })
-//   }
-
-//   createItem(item) {
-//     return client.create(item)
-//       .then(this.refresh)
-//   }
-
-//   deleteItem(item) {
-//     return (e) => {
-//       e.preventDefault()
-//       client.delete(item).then(this.refresh)
-//     }
-//   }

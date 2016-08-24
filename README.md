@@ -10,8 +10,9 @@ Goals:
 #### Quickstart
 
 * Install Docker
-* Build and test in parallel `make -j`
-* Live debug with `make debug` and attach editor to 5858. Make changes to code and it reloads.
+* Build, test, bring up dev environment `make images all`
+* Live reload of client/server
+* Debug by attaching debugger to 5858.
 
 OR 
 
