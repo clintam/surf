@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "build/server.js",
   "scripts": {
-    "lint": "eslint src",
+    "lint": "eslint src test",
     "fvt": "mocha --compilers js:babel-register test/fvt",
     "ui-fvt": "wdio",
     "dev": "nodemon --debug --exec babel-node src/server/server.js",

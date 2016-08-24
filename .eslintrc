@@ -9,8 +9,7 @@
     "react",
     "promise"
   ],
-  "env"     : {
-    "browser" : true
+  "env": {
   },
   "rules": {
     "semi" : [2, "never"],

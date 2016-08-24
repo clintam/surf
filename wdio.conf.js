@@ -20,6 +20,7 @@ exports.config = {
   framework: 'mocha',
 
   mochaOpts: {
-    ui: 'bdd'
+    ui: 'bdd',
+    compilers: ['js:babel-register']
   }
 }
