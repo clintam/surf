@@ -1,4 +1,4 @@
-all: docker fvt lint
+all: docker test lint
 
 images:
 	cd images && make
@@ -16,8 +16,13 @@ up: docker
 dev: docker
 	docker-compose up
 
+test: fvt ui-fvt
+
 fvt: up
-	docker-compose exec server npm run fvt --silent
+	docker-compose run --rm --name fvt server npm run fvt --silent
+
+ui-fvt: up
+	docker-compose run --rm --name ui-fvt server npm run ui-fvt --silent
 
 down:
 	docker-compose down -v

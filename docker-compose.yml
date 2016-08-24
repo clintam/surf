@@ -10,6 +10,10 @@ services:
      - 5858:5858
     volumes:
      - ./:/work
+    environment:
+     MONGO_HOST: mongo
+     WEBDRIVER_HOST: webdriver
+     SERVER_HOST: server
   mongo:
     image: mongo:3.3.10
     ports:
@@ -17,3 +21,7 @@ services:
   healthcheck:
     image: wait-for-http
     command: http://server:8080/items/
+  webdriver:
+    image: webdriver
+    ports:
+     - 4444:4444

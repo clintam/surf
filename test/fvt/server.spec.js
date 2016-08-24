@@ -1,9 +1,13 @@
 var request = require("request");
 var expect = require("chai").expect;
-var baseUrl = "http://localhost:8080/items";
-var ItemClient = require('../src/client/itemClient');
+var baseUrl = "http://"+getUrl()+":8080/items";
+var ItemClient = require('../../src/client/itemClient');
 var client = new ItemClient(baseUrl);
 var uuid = require('uuid');
+
+function getUrl() {
+    return process.env.SERVER_HOST || 'localhost'
+}
 
 describe("items endpoint", function () {
 
