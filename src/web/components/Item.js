@@ -1,14 +1,13 @@
 import React from 'react'
 
 const Item = (props) => (
-  <li key={props.itemName} className='list-group-item'>
-    <h4 className='list-group-item-heading'>
-      {props.itemName}
+  <li key={props.itemName} className='list-group-item container'>
+    <h4 className='list-group-item-heading'>{props.itemName}
+      <button type='button' className='btn btn-default pull-right'
+        onClick={props.deleteItem}>
+        <span className='glyphicon glyphicon-trash' />
+      </button>
     </h4>
-    <button type='button' className='btn btn-default'
-      onClick={props.deleteItem}>
-      remove
-    </button>
   </li>
 )
 Item.propTypes = {

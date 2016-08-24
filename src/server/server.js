@@ -14,7 +14,7 @@ const config = require('../../webpack.config.js')
 const compiler = webpack(config)
 const middleware = webpackMiddleware(compiler, {
   publicPath: config.output.publicPath,
-  contentBase: 'src',
+  contentBase: 'src/web',
   stats: {
     colors: true,
     hash: false,
