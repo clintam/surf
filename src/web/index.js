@@ -1,11 +1,11 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import reducers from './reducers'
+import configureStore from './store/configureStore'
 import App from './containers/App'
+import {listItems} from './actions'
 
-let store = createStore(reducers)
+let store = configureStore()
 
 render(
   <Provider store={store}>
@@ -13,3 +13,5 @@ render(
   </Provider>,
   document.getElementById('root')
 )
+
+store.dispatch(listItems())

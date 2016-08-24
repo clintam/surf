@@ -4,7 +4,7 @@ import ItemList from '../components/ItemList'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as TodoActions from '../actions'
+import * as Actions from '../actions'
 
 class App extends Component { // TODO make pure function
   render() {
@@ -25,13 +25,13 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    items: state.todos
+    items: state.items.items
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions, dispatch)
+    actions: bindActionCreators(Actions, dispatch)
   }
 }
 
