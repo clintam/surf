@@ -7,8 +7,7 @@
     "compile": "babel src -d build",
     "fvt": "mocha --compilers js:babel-register test/fvt",
     "ui-fvt": "wdio",
-    "dev": "nodemon --debug --exec babel-node src/server/server.js",
-    "dev-test": "nodemon --debug --exec node --debug build/server/server.js",
+    "dev": "babel src -d build -w & nodemon --debug --exec node --nolazy --debug build/server/server.js",
     "build": "webpack",
     "start": "babel-node src/server/server.js"
   },

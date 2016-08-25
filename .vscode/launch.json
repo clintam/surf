@@ -25,49 +25,47 @@
             "sourceMaps": true,
             "outDir": null
         },
-         {
-            "name": "Start Server",
+        {
+            "name": "Launch local server",
             "type": "node",
             "request": "launch",
-            "program": "/usr/bin/npm",
+            "program": "${workspaceRoot}/build/server/server.js",
             "stopOnEntry": false,
-            "args": [
-                "run",
-                "dev"
-            ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
-            "runtimeExecutable": null,
             "runtimeArgs": [
-                "--nolazy"
+                "--nolazy",
+                "--debug"
             ],
             "env": {
                 "NODE_ENV": "development"
             },
             "externalConsole": false,
             "sourceMaps": true,
-            "outDir": null
+            "outDir": "${workspaceRoot}/build"
         },
-        {
-            "name": "Attach to Docker",
+         {
+            "name": "Attach to Local (npm run dev)",
             "type": "node",
             "request": "attach",
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "sourceMaps": false,
-            "outDir": null,
-            "localRoot": "${workspaceRoot}",
-            "remoteRoot": "/work"
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build",
+            "localRoot": "${workspaceRoot}"
         },
         {
-            "name": "Attach to Process",
+            "name": "Attach to Docker (make dev)",
             "type": "node",
             "request": "attach",
-            "processId": "${command.PickProcess}",
             "port": 5858,
-            "sourceMaps": false,
-            "outDir": null
+            "address": "localhost",
+            "restart": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build",
+            "localRoot": "${workspaceRoot}",
+            "remoteRoot": "/work"
         }
     ]
 }
