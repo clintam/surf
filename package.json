@@ -4,12 +4,12 @@
   "main": "build/server.js",
   "scripts": {
     "lint": "eslint src test",
-    "compile": "babel src -d build",
+    "compile": "babel src -d build/src & babel test -d build/test",
+    "compile-watch": "babel -w src -d build/src & babel -w test -d build/test",
     "fvt": "mocha --compilers js:babel-register test/fvt",
     "ui-fvt": "wdio",
-    "dev": "babel src -d build -w & nodemon --debug --exec node --nolazy --debug build/server/server.js",
-    "build": "webpack",
-    "start": "babel-node src/server/server.js"
+    "dev": "npm run compile-watch --silent & nodemon --debug --exec node --nolazy --debug build/src/server/server.js",
+    "start": "node build/src/server/server.js"
   },
   "dependencies": {
     "axios": "^0.13.1",

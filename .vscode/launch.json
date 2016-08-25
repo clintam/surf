@@ -8,9 +8,7 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "--compilers",
-                "js:babel-register",
-                "test"
+                "build/test/fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -23,7 +21,7 @@
             },
             "externalConsole": false,
             "sourceMaps": true,
-            "outDir": null
+            "outDir": "${workspaceRoot}/build"
         },
         {
             "name": "Launch local server",
