@@ -4,10 +4,10 @@
   "main": "build/server.js",
   "scripts": {
     "lint": "eslint src test",
-    "compile": "babel src -d build/src & babel test -d build/test",
+    "compile": "babel src -d build/src && babel test -d build/test",
     "compile-watch": "babel -w src -d build/src & babel -w test -d build/test",
-    "fvt": "mocha --compilers js:babel-register test/fvt",
-    "ui-fvt": "wdio",
+    "fvt": "mocha build/test/fvt",
+    "ui-fvt": "mocha build/test/ui-fvt",
     "dev": "npm run compile-watch --silent & nodemon --debug --exec node --nolazy --debug build/src/server/server.js",
     "start": "node build/src/server/server.js"
   },

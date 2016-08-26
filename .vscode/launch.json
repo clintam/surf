@@ -24,6 +24,25 @@
             "outDir": "${workspaceRoot}/build"
         },
         {
+            "name": "UI-FVT",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "stopOnEntry": false,
+            "args": [
+                "build/test/ui-fvt"
+            ],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "externalConsole": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build"
+        },
+        {
             "name": "Launch local server",
             "type": "node",
             "request": "launch",
@@ -42,7 +61,7 @@
             "sourceMaps": true,
             "outDir": "${workspaceRoot}/build"
         },
-         {
+        {
             "name": "Attach to Local (npm run dev)",
             "type": "node",
             "request": "attach",

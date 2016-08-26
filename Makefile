@@ -28,4 +28,7 @@ ui-fvt: up
 down:
 	docker-compose down -v
 
+clean: 
+	rm -rfv build
+
 .PHONY: images

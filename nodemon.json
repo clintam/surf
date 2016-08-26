@@ -1,4 +1,3 @@
 {
-  "verbose": false,
-  "ignore": ["build/web", "test", "src"]
+  "verbose": false
 }

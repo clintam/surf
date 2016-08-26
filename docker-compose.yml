@@ -4,13 +4,11 @@ services:
     build: .
     image: server
     command: npm run dev
-    restart: always
     ports:
      - 8080:8080
      - 5858:5858
     volumes:
-     - ./:/work
-     - /work/node_modules/
+     - ./src:/work/src
     environment:
      MONGO_HOST: mongo
      WEBDRIVER_HOST: webdriver
