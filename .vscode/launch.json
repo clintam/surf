@@ -8,7 +8,7 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/test/fvt"
+                "test/fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -19,9 +19,7 @@
             "env": {
                 "NODE_ENV": "development"
             },
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build"
+            "externalConsole": false
         },
         {
             "name": "UI-FVT",
@@ -30,7 +28,7 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/test/ui-fvt"
+                "test/ui-fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -38,9 +36,7 @@
             "runtimeArgs": [
                 "--nolazy"
             ],
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build"
+            "externalConsole": false
         },
         {
             "name": "Launch local server",
@@ -68,8 +64,6 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build",
             "localRoot": "${workspaceRoot}"
         },
         {
@@ -80,7 +74,6 @@
             "address": "localhost",
             "restart": false,
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build",
             "localRoot": "${workspaceRoot}",
             "remoteRoot": "/work"
         }

@@ -1,3 +1,4 @@
 {
-  "verbose": false
+  "ignore": ["src/web"],
+  "verbose": true
 }

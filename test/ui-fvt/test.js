@@ -1,5 +1,4 @@
-import assert from 'assert'
-
+const assert = require('assert')
 const webdriverio = require('webdriverio')
 
 const url = 'http://server:8080/'

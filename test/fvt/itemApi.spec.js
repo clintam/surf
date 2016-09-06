@@ -1,6 +1,6 @@
-import { expect } from 'chai'
-import ItemClient from '../../src/client/itemClient'
-import uuid from 'uuid'
+const expect = require('chai').expect
+const ItemClient = require('../../src/client/itemClient')
+const uuid = require('uuid')
 
 const getUrl = () => process.env.SERVER_HOST || 'localhost'
 const baseUrl = `http://${getUrl()}:8080/items`
