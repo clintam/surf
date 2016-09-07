@@ -1,26 +1,21 @@
 const assert = require('assert')
-const webdriverio = require('webdriverio')
+const uuid = require('uuid')
 
-const url = 'http://server:8080/'
+describe('main page', function () {
+  it('provides title', function () {
+    const title = browser.url('/').getTitle()
+    assert.equal('Surfing CI-fari', title)
+  })
 
-describe('main page', () => {
-  it('should have the right title', (done) => {
-    const client = webdriverio.remote({
-      host: process.env.WEBDRIVER_HOST || 'localhost',
-      port: 4444,
-      desiredCapabilities: {
-        browserName: 'chrome'
-      }
-    })
-
-    client
-      .init()
-      .url(url)
-      .getTitle()
-      .then((title) => {
-        assert.equal(title, 'Surfing CI-fari')
-      })
-      .then(done)
-      .catch(done)
+  it('creates and deletes new item', function () {
+    const name = `UI TEST${uuid.v1()}`
+    const nameSelector = `li=${name}`
+    browser.url('/')
+    browser.setValue('#name', name)
+    browser.waitForVisible('#create:enabled')
+    browser.click('#create')
+    browser.waitForVisible(nameSelector)
+    browser.element(nameSelector).click('button')
   })
 })
+

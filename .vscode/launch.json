@@ -25,10 +25,10 @@
             "name": "UI-FVT",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "program": "${workspaceRoot}/node_modules/webdriverio/bin/wdio",
             "stopOnEntry": false,
             "args": [
-                "test/ui-fvt"
+                "test/ui-fvt/wdio.conf.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
