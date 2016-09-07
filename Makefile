@@ -1,4 +1,4 @@
-all: docker test lint
+all: docker all-tests lint
 
 images:
 	cd images && make
@@ -16,7 +16,10 @@ up: docker
 dev: up
 	docker-compose logs -f --tail=0
 
-test: fvt ui-fvt
+all-tests: test fvt ui-fvt
+
+test: docker
+	docker run --rm server npm run test --silent
 
 fvt: up
 	docker-compose run --rm --name fvt server npm run fvt --silent
