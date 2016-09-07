@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "src/server/server.js",
   "scripts": {
+    "compile": "gulp compile",
     "lint": "eslint src test",
-    "test": "mocha --compilers js:babel-register src/**/*.spec.js",
-    "fvt": "mocha test/fvt",
-    "ui-fvt": "wdio test/ui-fvt/wdio.conf.js",
-    "dev": "nodemon --debug src/server/server.js",
-    "start": "node src/server/server.js"
+    "test": "mocha build/src/**/*.spec.js",
+    "fvt": "mocha build/test/fvt",
+    "ui-fvt": "wdio build/test/ui-fvt/wdio.conf.js",
+    "dev": "gulp dev"
   },
   "dependencies": {
     "axios": "^0.13.1",
@@ -47,6 +47,10 @@
     "eslint-plugin-promise": "^2.0.0",
     "eslint-plugin-react": "^6.0.0",
     "eslint-plugin-standard": "^2.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-changed": "^1.3.2",
+    "gulp-nodemon": "^2.1.0",
     "mocha": "^3.0.2",
     "nodemon": "^1.10.2",
     "react-transform-hmr": "^1.0.4",

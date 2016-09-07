@@ -6,3 +6,7 @@ services:
 script:
   - make images
   - make all
+
+branches:
+  only: 
+  - master
