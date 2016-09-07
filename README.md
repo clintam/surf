@@ -1,3 +1,5 @@
+Build Status: [![Build Status](https://travis-ci.org/clintam/surf.svg)](https://travis-ci.org/clintam/surf#)
+
 
 A simple react/mongo stack managed with docker and make.
 
