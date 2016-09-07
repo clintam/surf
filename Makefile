@@ -7,7 +7,7 @@ docker:
 	docker build -t server ./
 
 lint: docker
-	docker run --rm server npm run lint --silent
+	docker run -t --rm server npm run lint --silent
 
 up: docker
 	docker-compose up -d
@@ -19,7 +19,7 @@ dev: up
 all-tests: test fvt ui-fvt
 
 test: docker
-	docker run --rm server npm run test --silent
+	docker run -t --rm server npm run test --silent
 
 fvt: up
 	docker-compose run --rm --name fvt server npm run fvt --silent
