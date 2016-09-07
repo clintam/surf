@@ -10,7 +10,7 @@ const ItemList = (props) => {
       <ul className='list-group'>
         {props.items.map((item, i) => (
           <Item key={i}
-            itemName={item.name}
+            item={item}
             deleteItem={ deleteItem(item) } />
         )) }
       </ul>

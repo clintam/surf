@@ -18,17 +18,17 @@ describe('/items/', () => {
 
   it('should CRUD', (done) => {
     const toCreate = {
-      name: 'test-' + uuid.v1()
+      name: `test-${uuid.v1()}`
     }
     client.create(toCreate)
       .then((created) => {
         expect(created.id).to.be.defined
         expect(created.name).to.equal(toCreate.name)
-        created.name = created.name + '-updated'
+        created.name = `${created.name}-updated`
         return client.update(created)
       })
       .then((updated) => {
-        expect(updated.name).to.equal(toCreate.name + '-updated')
+        expect(updated.name).to.equal(`${toCreate.name}-updated`)
         return client.delete(updated)
       })
       .then((deleted) => {

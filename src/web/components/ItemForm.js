@@ -23,6 +23,7 @@ const ItemForm = (props) => {
           />
       </div>
       <button type='submit'
+        id='create'
         className='btn btn-default'
         disabled={!props.form.isValid}>
         Create

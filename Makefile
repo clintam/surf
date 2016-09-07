@@ -13,8 +13,7 @@ up: docker
 	docker-compose up -d
 	docker-compose run --rm healthcheck
 
-dev: docker
-	docker-compose up -d
+dev: up
 	docker-compose logs -f --tail=0
 
 test: fvt ui-fvt
