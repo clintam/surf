@@ -1,3 +1,4 @@
+* syntax error kills dev server
 * move UI FVT to page abstraction
 * Sort out debug process for UI FVT 
   * need to lauch with wdio which spawns more processes

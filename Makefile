@@ -30,7 +30,8 @@ ui-fvt: up
 down:
 	docker-compose down -v
 
-clean: 
+clean: down
 	rm -rfv build
+	mkdir build
 
 .PHONY: images
