@@ -1,22 +1,18 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
 
-var Item = mongoose.model('Item', {
+const Item = mongoose.model('Item', {
   name: String,
   skills: String
 })
 
-exports.findById = function (req, res) {
-  // TODO
-}
-
-exports.findAll = function (req, res) {
+exports.findAll = (req, res) => {
   Item.find().exec((e, items) => {
     res.send(items)
   })
 }
 
-exports.add = function (req, res) {
+exports.add = (req, res) => {
   const item = req.body
 
   Item.create(item, (err, created) => {
@@ -28,7 +24,7 @@ exports.add = function (req, res) {
   })
 }
 
-exports.update = function (req, res) {
+exports.update = (req, res) => {
   const id = req.params.id
   const item = req.body
   Item.update({ _id: id }, item, (err) => {
@@ -40,7 +36,7 @@ exports.update = function (req, res) {
   })
 }
 
-exports.delete = function (req, res) {
+exports.delete = (req, res) => {
   var id = req.params.id
   Item.remove({ _id: id }, (err) => {
     if (err) {

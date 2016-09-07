@@ -4,6 +4,7 @@
   "main": "src/server/server.js",
   "scripts": {
     "lint": "eslint src test",
+    "test": "mocha --compilers js:babel-register src/**/*.spec.js",
     "fvt": "mocha test/fvt",
     "ui-fvt": "wdio test/ui-fvt/wdio.conf.js",
     "dev": "nodemon --debug src/server/server.js",
