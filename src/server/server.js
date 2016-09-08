@@ -48,4 +48,6 @@ app.listen(8080, '0.0.0.0', (err) => {
   console.info('*** Listening on port 8080')
 })
 
+require('../chatbot/bot.js')
+
 exports.app = app
