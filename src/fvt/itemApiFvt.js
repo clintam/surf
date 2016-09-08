@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const ItemClient = require('../../src/client/itemClient')
+const ItemClient = require('../client/itemClient')
 const uuid = require('uuid')
 
 const getUrl = () => process.env.SERVER_HOST || 'localhost'

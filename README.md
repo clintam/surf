@@ -27,11 +27,7 @@ OR
 
 Simple Makefiles call out to docker and express the dependencies. 
 Incremental-build optimizations are managed by docker/docker-compose.
-This combination enables for effecient testing in paralell with
-
-```shell
-make images && make -j
-```
+This combination enables for effecient testing in paralell with `make -j`
 
 In this project we would first build the base docker image, then in paralell,
 * lint it

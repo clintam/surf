@@ -4,10 +4,10 @@
   "main": "src/server/server.js",
   "scripts": {
     "compile": "gulp compile",
-    "lint": "eslint src test",
-    "test": "mocha build/src/**/*.spec.js",
-    "fvt": "mocha build/test/fvt",
-    "ui-fvt": "wdio build/test/ui-fvt/wdio.conf.js",
+    "lint": "eslint src",
+    "test": "mocha build/**/*.spec.js",
+    "fvt": "mocha build/fvt",
+    "ui-fvt": "wdio build/ui-fvt/wdio.conf.js",
     "dev": "gulp dev"
   },
   "dependencies": {

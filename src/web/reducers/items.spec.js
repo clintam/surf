@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import reducer from './items.js'
 
-describe('todos reducer', () => {
+describe('items reducer', () => {
   it('should return the initial state', () => {
     expect(
       reducer(undefined, {})

@@ -1,7 +1,7 @@
 FROM nodejs
 
 ADD package.json .
-RUN npm install
+RUN npm install --loglevel=warn
 
 ADD . .
 
