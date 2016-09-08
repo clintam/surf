@@ -1,15 +1,24 @@
-all: docker all-tests lint
+IMAGE_NAME = server
+RUN_DOCKER = docker run -t --rm ${IMAGE_NAME} npm run $(1) --silent
+RUN_DOCKER_COMPOSE = docker-compose run --rm --name $(1) ${IMAGE_NAME} npm run $(1) --silent
 
-images:
-	cd images && make
+all: image all-tests lint
 
-docker:
+%.image:
+	docker build -t $* $*
+
+image: base_images/nodejs.image
 	docker build -t server ./
 
-lint: docker
-	docker run -t --rm server npm run lint --silent
+lint: image
+	$(call RUN_DOCKER,lint)
 
-up: docker
+test: image
+	$(call RUN_DOCKER,test)
+
+docker_compose_images: image base_images/wait-for-http.image base_images/webdriver.image
+
+up: docker_compose_images
 	docker-compose up -d
 	docker-compose run --rm healthcheck
 
@@ -18,20 +27,17 @@ dev: up
 
 all-tests: test fvt ui-fvt
 
-test: docker
-	docker run -t --rm server npm run test --silent
-
 fvt: up
-	docker-compose run --rm --name fvt server npm run fvt --silent
+	$(call RUN_DOCKER_COMPOSE,fvt)
 
 ui-fvt: up
-	docker-compose run --rm --name ui-fvt server npm run ui-fvt --silent
+	$(call RUN_DOCKER_COMPOSE,ui-fvt)
 
 down:
 	docker-compose down -v
 
 clean: down
-	rm -rfv build
+	rm -rf build
 	mkdir build
 
 .PHONY: images
