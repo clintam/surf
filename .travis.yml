@@ -4,8 +4,7 @@ services:
   - docker
 
 script:
-  - make images
-  - make all
+  - make -j
 
 branches:
   only: 

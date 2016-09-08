@@ -15,11 +15,11 @@ A simple react/mongo stack managed with docker and make.
 #### Quickstart
 
 * Install Docker
-* Build, test, bring up dev environment `make images all`
+* Build, test, bring up dev environment `make`
 
 OR
 
-* Install Nodejs, mongo, webdriver, chrome, and ...
+* Install Nodejs, mongo, selenium, chrome, and ...
 * Build with `npm install`
 * Run with `npm run dev`
 
@@ -29,8 +29,9 @@ Simple Makefiles call out to docker and express the dependencies.
 Incremental-build optimizations are managed by docker/docker-compose.
 This combination enables for effecient testing in paralell with `make -j`
 
-In this project we would first build the base docker image, then in paralell,
-* lint it
+* build base images
+* build this image
+* lint the source
 * run unit tests
 * startup FVT environment with mongo/webdriver
  * test REST API
