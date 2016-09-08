@@ -4,11 +4,11 @@ RUN_DOCKER_COMPOSE = docker-compose run --rm --name $(1) ${IMAGE_NAME} npm run $
 
 all: image all-tests lint
 
-%.image:
-	docker build -t $* $*
+base_images/%.image:
+	docker build -t $* base_images/$*
 
 image: base_images/nodejs.image
-	docker build -t server ./
+	docker build -t ${IMAGE_NAME} .
 
 lint: image
 	$(call RUN_DOCKER,lint)
@@ -40,4 +40,4 @@ clean: down
 	rm -rf build
 	mkdir build
 
-.PHONY: images
+.PHONY: image
