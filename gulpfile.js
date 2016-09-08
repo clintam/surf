@@ -42,7 +42,12 @@ gulp.task('dev', ['compile', 'watch'], () => {
   nodemon({
     verbose: true,
     script: 'build/src/server/server.js',
-    ignore: [`${process.cwd()}/src/**`]
+    ignore: [
+      `${process.cwd()}/src/**`,
+      `${process.cwd()}/build/src/**/*.spec.js`,
+      `${process.cwd()}/build/src/web/**`,
+      `${process.cwd()}/build/test/**`
+    ]
   })
 })
 
