@@ -34,6 +34,7 @@ gulp.task('watch', () => {
 gulp.task('dev', ['compile', 'watch'], () => {
   nodemon({
     verbose: true,
+    exec: 'node --debug',
     script: 'build/server/server.js',
     ignore: [
       `${process.cwd()}/src/**`,

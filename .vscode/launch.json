@@ -1,7 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
-         {
+        {
             "name": "tests",
             "type": "node",
             "request": "launch",
@@ -90,7 +90,9 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "localRoot": "${workspaceRoot}"
+            "localRoot": "${workspaceRoot}",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build"
         },
         {
             "name": "Attach to Docker (make dev)",
@@ -101,6 +103,7 @@
             "restart": false,
             "sourceMaps": true,
             "localRoot": "${workspaceRoot}",
+            "outDir": "${workspaceRoot}/build",
             "remoteRoot": "/work"
         }
     ]

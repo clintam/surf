@@ -41,6 +41,17 @@ app.post('/items', items.add)
 app.put('/items/:id', items.update)
 app.delete('/items/:id', items.delete)
 
+require('express-ws')(app)
+app.ws('/rtm', function (ws, req) {
+  ws.send(JSON.stringify({ type: 'hello' }))
+
+  ws.on('message', function (msg) {
+    ws.send(msg)
+  })
+
+  items.pipeEvents(ws)
+})
+
 app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
     console.log(err)

@@ -20,6 +20,7 @@ exports.add = (req, res) => {
       res.send({ 'error': 'An error has occurred' })
     } else {
       res.send(created)
+      afterCreate(created)
     }
   })
 }
@@ -44,5 +45,26 @@ exports.delete = (req, res) => {
     } else {
       res.send({ ok: true })
     }
+  })
+}
+
+const eventListeners = []
+
+const afterCreate = (item) => {
+  eventListeners.forEach((l) => l.updated(item))
+}
+
+exports.pipeEvents = (ws) => {
+  const listener = {
+    updated: (item) => {
+      ws.send(JSON.stringify({
+        type: 'item_created',
+        item: item
+      }))
+    }
+  }
+  eventListeners.push(listener)
+  ws.on('close', () => {
+    eventListeners.splice(eventListeners.indexOf(listener))
   })
 }

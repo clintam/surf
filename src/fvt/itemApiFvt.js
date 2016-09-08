@@ -37,4 +37,19 @@ describe('/items/', () => {
       .then(done)
       .catch(done)
   })
+
+  it('should stream events', (done) => {
+    const toCreate = {
+      name: `test-${uuid.v1()}`
+    }
+
+    client.openRTM((event) => {
+      if (event.type === 'item_created' && event.item.name === toCreate.name) {
+        client.delete(event.item)
+        .then(() => done())
+      }
+    })
+
+    client.create(toCreate)
+  })
 })
