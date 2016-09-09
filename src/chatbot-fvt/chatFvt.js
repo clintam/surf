@@ -13,18 +13,17 @@ describe('chat bot', function () {
 
   beforeEach(() => slackApi.ready)
 
-  it('should expose help', (done) => {
+  it('should expose help', () => {
     // Trigger the bot
     slackApi.ensureUserInChannel(testBotName, testChannelName)
       .then(({user, channel}) =>
         slackApi.sendMessage(`<@${user.id}> help`, testChannelName))
 
     // Wait for success
-    slackApi.waitForMessage('I can keep track')
-      .then(() => done())
+    return slackApi.waitForMessage('I can keep track')
   })
 
-  it('should list items', (done) => {
+  it('should list items', () => {
     const newItem = {
       name: uuid.v1()
     }
@@ -36,13 +35,12 @@ describe('chat bot', function () {
         slackApi.sendMessage(`<@${user.id}> list items`, testChannelName))
 
     // Wait for success
-    slackApi.waitForMessage('I know about')
+    return slackApi.waitForMessage('I know about')
       .then((message) => {
         var attachement = message.attachments.find((a) => a.title === newItem.name)
         expect(attachement).to.exist
       })
       .then(() => client.delete(createdItem))
-      .then(() => done())
   })
 })
 

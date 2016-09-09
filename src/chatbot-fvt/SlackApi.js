@@ -4,6 +4,7 @@ const bluebird = require('bluebird')
 class SlackApi {
   constructor(token) {
     this.controller = Botkit.slackbot({
+      log: false
     })
     this.bot = this.controller.spawn({
       token: process.env.TEST_SLACK_TOKEN
