@@ -14,5 +14,4 @@ controller.spawn({
   token: process.env.SLACK_TOKEN
 }).startRTM()
 
-require('./listeners/identityChatUx').initialize(controller)
 require('./listeners/itemsChatUx').initialize(controller)

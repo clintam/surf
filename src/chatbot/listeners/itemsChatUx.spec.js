@@ -9,6 +9,6 @@ describe('itemsChatUx', () => {
       hears: sinon.spy()
     }
     itemsChatUx.initialize(controller)
-    expect(controller.hears.callCount).to.equal(2)
+    expect(controller.hears.callCount).to.equal(3)
   })
 })

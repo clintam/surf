@@ -25,13 +25,13 @@ up: docker_compose_images
 dev: up
 	docker-compose logs -f --tail=0
 
-all-tests: test fvt ui-fvt
+all-tests: test server-fvt web-fvt
 
-fvt: up
-	$(call RUN_DOCKER_COMPOSE,fvt)
+server-fvt: up
+	$(call RUN_DOCKER_COMPOSE,server-fvt)
 
-ui-fvt: up
-	$(call RUN_DOCKER_COMPOSE,ui-fvt)
+web-fvt: up
+	$(call RUN_DOCKER_COMPOSE,web-fvt)
 
 down:
 	docker-compose down -v

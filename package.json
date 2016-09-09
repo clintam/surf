@@ -6,8 +6,8 @@
     "compile": "gulp compile",
     "lint": "eslint src",
     "test": "mocha build/**/*.spec.js",
-    "fvt": "mocha build/fvt",
-    "ui-fvt": "wdio build/ui-fvt/wdio.conf.js",
+    "server-fvt": "mocha build/server-fvt",
+    "web-fvt": "wdio build/web-fvt/wdio.conf.js",
     "dev": "gulp dev"
   },
   "dependencies": {

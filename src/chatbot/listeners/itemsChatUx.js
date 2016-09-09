@@ -4,6 +4,14 @@ const baseUrl = `http://${getUrl()}:8080/items`
 var client = new ItemClient(baseUrl)
 
 export function initialize(controller) {
+  controller.hears(['hello', 'hi', 'help', 'who are you'],
+    'direct_message,direct_mention,mention', (bot, message) => {
+      bot.reply(message,
+`I can keep track of a list of items!
+Ask me to 'list items' or 'add' somethng :metal:
+`)
+    })
+
   const react = (bot, message, name = 'robot_face') => {
     bot.api.reactions.add({
       timestamp: message.ts,
