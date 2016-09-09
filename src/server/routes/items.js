@@ -1,13 +1,16 @@
 const mongoose = require('mongoose')
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
 
-const Item = mongoose.model('Item', {
-  name: String,
-  skills: String
-})
+const Item = mongoose.model('Item',
+  new mongoose.Schema({
+    name: String,
+    skills: String
+  }, {
+    timestamps: true
+  }))
 
 exports.findAll = (req, res) => {
-  Item.find().exec((e, items) => {
+  Item.find().sort({updatedAt: -1}).exec((e, items) => {
     res.send(items)
   })
 }
