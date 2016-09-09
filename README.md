@@ -32,7 +32,7 @@ OR
 
 #### Make + Docker 
 
-Simple Makefiles call out to docker and express the dependencies. 
+Simple Makefiles call out to Docker and express the dependencies. 
 Incremental-build optimizations are managed by docker/docker-compose.
 This combination enables for efficient testing in parallel with `make -j`
 
@@ -48,9 +48,23 @@ This combination enables for efficient testing in parallel with `make -j`
 
 #### React
 
-* prefer functional components
 
-TODO: evaluation
+Setup
+* prefer functional abstractions
+* Views consist of: components and containers:
+ * components are pure functions props -> DOM
+ * containers group components mapping state -> props
+
+Evaluation
+* Functional UI programming is great (Tony the tiger)!
+ * views, reducers can be pure functions
+ * most side-effects (AJAX) happens in actions
+* enforcing a separation between view and state manipulation is "firm but fair"
+* TODO: Reducer eval. Is it tedious? 
+
+
+Notes: re-wiring action to get live editing w/websocket was a 10-liner 
+https://github.com/clintam/surf/commit/25417a55ec115094875d5740ddc6f26683a8e2d0
 
 #### Chat UX
 
