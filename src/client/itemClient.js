@@ -1,9 +1,12 @@
+/* global location */
 var http = require('axios')
+var urlApi = require('url')
+
 const toJson = (res) => res.data
 
 class ItemClient {
-  constructor(baseUrl) {
-    this.url = baseUrl
+  constructor(url) {
+    this.url = url || `http://${process.env.SERVER_HOST || 'localhost'}:8080/items`
   }
 
   list() {
@@ -21,6 +24,16 @@ class ItemClient {
 
   delete(item) {
     return http.delete(this.url + '/' + item._id).then(toJson)
+  }
+
+  openRTM(onEvent) {
+    const url = urlApi.parse(this.url)
+    const host = url.host || location.host
+    const webSocketUrl = `http://${host}/`
+    var socket = require('socket.io-client')(webSocketUrl)
+    socket.on('event', function (data) {
+      onEvent(data)
+    })
   }
 
 }

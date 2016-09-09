@@ -1,7 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
-         {
+        {
             "name": "tests",
             "type": "node",
             "request": "launch",
@@ -25,13 +25,13 @@
             "trace": "sm"
         },
         {
-            "name": "FVT",
+            "name": "server-fvt",
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/fvt"
+                "build/server-fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -48,13 +48,13 @@
             "trace": "sm"
         },
         {
-            "name": "UI-FVT",
+            "name": "web-fvt",
             "type": "node",
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/webdriverio/bin/wdio",
             "stopOnEntry": false,
             "args": [
-                "test/ui-fvt/wdio.conf.js"
+                "test/web-fvt/wdio.conf.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -63,6 +63,29 @@
                 "--nolazy"
             ],
             "externalConsole": false
+        },
+         {
+            "name": "chatbot-fvt",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "stopOnEntry": false,
+            "args": [
+                "build/chatbot-fvt"
+            ],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development",
+                "TEST_SLACK_TOKEN": "xoxb-78109031585-43uFjysL1Eu5rQTgMiDMbYVW"
+            },
+            "externalConsole": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build"
         },
         {
             "name": "Launch local server",
@@ -90,7 +113,9 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "localRoot": "${workspaceRoot}"
+            "localRoot": "${workspaceRoot}",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build"
         },
         {
             "name": "Attach to Docker (make dev)",
@@ -101,6 +126,7 @@
             "restart": false,
             "sourceMaps": true,
             "localRoot": "${workspaceRoot}",
+            "outDir": "${workspaceRoot}/build",
             "remoteRoot": "/work"
         }
     ]

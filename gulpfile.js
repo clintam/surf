@@ -34,13 +34,13 @@ gulp.task('watch', () => {
 gulp.task('dev', ['compile', 'watch'], () => {
   nodemon({
     verbose: true,
+    exec: 'node --debug',
     script: 'build/server/server.js',
     ignore: [
       `${process.cwd()}/src/**`,
       `${process.cwd()}/build/**/*.spec.js`,
       `${process.cwd()}/build/web/**`,
-      `${process.cwd()}/build/fvt/**`,
-      `${process.cwd()}/build/ui-fvt/**`
+      `${process.cwd()}/build/*-fvt/**`
     ]
   })
 })

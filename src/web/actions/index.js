@@ -9,7 +9,6 @@ export function createItem(item) {
   return (dispatch) => {
     client.create(item)
       .then(() => {
-        dispatch(listItems())
         dispatch({ type: 'CREATED_ITEM' })
       })
   }
@@ -18,7 +17,6 @@ export function createItem(item) {
 export function deleteItem(item) {
   return (dispatch) => {
     client.delete(item)
-      .then(() => dispatch(listItems()))
   }
 }
 
@@ -28,9 +26,13 @@ export function loadItems(items) {
 
 export function listItems() {
   return (dispatch) => {
-    client.list().then((items) =>
-      dispatch(loadItems(items))
-    )
+    const refresh = () => {
+      client.list().then((items) =>
+        dispatch(loadItems(items))
+      )
+    }
+    refresh()
+    client.openRTM(refresh)
   }
 }
 

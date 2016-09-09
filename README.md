@@ -3,14 +3,21 @@ Surfing CI-fari
 [![Build Status](https://travis-ci.org/clintam/surf.svg)](https://travis-ci.org/clintam/surf#)
 ***
 
+A sweet nodejs stack using mongo, react, socket.io, and botkit. 
+Infrastructure is managed with docker and make. 
 
-A simple react/mongo stack managed with docker and make. 
+Developer sanity is achieved via:
+* Leveraging modern javascript (ES6)
+* Efficient hot-swapping for live development cycles
+* Reproducible, isolated environments for dev and testing
+* CI practices (linting, unit tests, and functional verification) 
+* Isomorphic codebase: abstractions shared for REST APIs, web UX, and chat UX
 
-#### Goals
-* Modern and simple
-* effecient dev cycles
-* Support best CI practices
-* Isomorphic codebase runs in server and clients
+#### Application
+
+YATL (yet another todo list), but with some tech bling:
+* Real time updates with websockets
+* A chat interface (slack)
 
 #### Quickstart
 
@@ -27,15 +34,16 @@ OR
 
 Simple Makefiles call out to docker and express the dependencies. 
 Incremental-build optimizations are managed by docker/docker-compose.
-This combination enables for effecient testing in paralell with `make -j`
+This combination enables for efficient testing in parallel with `make -j`
 
-* build base images
-* build this image
-* lint the source
-* run unit tests
-* startup FVT environment with mongo/webdriver
- * test REST API
- * test web UI
+* download/build base images (nodejs, mongo, webdriver)
+* build server image
+ * lint the source
+ * run unit tests
+ * startup FVT environment with our server plus mongo and webdriver
+  * test REST API
+  * test web UI
+  * test chat UI
  
 
 #### React
@@ -43,3 +51,8 @@ This combination enables for effecient testing in paralell with `make -j`
 * prefer functional components
 
 TODO: evaluation
+
+#### Chat UX
+
+Bots test bots! FVT by using another bot to drive conversation with our chat UX bot
+

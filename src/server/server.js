@@ -41,11 +41,18 @@ app.post('/items', items.add)
 app.put('/items/:id', items.update)
 app.delete('/items/:id', items.delete)
 
-app.listen(8080, '0.0.0.0', (err) => {
+const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
     console.log(err)
   }
   console.info('*** Listening on port 8080')
 })
+
+const io = require('socket.io').listen(server)
+io.sockets.on('connection', function (socket) {
+  items.pipeEvents(socket)
+})
+
+require('../chatbot/bot.js')
 
 exports.app = app

@@ -10,7 +10,7 @@ exports.config = {
    * specify test files
    */
   specs: [
-    './build/ui-fvt/**/*Fvt.js'
+    './build/web-fvt/**/*Fvt.js'
   ],
   exclude: [
   ],
