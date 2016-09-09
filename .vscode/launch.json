@@ -80,12 +80,12 @@
                 "--nolazy"
             ],
             "env": {
-                "NODE_ENV": "development"
+                "NODE_ENV": "development",
+                "TEST_SLACK_TOKEN": "xoxb-78109031585-43uFjysL1Eu5rQTgMiDMbYVW"
             },
             "externalConsole": false,
             "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build",
-            "trace": "sm"
+            "outDir": "${workspaceRoot}/build"
         },
         {
             "name": "Launch local server",

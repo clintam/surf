@@ -1,7 +1,8 @@
-* ROOT d  ocker files (in build) create shadow and break until restart
+
 
 Testing TODOs
+* Mocking for Unit tests. Do we need to switch to DI?
 * Chat FVT
-* move UI FVT to page abstraction
+* move web FVT to page abstraction
 
 
