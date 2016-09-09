@@ -33,17 +33,21 @@ exports.update = (req, res) => {
       res.send({ 'error': 'An error has occurred' })
     } else {
       res.send(item)
+      afterUpdate(item)
     }
   })
 }
 
 exports.delete = (req, res) => {
-  var id = req.params.id
-  Item.remove({ _id: id }, (err) => {
+  const id = req.params.id
+  const itemShell = { _id: id }
+
+  Item.remove(itemShell, (err) => {
     if (err) {
       res.send({ 'error': 'An error has occurred' })
     } else {
       res.send({ ok: true })
+      afterDelete(itemShell)
     }
   })
 }
@@ -51,20 +55,31 @@ exports.delete = (req, res) => {
 const eventListeners = []
 
 const afterCreate = (item) => {
+  eventListeners.forEach((l) => l.created(item))
+}
+
+const afterDelete = (item) => {
+  eventListeners.forEach((l) => l.deleted(item))
+}
+
+const afterUpdate = (item) => {
   eventListeners.forEach((l) => l.updated(item))
 }
 
 exports.pipeEvents = (ws) => {
+  const sendEvent = (type) => (item) => {
+    ws.emit('event', {
+      type: type,
+      item: item
+    })
+  }
   const listener = {
-    updated: (item) => {
-      ws.send(JSON.stringify({
-        type: 'item_created',
-        item: item
-      }))
-    }
+    created: sendEvent('item_created'),
+    deleted: sendEvent('item_deleted'),
+    updated: sendEvent('item_updated')
   }
   eventListeners.push(listener)
-  ws.on('close', () => {
+  ws.on('disconnect', () => {
     eventListeners.splice(eventListeners.indexOf(listener))
   })
 }

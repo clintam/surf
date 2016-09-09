@@ -1,3 +1,4 @@
+/* global location */
 var http = require('axios')
 var urlApi = require('url')
 
@@ -26,12 +27,12 @@ class ItemClient {
   }
 
   openRTM(onEvent) {
-    const WebSocket = require('ws')
     const url = urlApi.parse(this.url)
-    const webSocketUrl = `ws://${url.hostname}:${url.port}/rtm`
-    this.ws = new WebSocket(webSocketUrl)
-    this.ws.on('message', (body) => {
-      onEvent(JSON.parse(body))
+    const host = url.host || location.host
+    const webSocketUrl = `http://${host}/`
+    var socket = require('socket.io-client')(webSocketUrl)
+    socket.on('event', function (data) {
+      onEvent(data)
     })
   }
 

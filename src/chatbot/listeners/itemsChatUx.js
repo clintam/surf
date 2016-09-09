@@ -37,14 +37,15 @@ export function initialize(controller) {
   })
 
   controller.hears(['add (.*)'], 'direct_message', (bot, message) => {
-    react(bot, message, 'heavy_check_mark')
     const item = {
       name: message.match[1]
     }
 
+    bot.startTyping(message)
     client.create(item)
       .then(() => {
         bot.reply(message, 'got it')
+        react(bot, message, 'heavy_check_mark')
       })
   })
 }
