@@ -64,6 +64,29 @@
             ],
             "externalConsole": false
         },
+         {
+            "name": "chatbot-fvt",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "stopOnEntry": false,
+            "args": [
+                "build/chatbot-fvt"
+            ],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "externalConsole": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build",
+            "trace": "sm"
+        },
         {
             "name": "Launch local server",
             "type": "node",

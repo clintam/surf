@@ -4,11 +4,12 @@
   "main": "src/server/server.js",
   "scripts": {
     "compile": "gulp compile",
+    "dev": "gulp dev",    
     "lint": "eslint src",
     "test": "mocha build/**/*.spec.js",
     "server-fvt": "mocha build/server-fvt",
     "web-fvt": "wdio build/web-fvt/wdio.conf.js",
-    "dev": "gulp dev"
+    "chatbot-fvt": "mocha build/chatbot-fvt"
   },
   "dependencies": {
     "axios": "^0.13.1",

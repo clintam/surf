@@ -1,10 +1,7 @@
 const expect = require('chai').expect
 const ItemClient = require('../client/itemClient')
 const uuid = require('uuid')
-
-const getUrl = () => process.env.SERVER_HOST || 'localhost'
-const baseUrl = `http://${getUrl()}:8080/items`
-var client = new ItemClient(baseUrl)
+var client = new ItemClient()
 
 describe('/items/', () => {
   it('should list', (done) => {
@@ -22,7 +19,10 @@ describe('/items/', () => {
     }
     client.create(toCreate)
       .then((created) => {
-        expect(created.id).to.be.defined
+        expect(created._id).to.exist
+        expect(created.__v).to.exist
+        expect(created.updatedAt).to.exist
+        expect(created.createdAt).to.exist
         expect(created.name).to.equal(toCreate.name)
         created.name = `${created.name}-updated`
         return client.update(created)
@@ -46,7 +46,7 @@ describe('/items/', () => {
     client.openRTM((event) => {
       if (event.type === 'item_created' && event.item.name === toCreate.name) {
         client.delete(event.item)
-        .then(() => done())
+          .then(() => done())
       }
     })
 

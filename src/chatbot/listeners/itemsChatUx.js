@@ -1,7 +1,5 @@
 const ItemClient = require('../../client/itemClient')
-const getUrl = () => process.env.SERVER_HOST || 'localhost'
-const baseUrl = `http://${getUrl()}:8080/items`
-var client = new ItemClient(baseUrl)
+var client = new ItemClient()
 
 export function initialize(controller) {
   controller.hears(['hello', 'hi', 'help', 'who are you'],

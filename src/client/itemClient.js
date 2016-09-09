@@ -5,8 +5,8 @@ var urlApi = require('url')
 const toJson = (res) => res.data
 
 class ItemClient {
-  constructor(baseUrl) {
-    this.url = baseUrl
+  constructor(url) {
+    this.url = url || `http://${process.env.SERVER_HOST || 'localhost'}:8080/items`
   }
 
   list() {

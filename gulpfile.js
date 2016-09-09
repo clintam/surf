@@ -40,8 +40,7 @@ gulp.task('dev', ['compile', 'watch'], () => {
       `${process.cwd()}/src/**`,
       `${process.cwd()}/build/**/*.spec.js`,
       `${process.cwd()}/build/web/**`,
-      `${process.cwd()}/build/fvt/**`,
-      `${process.cwd()}/build/ui-fvt/**`
+      `${process.cwd()}/build/*-fvt/**`
     ]
   })
 })
