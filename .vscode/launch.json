@@ -64,7 +64,7 @@
             ],
             "externalConsole": false
         },
-         {
+        {
             "name": "chatbot-fvt",
             "type": "node",
             "request": "launch",
@@ -128,6 +128,15 @@
             "localRoot": "${workspaceRoot}",
             "outDir": "${workspaceRoot}/build",
             "remoteRoot": "/work"
+        },
+        {
+            "name": "Debug Web (Chrome)",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/",
+            "webRoot": "${workspaceRoot}",
+            "sourceMaps": true,
+            "trace": "sm"
         }
     ]
 }
