@@ -1,7 +1,7 @@
 /* global describe it*/
 const expect = require('chai').expect
 
-import * as Actions from './'
+import * as Actions from './actions'
 
 describe('actions', () => {
   const item = {

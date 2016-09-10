@@ -25,7 +25,7 @@ describe('chat bot', function () {
 
   it('should list items', () => {
     const newItem = {
-      name: uuid.v1()
+      name: `chat-fvt-${uuid.v1()}`
     }
     var createdItem
     client.create(newItem)

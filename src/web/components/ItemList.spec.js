@@ -7,10 +7,10 @@ import { shallow } from 'enzyme'
 
 describe('<ItemList />', () => {
   const items = [{}, {}]
-  const isFocused = (item) => false
+  const formProvider = (item) => undefined
   const wrapper = shallow(<ItemList
     items={items}
-    isFocused={isFocused}
+    formProvider={formProvider}
     actions={{}} />
   )
 
