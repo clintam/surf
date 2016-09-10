@@ -2,8 +2,6 @@ import React from 'react'
 import Item from './Item'
 
 const ItemList = (props) => {
-  const deleteItem = (item) => (e) => props.actions.deleteItem(item)
-  const focusItem = (item) => (e) => props.actions.focusItem(item)
   const doneItemCount = props.items.filter((i) => i.done).length
   return (
     <div>
@@ -16,19 +14,22 @@ const ItemList = (props) => {
         {props.items.map((item, i) => (
           <Item key={i}
             item={item}
-            focus={focusItem(item) }
-            isFocused={props.isFocused(item) }
-            deleteItem={ deleteItem(item) }
-            updateItem={ props.actions.updateItem } />
-        )) }.
+            itemForm={props.formProvider(item)}
+            actions={props.actions} />
+        )) }
       </ul>
+      <button type='button' className='btn btn-link'
+        onClick={props.actions.addItem}>
+        <span className='glyphicon glyphicon-plus' />
+        Add another item
+      </button>
     </div>
   )
 }
 
 ItemList.propTypes = {
   items: React.PropTypes.array.isRequired,
-  isFocused: React.PropTypes.func.isRequired,
+  formProvider: React.PropTypes.func,
   actions: React.PropTypes.object.isRequired
 }
 

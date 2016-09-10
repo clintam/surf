@@ -3,9 +3,12 @@ import React from 'react'
 const ItemForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.actions.createItem(props.form.item)
+    props.actions.saveItem(props.form.item)
   }
-
+  const onBlur = (e) => {
+    updateForm(e)
+    handleSubmit(e)
+  }
   const updateForm = (e) => props.actions.updateForm(
     Object.assign({}, props.form.item, { name: e.target.value })
   )
@@ -13,23 +16,14 @@ const ItemForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
-        <div className='input-group'>
-          <input type='text'
-            className='form-control'
-            id='name'
-            placeholder='Add another item...'
-            value={props.form.item.name}
-            onChange={updateForm}
-            />
-          <span className='input-group-btn'>
-            <button type='submit'
-              id='create'
-              className='btn btn-default'
-              disabled={!props.form.isValid}>
-              Create
-            </button>
-          </span>
-        </div>
+        <input type='text'
+          className='form-control'
+          id='name'
+          placeholder='Name...'
+          value={props.form.item.name}
+          onChange={updateForm}
+          onBlur={onBlur}
+          />
       </div>
     </form>
   )
