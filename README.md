@@ -60,6 +60,7 @@ Evaluation
  * views, reducers can be pure functions
  * most side-effects (AJAX) happens in actions
 * enforcing a separation between view and state manipulation is "firm but fair"
+* JSX seems nice
 * TODO: Reducer eval. Is it tedious? 
 
 

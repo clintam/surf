@@ -3,6 +3,7 @@ import Item from './Item'
 
 const ItemList = (props) => {
   const deleteItem = (item) => (e) => props.actions.deleteItem(item)
+  const updateItem = (item) => props.actions.updateItem(item)
 
   return (
     <div>
@@ -11,7 +12,8 @@ const ItemList = (props) => {
         {props.items.map((item, i) => (
           <Item key={i}
             item={item}
-            deleteItem={ deleteItem(item) } />
+            deleteItem={ deleteItem(item) }
+            updateItem={ updateItem } />
         )) }
       </ul>
     </div>

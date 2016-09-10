@@ -1,4 +1,4 @@
-const ItemClient = require('../../client/itemClient')
+const ItemClient = require('../../common/itemClient')
 var client = new ItemClient()
 
 export function initialize(controller) {
@@ -33,7 +33,7 @@ Ask me to 'list items' or 'add' somethng :metal:
             return {
               'title': item.name,
               'text': '(need more info)',
-              'color': '#7CD197'
+              'color': item.color
             }
           })
         }

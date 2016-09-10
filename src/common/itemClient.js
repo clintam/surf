@@ -30,7 +30,11 @@ class ItemClient {
     const url = urlApi.parse(this.url)
     const host = url.host || location.host
     const webSocketUrl = `http://${host}/`
-    var socket = require('socket.io-client')(webSocketUrl)
+    var socket = require('socket.io-client')(webSocketUrl, {
+      reconnection: true,
+      reconnectionDelay: 500,
+      reconnectionAttempts: 1000
+    })
     socket.on('event', function (data) {
       onEvent(data)
     })

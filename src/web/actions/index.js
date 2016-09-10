@@ -1,4 +1,4 @@
-import ItemClient from '../../client/itemClient'
+import ItemClient from '../../common/itemClient'
 const client = new ItemClient('items')
 
 export function updateForm(item) {
@@ -10,6 +10,15 @@ export function createItem(item) {
     client.create(item)
       .then(() => {
         dispatch({ type: 'CREATED_ITEM' })
+      })
+  }
+}
+
+export function updateItem(item) {
+  return (dispatch) => {
+    client.update(item)
+      .then(() => {
+        dispatch({ type: 'UPDATED_ITEM' })
       })
   }
 }

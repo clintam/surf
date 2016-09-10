@@ -1,16 +1,28 @@
 const mongoose = require('mongoose')
+const itemDomain = require('../../common/itemDomain')
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
 
+const schema = {
+  name: String,
+  color: {
+    type: String,
+    default: '#000000',
+    validate: {
+      validator: function (v) {
+        return itemDomain.validColors().includes(v)
+      },
+      message: '{VALUE} is not a valid color'
+    }
+  }
+}
+
 const Item = mongoose.model('Item',
-  new mongoose.Schema({
-    name: String,
-    skills: String
-  }, {
+  new mongoose.Schema(schema, {
     timestamps: true
   }))
 
 exports.findAll = (req, res) => {
-  Item.find().sort({updatedAt: -1}).exec((e, items) => {
+  Item.find().sort({ createdAt: -1 }).exec((e, items) => {
     res.send(items)
   })
 }
@@ -18,41 +30,41 @@ exports.findAll = (req, res) => {
 exports.add = (req, res) => {
   const item = req.body
 
-  Item.create(item, (err, created) => {
-    if (err) {
-      res.send({ 'error': 'An error has occurred' })
-    } else {
+  Item.create(item)
+    .then((created) => {
       res.send(created)
       afterCreate(created)
-    }
-  })
+    })
+    .catch((e) => {
+      res.status(500).send(e)
+    })
 }
 
 exports.update = (req, res) => {
   const id = req.params.id
   const item = req.body
-  Item.update({ _id: id }, item, (err) => {
-    if (err) {
-      res.send({ 'error': 'An error has occurred' })
-    } else {
+  Item.update({ _id: id }, item)
+    .then(() => {
       res.send(item)
       afterUpdate(item)
-    }
-  })
+    })
+    .catch((e) => {
+      res.status(500).send(e)
+    })
 }
 
 exports.delete = (req, res) => {
   const id = req.params.id
   const itemShell = { _id: id }
 
-  Item.remove(itemShell, (err) => {
-    if (err) {
-      res.send({ 'error': 'An error has occurred' })
-    } else {
+  Item.remove(itemShell)
+    .then(() => {
       res.send({ ok: true })
       afterDelete(itemShell)
-    }
-  })
+    })
+    .catch((e) => {
+      res.status(500).send(e)
+    })
 }
 
 const eventListeners = []

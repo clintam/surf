@@ -7,11 +7,21 @@ import { shallow } from 'enzyme'
 import sinon from 'sinon'
 
 describe('<Item />', () => {
+  const item = { _id: 1 }
+  const deleteItem = sinon.spy()
+  const updateItem = sinon.spy()
+  const wrapper = shallow(<Item item={item}
+    deleteItem={deleteItem}
+    updateItem={updateItem}
+    />)
+
   it('can delete with button click', () => {
-    const item = {}
-    const deleteItem = sinon.spy()
-    const wrapper = shallow(<Item item={item} deleteItem={deleteItem} />)
-    wrapper.find('button').simulate('click')
+    wrapper.find('#delete-1').simulate('click')
     expect(deleteItem).to.have.property('callCount', 1)
+  })
+
+  it('can update color with button click', () => {
+    wrapper.find('#update-1').simulate('click')
+    expect(updateItem).to.have.property('callCount', 1)
   })
 })

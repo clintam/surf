@@ -54,7 +54,7 @@
             "program": "${workspaceRoot}/node_modules/webdriverio/bin/wdio",
             "stopOnEntry": false,
             "args": [
-                "test/web-fvt/wdio.conf.js"
+                "build/web-fvt/wdio.conf.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,

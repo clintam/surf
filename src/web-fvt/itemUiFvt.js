@@ -15,7 +15,7 @@ describe('main page', function () {
     browser.waitForVisible('#create:enabled')
     browser.click('#create')
     browser.waitForVisible(nameSelector)
-    browser.element(nameSelector).click('button')
+    browser.element(nameSelector).click('button[id*=delete]')
   })
 })
 
