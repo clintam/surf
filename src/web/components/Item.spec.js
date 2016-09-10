@@ -9,7 +9,6 @@ import sinon from 'sinon'
 describe('<Item />', () => {
   const item = { _id: 1 }
   const actions = {
-    deleteItem: sinon.spy(),
     saveItem: sinon.spy()
   }
   const wrapper = shallow(<Item
@@ -18,13 +17,8 @@ describe('<Item />', () => {
     itemForm={{}}
     />)
 
-  it('can delete with button click', () => {
-    wrapper.find('#delete-1').simulate('click')
-    expect(actions.deleteItem).to.have.property('callCount', 1)
-  })
-
-  it('can update color with button click', () => {
-    wrapper.find('#update-1').simulate('click')
+  it('can toggle done with button click', () => {
+    wrapper.find('#toggle-1').simulate('click', {stopPropagation: sinon.spy()})
     expect(actions.saveItem).to.have.property('callCount', 1)
   })
 })

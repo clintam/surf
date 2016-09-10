@@ -1,16 +1,8 @@
 import React from 'react'
-import {changeColor} from '../../common/itemDomain'
 import ItemForm from './ItemForm'
-const classNames = require('classnames')
+import classNames from 'classnames'
 
 const Item = (props) => {
-  const deleteItem = (e) => props.actions.deleteItem(props.item)
-
-  const updateColor = (e) => {
-    const newItem = Object.assign({}, props.item)
-    changeColor(newItem)
-    props.actions.saveItem(newItem)
-  }
   const toggleDone = (e) => {
     e.stopPropagation()
     const newItem = Object.assign({}, props.item, { done: !props.item.done })
@@ -33,29 +25,16 @@ const Item = (props) => {
           }) } style={{ color: props.item.color }} />
         </button>
       </div>
-      <div className='col-sm-6'>
+      <div className='col-sm-11'>
         { isEditMode &&
           <ItemForm form={props.itemForm} actions={props.actions} />
         }
         {!isEditMode &&
-          <span className='name'>{props.item.name}</span>
+          <span className='name'>
+            {props.item.name}
+          </span>
         }
       </div>
-      { isEditMode &&
-        <div className='col-sm-5'>
-          <div className='btn-group pull-right'>
-            <button type='button' id={`update-${id}`} className='btn btn-default btn'
-              onClick={updateColor} title='Change color'>
-              <span className='glyphicon glyphicon-asterisk'
-                style={{ color: props.item.color }} />
-            </button>
-            <button type='button' id={`delete-${id}`} className='btn btn-default pull-right'
-              onClick={deleteItem} title='Delete'>
-              <span className='glyphicon glyphicon-remove-circle' />
-            </button>
-          </div>
-        </div>
-      }
     </li>
   )
 }
