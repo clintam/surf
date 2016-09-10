@@ -8,12 +8,13 @@ describe('main page', function () {
   })
 
   it('creates and deletes new item', function () {
-    const name = `UI TEST${uuid.v1()}`
+    const name = `web-fvt-${uuid.v1()}`
     const nameSelector = `li=${name}`
     browser.url('/')
-    browser.setValue('#name', name)
-    browser.waitForVisible('#create:enabled')
     browser.click('#create')
+    browser.waitForVisible('#name')
+    browser.setValue('#name', name)
+    browser.click('#root')
     browser.waitForVisible(nameSelector)
     browser.click(nameSelector)
     browser.waitForVisible('button[id*=delete]')

@@ -18,7 +18,7 @@ const ItemList = (props) => {
             actions={props.actions} />
         )) }
       </ul>
-      <button type='button' className='btn btn-link'
+      <button type='button' id='create' className='btn btn-link'
         onClick={props.actions.addItem}>
         <span className='glyphicon glyphicon-plus' />
         Add another item

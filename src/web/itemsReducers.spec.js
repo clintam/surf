@@ -1,19 +1,13 @@
 /* global describe it*/
 import { expect } from 'chai'
-import reducer from './items.js'
+import reducer from './itemsReducers'
 
 describe('items reducer', () => {
   it('should return the initial state', () => {
     expect(
-      reducer(undefined, {})
+      reducer(undefined, {}).items
     ).to.eql({
-      items: [],
-      form: {
-        isValid: false,
-        item: {
-          name: ''
-        }
-      }
+      items: []
     }
       )
   })
@@ -23,8 +17,6 @@ describe('items reducer', () => {
     expect(reducer({}, {
       type: 'LOAD_ITEMS',
       items: items
-    })).to.eql({
-      items: items
-    })
+    })).to.eql({ items: { items } })
   })
 })

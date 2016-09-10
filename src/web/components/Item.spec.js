@@ -8,25 +8,23 @@ import sinon from 'sinon'
 
 describe('<Item />', () => {
   const item = { _id: 1 }
-  const deleteItem = sinon.spy()
-  const updateItem = sinon.spy()
-  const focus = sinon.spy
-  const isFocused = true
+  const actions = {
+    deleteItem: sinon.spy(),
+    saveItem: sinon.spy()
+  }
   const wrapper = shallow(<Item
     item={item}
-    deleteItem={deleteItem}
-    updateItem={updateItem}
-    isFocused={isFocused}
-    focus={focus}
+    actions={actions}
+    itemForm={{}}
     />)
 
   it('can delete with button click', () => {
     wrapper.find('#delete-1').simulate('click')
-    expect(deleteItem).to.have.property('callCount', 1)
+    expect(actions.deleteItem).to.have.property('callCount', 1)
   })
 
   it('can update color with button click', () => {
     wrapper.find('#update-1').simulate('click')
-    expect(updateItem).to.have.property('callCount', 1)
+    expect(actions.saveItem).to.have.property('callCount', 1)
   })
 })
