@@ -10,9 +10,14 @@ describe('<Item />', () => {
   const item = { _id: 1 }
   const deleteItem = sinon.spy()
   const updateItem = sinon.spy()
-  const wrapper = shallow(<Item item={item}
+  const focus = sinon.spy
+  const isFocused = true
+  const wrapper = shallow(<Item
+    item={item}
     deleteItem={deleteItem}
     updateItem={updateItem}
+    isFocused={isFocused}
+    focus={focus}
     />)
 
   it('can delete with button click', () => {

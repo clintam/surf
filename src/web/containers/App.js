@@ -7,11 +7,11 @@ import { connect } from 'react-redux'
 import * as Actions from '../actions'
 
 const App = (props) => {
-  const { items, form, actions } = props
+  const { items, form, isFocused, actions } = props
   return (
     <div className='container'>
-      <ItemForm actions={actions} form={form} />
-      <ItemList actions={actions} items={items} />
+      <ItemForm actions={actions} form={form} className='row' />
+      <ItemList actions={actions} items={items} isFocused={isFocused} />
     </div>
   )
 }
@@ -19,13 +19,15 @@ const App = (props) => {
 App.propTypes = {
   items: PropTypes.array.isRequired,
   form: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  isFocused: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
   return {
     items: state.items.items,
-    form: state.items.form
+    form: state.items.form,
+    isFocused: (item) => state.items.updateForm && item._id === state.items.updateForm.item._id
   }
 }
 

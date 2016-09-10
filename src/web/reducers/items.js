@@ -15,7 +15,7 @@ const initialState = {
 
 const validateForm = (item) => {
   return {
-    isValid: item.name,
+    isValid: !!item.name,
     item
   }
 }
@@ -28,6 +28,10 @@ export default function items(state = initialState, action) {
       return Object.assign({}, state, { form: validateForm(action.item) })
     case 'CREATED_ITEM':
       return Object.assign({}, state, { form: initialForm() })
+    // case 'UPDATED_ITEM':
+    //   return Object.assign({}, state)
+    case 'FOCUS_ITEM':
+      return Object.assign({}, state, { updateForm: validateForm(action.item) })
     default:
       return state
   }

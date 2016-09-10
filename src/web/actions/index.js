@@ -45,3 +45,6 @@ export function listItems() {
   }
 }
 
+export function focusItem(item) {
+  return { type: 'FOCUS_ITEM', item }
+}

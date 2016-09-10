@@ -13,21 +13,24 @@ const ItemForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className='form-group'>
-        <label htmlFor='name'>Name</label>
-        <input type='text'
-          className='form-control'
-          id='name'
-          placeholder='Name'
-          value={props.form.item.name}
-          onChange={updateForm}
-          />
+        <div className='input-group'>
+          <input type='text'
+            className='form-control'
+            id='name'
+            placeholder='Add another item...'
+            value={props.form.item.name}
+            onChange={updateForm}
+            />
+          <span className='input-group-btn'>
+            <button type='submit'
+              id='create'
+              className='btn btn-default'
+              disabled={!props.form.isValid}>
+              Create
+            </button>
+          </span>
+        </div>
       </div>
-      <button type='submit'
-        id='create'
-        className='btn btn-default'
-        disabled={!props.form.isValid}>
-        Create
-      </button>
     </form>
   )
 }

@@ -13,6 +13,10 @@ const schema = {
       },
       message: '{VALUE} is not a valid color'
     }
+  },
+  done: {
+    type: Boolean,
+    default: false
   }
 }
 
@@ -22,7 +26,7 @@ const Item = mongoose.model('Item',
   }))
 
 exports.findAll = (req, res) => {
-  Item.find().sort({ createdAt: -1 }).exec((e, items) => {
+  Item.find().sort({ done: 1, createdAt: -1 }).exec((e, items) => {
     res.send(items)
   })
 }
