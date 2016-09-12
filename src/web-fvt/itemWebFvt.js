@@ -9,7 +9,7 @@ describe('main page', function () {
 
   it('creates and deletes new item', function () {
     const name = `web-fvt-${uuid.v1()}`
-    const nameSelector = `li=${name}`
+    const nameSelector = `li*=${name}`
     browser.url('/')
     browser.click('#create')
     browser.waitForVisible('#name')

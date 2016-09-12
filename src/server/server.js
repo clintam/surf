@@ -1,13 +1,14 @@
 const express = require('express')
 const items = require('./routes/items')
 const bodyParser = require('body-parser')
-const app = express()
 
 const path = require('path')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('../webpack.config.js')
+
+import * as webFetcher from './webFetcher'
 
 // Client side
 
@@ -25,6 +26,7 @@ const middleware = webpackMiddleware(compiler, {
   }
 })
 
+const app = express()
 app.use(middleware)
 app.use(webpackHotMiddleware(compiler))
 app.get('/index.html', (req, res) => {
@@ -32,13 +34,24 @@ app.get('/index.html', (req, res) => {
   res.end()
 })
 
-// API
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+// FIXME make image served from mongo
+const saveRawBody = function (req, res, buf, encoding) {
+  if (buf && buf.length) {
+    req.rawBody = buf.toString(encoding || 'utf8')
+  }
+}
+
+app.use(bodyParser.json({ verify: saveRawBody }))
+app.use(bodyParser.urlencoded({ verify: saveRawBody, extended: true }))
+// app.use(bodyParser.raw({ verify: saveRawBody, type: () => true }))
 
 app.get('/items', items.findAll)
 app.post('/items', items.add)
 app.put('/items/:id', items.update)
+app.post('/items/:id/image', (x, y) => {
+  console.log(x)
+}, items.updateImage)
+app.get('/items/:id/image.png', items.getImage)
 app.delete('/items/:id', items.delete)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
@@ -53,6 +66,7 @@ io.sockets.on('connection', function (socket) {
   items.pipeEvents(socket)
 })
 
-require('../chatbot/bot.js')
-
+// Also spawn chatbot and fetch service (this also be deployed as indepdent proccesses (a. la microservices))
+require('../chatbot/bot')
+webFetcher.initialize()
 exports.app = app

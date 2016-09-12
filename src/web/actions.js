@@ -40,6 +40,10 @@ export function focusItem(item) {
   return { type: 'FOCUS_ITEM', item }
 }
 
+export function unFocusItem(item) {
+  return { type: 'UNFOCUS_ITEM', item }
+}
+
 export function addItem(item) {
   return { type: 'ADD_ITEM', item }
 }

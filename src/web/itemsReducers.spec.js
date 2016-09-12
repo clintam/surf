@@ -13,10 +13,15 @@ describe('items reducer', () => {
   })
 
   it('should handle LOAD_ITEMS', () => {
-    const items = [{}]
+    const items = [{ _id: 'abc' }]
     expect(reducer({}, {
       type: 'LOAD_ITEMS',
       items: items
-    })).to.eql({ items: { items } })
+    })).to.eql({
+      items: {
+        items,
+        form: undefined
+      }
+    })
   })
 })

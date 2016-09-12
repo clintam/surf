@@ -24,7 +24,7 @@ function mapStateToProps(state) {
   return {
     items: state.items.items,
     formProvider: (item) => {
-      return state.items.formItem === item ? state.items.form : undefined
+      return state.items.formItemId === item._id ? state.items.form : undefined
     }
   }
 }

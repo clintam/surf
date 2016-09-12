@@ -7,7 +7,7 @@ const ItemList = (props) => {
     <div>
       {props.items.length > 0 &&
         <span>
-          {doneItemCount} of {props.items.length} items are done
+          {doneItemCount} of {props.items.length} items are enabled
         </span>
       }
       <ul className='list-group'>

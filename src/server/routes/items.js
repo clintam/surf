@@ -1,33 +1,39 @@
 const mongoose = require('mongoose')
-const itemDomain = require('../../common/itemDomain')
+
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
 
-const schema = {
+const storeTimeStamps = {
+  timestamps: true
+}
+const schema = new mongoose.Schema({
   name: String,
-  color: {
+  url: {
     type: String,
-    default: '#000000',
     validate: {
-      validator: function (v) {
-        return itemDomain.validColors().includes(v)
-      },
-      message: '{VALUE} is not a valid color'
+      validator: (url) => true, // FIXME
+      message: '{VALUE} is not a valid URL'
     }
   },
+  selector: String,
+  title: String,
+  fullText: String,
+  fetchDate: Date,
+  fetchError: String,
+  lastFetch: mongoose.Schema.Types.Mixed,
+  image: Buffer, // TODO
   done: {
     type: Boolean,
     default: false
   }
-}
+}, storeTimeStamps)
 
-const Item = mongoose.model('Item',
-  new mongoose.Schema(schema, {
-    timestamps: true
-  }))
+const Item = mongoose.model('Item', schema)
 
+// REVIEW: the mongoose model does not have json fields on it? How does json render
+const slimItem = (row) => row // Object.assign({}, row._doc, { image: null })
 exports.findAll = (req, res) => {
   Item.find().sort({ done: 1, createdAt: -1 }).exec((e, items) => {
-    res.send(items)
+    res.send(items.map(slimItem))
   })
 }
 
@@ -47,8 +53,8 @@ exports.add = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id
   const item = req.body
-  Item.update({ _id: id }, item)
-    .then(() => {
+  Item.update({ _id: id }, { $set: item })
+    .then((x) => {
       res.send(item)
       afterUpdate(item)
     })
@@ -69,6 +75,53 @@ exports.delete = (req, res) => {
     .catch((e) => {
       res.status(500).send(e)
     })
+}
+const fs = require('fs')
+
+exports.updateImage = (req, res) => {
+  const id = req.params.id
+  // const item = {
+  //   _id: id,
+  //   image: req.rawBody
+  // }
+  // return Item.update({ _id: id }, item)
+  //   .then(() => {
+  //     res.send(item)
+  //     afterUpdate(item)
+  //   })
+  //   .catch((e) => {
+  //     res.status(500).send(e)
+  //   })
+  fs.writeFile(`images/${id}.png`, req.rawBody, (e) => {
+    res.status(500).send(e)
+  })
+}
+
+exports.getImage = (req, res) => {
+  const id = req.params.id
+  // return Item.findOne({ _id: id })
+  //   .exec((e, item) => {
+  //     if (e) {
+  //       res.status(500).send(e)
+  //       return
+  //     }
+  //     if (!item) {
+  //       res.status(404).send('not found')
+  //       return
+  //     }
+  //     //const base64 = (item.image.toString('base64')
+  //     res.contentType('image/png')
+  //     res.send(item.image)
+  //   })
+
+  fs.readFile(`images/${id}.png`, (e, data) => {
+    if (e) {
+      res.status(500).send(e)
+      return
+    }
+    res.contentType('image/png')
+    res.send(data)
+  })
 }
 
 const eventListeners = []

@@ -13,6 +13,9 @@ module.exports = {
     filename: '[name].js',
     publicPath: '/'
   },
+  externals: {
+    fs: true
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/web/index.tpl.html',

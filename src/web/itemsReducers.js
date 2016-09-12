@@ -14,23 +14,28 @@ const validateForm = (item) => {
 const items = (state = initialState, action) => {
   switch (action.type) {
     case 'LOAD_ITEMS':
-      return Object.assign({}, state, { items: action.items })
+      const itemForForm = action.items.find((i) => i._id === state.formItemId)
+      const itemForm = itemForForm && validateForm(itemForForm)
+      return Object.assign({}, state, {
+        items: action.items,
+        form: itemForm
+      })
     case 'UPDATE_FORM':
       return Object.assign({}, state, { form: validateForm(action.item) })
-    case 'SAVED_ITEM':
-      return Object.assign({}, state, { form: null })
     case 'ADD_ITEM':
       const newItem = { name: '' }
       return Object.assign({}, state, {
         items: state.items.concat(newItem),
         form: validateForm(newItem),
-        formItem: newItem
+        formItemId: undefined
       })
     case 'FOCUS_ITEM':
       return Object.assign({}, state, {
         form: validateForm(action.item),
-        formItem: action.item
+        formItemId: action.item._id
       })
+    case 'UNFOCUS_ITEM':
+      return Object.assign({}, state, { form: null, formItemId: null })
     default:
       return state
   }

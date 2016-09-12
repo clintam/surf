@@ -23,7 +23,7 @@ up: docker_compose_images
 	docker-compose run --rm healthcheck
 
 dev: up
-	docker-compose logs -f --tail=0
+	docker-compose logs -f --tail=10
 
 all-tests: test server-fvt web-fvt chatbot-fvt
 

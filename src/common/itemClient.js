@@ -22,6 +22,17 @@ class ItemClient {
     return http.put(this.url + '/' + item._id, item).then(toJson)
   }
 
+  updateImage(itemId, imageBuffer) {
+    const fs = require('fs')
+    fs.writeFile(`images/${itemId}.png`, imageBuffer, (e) => {
+      if (e) {
+        console.log('could not write' + e)
+      }
+    })
+    // FIXME could not get this to work over http.
+    // return http.post(`${this.url}/${itemId}/image`, imageBuffer).then(toJson)
+  }
+
   delete(item) {
     return http.delete(this.url + '/' + item._id).then(toJson)
   }
