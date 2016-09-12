@@ -14,7 +14,8 @@ describe('main page', function () {
     browser.click('#create')
     browser.waitForVisible('#name')
     browser.setValue('#name', name)
-    browser.click('#root')
+    browser.click('#root') // FIXME why?
+    browser.click('#unfocus')
     browser.waitForVisible(nameSelector)
     browser.click(nameSelector)
     browser.waitForVisible('button[id*=delete]')

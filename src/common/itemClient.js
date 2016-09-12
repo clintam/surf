@@ -24,11 +24,9 @@ class ItemClient {
 
   updateImage(itemId, imageBuffer) {
     const fs = require('fs')
-    fs.writeFile(`images/${itemId}.png`, imageBuffer, (e) => {
-      if (e) {
-        console.log('could not write' + e)
-      }
-    })
+    const bluebird = require('bluebird')
+    const writeFileAsync = bluebird.promisify(fs.writeFile)
+    return writeFileAsync(`images/${itemId}.png`, imageBuffer)
     // FIXME could not get this to work over http.
     // return http.post(`${this.url}/${itemId}/image`, imageBuffer).then(toJson)
   }
@@ -49,6 +47,7 @@ class ItemClient {
     socket.on('event', function (data) {
       onEvent(data)
     })
+    socket.on('reconnect', (data) => console.error('XXXXX reconnect'))
   }
 
 }

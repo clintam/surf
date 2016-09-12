@@ -20,6 +20,7 @@ const schema = new mongoose.Schema({
   fetchDate: Date,
   fetchError: String,
   lastFetch: mongoose.Schema.Types.Mixed,
+  result: mongoose.Schema.Types.Mixed,
   image: Buffer, // TODO
   done: {
     type: Boolean,
@@ -32,7 +33,7 @@ const Item = mongoose.model('Item', schema)
 // REVIEW: the mongoose model does not have json fields on it? How does json render
 const slimItem = (row) => row // Object.assign({}, row._doc, { image: null })
 exports.findAll = (req, res) => {
-  Item.find().sort({ done: 1, createdAt: -1 }).exec((e, items) => {
+  Item.find().exec((e, items) => {
     res.send(items.map(slimItem))
   })
 }

@@ -2,12 +2,11 @@ import React from 'react'
 import Item from './Item'
 
 const ItemList = (props) => {
-  const doneItemCount = props.items.filter((i) => i.done).length
   return (
     <div>
       {props.items.length > 0 &&
         <span>
-          {doneItemCount} of {props.items.length} items are enabled
+          {props.items.length} questions are configured
         </span>
       }
       <ul className='list-group'>

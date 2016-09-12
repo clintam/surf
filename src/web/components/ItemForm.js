@@ -27,7 +27,7 @@ const ItemForm = (props) => {
     <form onSubmit={handleSubmit} className='form-horizontal'>
       <div className='form-group'>
         <div className='col-xs-1 col-md-1'>
-          <button type='button' id={`unfocus-${id}`} className='btn btn-default'
+          <button type='button' id='unfocus' className='btn btn-default'
             onClick={unFocusItem} title='Done Editing'>
             <span className='glyphicon glyphicon-ok' />
           </button>

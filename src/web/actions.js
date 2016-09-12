@@ -8,8 +8,8 @@ export function updateForm(item) {
 export function saveItem(item) {
   return (dispatch) => {
     const createOrUpdate = item._id ? client.update(item) : client.create(item)
-    createOrUpdate.then(() => {
-      dispatch({ type: 'SAVED_ITEM' })
+    createOrUpdate.then((item) => {
+      dispatch({ type: 'SAVED_ITEM', item })
     })
   }
 }

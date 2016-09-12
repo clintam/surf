@@ -5,7 +5,7 @@ export function initialize(controller) {
   controller.hears(['hello', 'hi', 'help', 'who are you'],
     'direct_message,direct_mention,mention', (bot, message) => {
       bot.reply(message,
-`I can keep track of a list of items!
+        `I can keep track of a list of items!
 Ask me to 'list items' or 'add' somethng :metal:
 `)
     })
@@ -28,12 +28,18 @@ Ask me to 'list items' or 'add' somethng :metal:
     client.list()
       .then((items) => {
         var reply = {
-          'text': `I know about ${items.length} items`,
-          'attachments': items.map((item) => {
+          text: `I know about ${items.length} items`,
+          attachments: items.map((item) => {
+            const result = item.result instanceof Array ? item.result : [item.result]
             return {
-              'title': item.name,
-              'text': '(need more info)',
-              'color': item.color
+              title: item.name,
+              text: `Pulling from ${item.url}`,
+              fields: result.map((r, i) => {
+                return {
+                  title: i + 1,
+                  value: r
+                }
+              })
             }
           })
         }

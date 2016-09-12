@@ -65,6 +65,7 @@ const fetchItem = (item) => () => {
     .then(() => webdriver.getText(item.selector || 'body'))
     .then((text) => {
       itemToUpdate.fullText = text
+      itemToUpdate.result = text
     })
     .catch((e) => {
       console.error(e)

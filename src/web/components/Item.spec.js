@@ -9,16 +9,15 @@ import sinon from 'sinon'
 describe('<Item />', () => {
   const item = { _id: 1 }
   const actions = {
-    saveItem: sinon.spy()
+    focusItem: sinon.spy()
   }
   const wrapper = shallow(<Item
     item={item}
     actions={actions}
-    itemForm={{}}
     />)
 
-  it('can toggle done with button click', () => {
-    wrapper.find('#toggle-1').simulate('click', {stopPropagation: sinon.spy()})
-    expect(actions.saveItem).to.have.property('callCount', 1)
+  it('can focus with click', () => {
+    wrapper.find('li').simulate('click', {stopPropagation: sinon.spy()})
+    expect(actions.focusItem).to.have.property('callCount', 1)
   })
 })
