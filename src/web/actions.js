@@ -1,10 +1,6 @@
 import ItemClient from '../common/itemClient'
 const client = new ItemClient('items')
 
-export function updateForm(item) {
-  return { type: 'UPDATE_FORM', item }
-}
-
 export function saveItem(item) {
   return (dispatch) => {
     const createOrUpdate = item._id ? client.update(item) : client.create(item)

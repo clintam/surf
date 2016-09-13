@@ -1,10 +1,11 @@
 import React from 'react'
 import ItemForm from './ItemForm'
+import { connect } from 'react-redux'
 import moment from 'moment'
 
-const Item = (props) => {
+let Item = (props) => {
   const id = props.item._id
-  const isEditMode = !!props.itemForm
+  const isEditMode = props.isEditMode
   const focusItem = (e) => !isEditMode && props.actions.focusItem(props.item)
   const lastFetchDate = props.item.lastFetch && moment(props.item.lastFetch.date)
   const lastFetchError = props.item.lastFetch && props.item.lastFetch.error
@@ -21,7 +22,7 @@ const Item = (props) => {
         }
         { isEditMode &&
           <div className='col-sm-11'>
-            <ItemForm form={props.itemForm} actions={props.actions} />
+            <ItemForm item={props.item} actions={props.actions} />
           </div>
         } {!isEditMode &&
           <div id={`name-${id}`} className='col-sm-8'>
@@ -74,8 +75,19 @@ const Item = (props) => {
 }
 Item.propTypes = {
   item: React.PropTypes.object.isRequired,
-  itemForm: React.PropTypes.object,
+  isEditMode: React.PropTypes.bool.isRequired,
   actions: React.PropTypes.object.isRequired
 }
+
+Item = connect(
+  (state) => ({
+    editItem: state.items.editItem
+  }),
+  {},
+  (stateProps, dispatchProps, ownProps) => {
+    return Object.assign({}, ownProps, stateProps, dispatchProps, 
+    {isEditMode: ownProps.item === stateProps.editItem})
+  }
+)(Item)
 
 export default Item

@@ -13,7 +13,6 @@ const ItemList = (props) => {
         {props.items.map((item, i) => (
           <Item key={i}
             item={item}
-            itemForm={props.formProvider(item)}
             actions={props.actions} />
         )) }
       </ul>
@@ -28,7 +27,6 @@ const ItemList = (props) => {
 
 ItemList.propTypes = {
   items: React.PropTypes.array.isRequired,
-  formProvider: React.PropTypes.func,
   actions: React.PropTypes.object.isRequired
 }
 

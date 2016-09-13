@@ -1,50 +1,49 @@
 import { combineReducers } from 'redux'
+import { reducer as formReducer } from 'redux-form'
 
 const initialState = {
   items: []
 }
 
-const validateForm = (item) => {
-  return {
-    isValid: !!item.name,
-    item
-  }
+const handleLoadItems = (state, action) => {
+  const itemForForm = state.editItem && action.items.find((i) => i._id === state.editItem.id)
+  // const unsavedItem = state.items.find((i) => !i._id)
+  var items = action.items
+  // if (unsavedItem) {
+  //   items = action.items.concat(unsavedItem)
+  // }
+  return Object.assign({}, state, {
+    items: items,
+    editItem: itemForForm
+  })
 }
 
 const items = (state = initialState, action) => {
   switch (action.type) {
     case 'LOAD_ITEMS':
-      const itemForForm = action.items.find((i) => i._id === state.formItemId)
-      const itemForm = itemForForm && validateForm(itemForForm)
-      return Object.assign({}, state, {
-        items: action.items,
-        form: itemForm
-      })
-    case 'UPDATE_FORM':
-      return Object.assign({}, state, { form: validateForm(action.item) })
+      return handleLoadItems(state, action)
     case 'ADD_ITEM':
       const newItem = { name: '', selector: 'h1' }
       return Object.assign({}, state, {
         items: state.items.concat(newItem),
-        form: validateForm(newItem),
-        formItemId: undefined
+        editItem: newItem
       })
     case 'FOCUS_ITEM':
       return Object.assign({}, state, {
-        form: validateForm(action.item),
-        formItemId: action.item._id
+        editItem: action.item
       })
     case 'UNFOCUS_ITEM':
-      return Object.assign({}, state, { form: null, formItemId: null })
-    case 'SAVED_ITEM':
-      return Object.assign({}, state, {formItemId: action.item._id})
+      return Object.assign({}, state, { editItem: null })
+    // case 'SAVED_ITEM':
+    // return Object.assign({}, state, { form: validateForm(action.item), formItemId: action.item._id })
     default:
       return state
   }
 }
 
 const rootReducer = combineReducers({
-  items
+  items,
+  form: formReducer
 })
 
 export default rootReducer
