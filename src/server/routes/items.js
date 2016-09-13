@@ -141,6 +141,7 @@ const afterUpdate = (item) => {
 
 exports.pipeEvents = (ws) => {
   const sendEvent = (type) => (item) => {
+    console.log(`emitting ${type} to ${ws.id}`)
     ws.emit('event', {
       type: type,
       item: item
@@ -153,6 +154,7 @@ exports.pipeEvents = (ws) => {
   }
   eventListeners.push(listener)
   ws.on('disconnect', () => {
+    console.log(`disconnecting from ${ws.id}`)
     eventListeners.splice(eventListeners.indexOf(listener))
   })
 }
