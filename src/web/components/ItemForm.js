@@ -1,20 +1,18 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {compose} from 'redux'
 import classNames from 'classnames'
-import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 
-let ItemForm = (props) => {
-  const item = props.item
-
-  const deleteItem = (e) => props.actions.deleteItem(item)
-  const unFocusItem = (e) => props.actions.unFocusItem(item)
-  const onSubmit = (item) => props.actions.saveItem(item)
+export const ItemForm = ({actions, item, handleSubmit}) => {
+  const deleteItem = (e) => actions.deleteItem(item)
+  const unFocusItem = (e) => actions.unFocusItem(item)
+  const onSubmit = (item) => actions.saveItem(item)
 
   const id = item._id
 
-
   return (
-    <form onSubmit={props.handleSubmit(onSubmit) } className='form-horizontal'>
+    <form onSubmit={handleSubmit(onSubmit) } className='form-horizontal'>
       <div className='form-group'>
         <div className='col-xs-offset-9 col-xs-2 col-md-offset-10 col-md-1'>
           <button type='button' id={`delete-${id}`} className='btn btn-link'
@@ -26,7 +24,7 @@ let ItemForm = (props) => {
       <div className='form-group'>
         <label htmlFor='name' className='col-sm-1 control-label'>Question</label>
         <div className='col-sm-5'>
-          <Field name='name' component='input' type='text' className='form-control' />
+          <Field id='name' name='name' component='input' type='text' className='form-control' />
         </div>
       </div>
       <div className={classNames({ 'form-group': true, 'has-error': !item.url }) }>
@@ -65,17 +63,7 @@ ItemForm.propTypes = {
   handleSubmit: React.PropTypes.func.isRequired
 }
 
-ItemForm = reduxForm({
-  form: 'item'
-})(ItemForm)
-
-ItemForm = connect(
-  (state) => ({
-  }),
-  {},
-  (stateProps, dispatchProps, ownProps) => {
-    return Object.assign({}, ownProps, stateProps, dispatchProps, { initialValues: ownProps.item })
-  }
-)(ItemForm)
-
-export default ItemForm
+export default compose(
+  // use different form state for different items
+  connect((state, props) => ({ form: props.item._id || 'new-item' })),
+  reduxForm({}))(ItemForm)

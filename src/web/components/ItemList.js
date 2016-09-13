@@ -1,23 +1,24 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import Item from './Item'
 
-const ItemList = (props) => {
+const ItemList = ({items, isEditingItem, actions}) => {
   return (
     <div>
-      {props.items.length > 0 &&
+      {items.length > 0 &&
         <span>
-          {props.items.length} questions are configured
+          {items.length} questions are configured
         </span>
       }
       <ul className='list-group'>
-        {props.items.map((item, i) => (
+        {items.map((item, i) => (
           <Item key={i}
             item={item}
-            actions={props.actions} />
+            isEditMode={isEditingItem(item)}
+            actions={actions} />
         )) }
       </ul>
       <button type='button' id='create' className='btn btn-link'
-        onClick={props.actions.addItem}>
+        onClick={actions.addItem}>
         <span className='glyphicon glyphicon-plus' />
         Add another item
       </button>
@@ -26,8 +27,9 @@ const ItemList = (props) => {
 }
 
 ItemList.propTypes = {
-  items: React.PropTypes.array.isRequired,
-  actions: React.PropTypes.object.isRequired
+  items: PropTypes.array.isRequired,
+  isEditingItem: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 export default ItemList

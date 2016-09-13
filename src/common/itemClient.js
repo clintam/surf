@@ -47,7 +47,6 @@ class ItemClient {
     socket.on('event', function (data) {
       onEvent(data)
     })
-    socket.on('reconnect', (data) => console.error('XXXXX reconnect'))
   }
 
 }

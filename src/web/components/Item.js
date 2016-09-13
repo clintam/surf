@@ -1,18 +1,16 @@
 import React from 'react'
 import ItemForm from './ItemForm'
-import { connect } from 'react-redux'
 import moment from 'moment'
 
-let Item = (props) => {
-  const id = props.item._id
-  const isEditMode = props.isEditMode
-  const focusItem = (e) => !isEditMode && props.actions.focusItem(props.item)
-  const lastFetchDate = props.item.lastFetch && moment(props.item.lastFetch.date)
-  const lastFetchError = props.item.lastFetch && props.item.lastFetch.error
-  const lastFetchHash = props.item.lastFetch && props.item.lastFetch.hash
+const Item = ({item, isEditMode, actions}) => {
+  const id = item._id
+  const focusItem = (e) => !isEditMode && actions.focusItem(item)
+  const lastFetchDate = item.lastFetch && moment(item.lastFetch.date)
+  const lastFetchError = item.lastFetch && item.lastFetch.error
+  const lastFetchHash = item.lastFetch && item.lastFetch.hash
   const lastFetchSuccess = lastFetchDate && !lastFetchError
   return (
-    <li key={props.item._id} className='list-group-item container'
+    <li key={item._id} className='list-group-item container'
       onClick={focusItem} >
       <div className='row'>
         { !isEditMode &&
@@ -22,16 +20,16 @@ let Item = (props) => {
         }
         { isEditMode &&
           <div className='col-sm-11'>
-            <ItemForm item={props.item} actions={props.actions} />
+            <ItemForm item={item} initialValues={item} actions={actions} />
           </div>
         } {!isEditMode &&
           <div id={`name-${id}`} className='col-sm-8'>
-            {props.item.name}
+            {item.name}
           </div>
         } {!isEditMode &&
           <div className='col-sm-2'>
-            <a target='new' href={props.item.url} className='url'>
-              {props.item.url}
+            <a target='new' href={item.url} className='url'>
+              {item.url}
             </a>
           </div>
         }
@@ -52,15 +50,14 @@ let Item = (props) => {
           }
           {lastFetchSuccess &&
             <div className='well'>
-              {props.item.fullText}
+              {item.fullText}
             </div>
           }
         </div>
         {lastFetchSuccess &&
           <div className='col-sm-6'>
-            <h4> {props.item.title} </h4>
-            {/* props.item.fullText*/}
-            <a target='new' href={props.item.url} className='thumbnail'>
+            <h4> {item.title} </h4>
+            <a target='new' href={item.url} className='thumbnail'>
               <img src={`items/${id}/image.png?hash=${lastFetchHash}`}
                 style={{
                   width: '200px',
@@ -78,16 +75,5 @@ Item.propTypes = {
   isEditMode: React.PropTypes.bool.isRequired,
   actions: React.PropTypes.object.isRequired
 }
-
-Item = connect(
-  (state) => ({
-    editItem: state.items.editItem
-  }),
-  {},
-  (stateProps, dispatchProps, ownProps) => {
-    return Object.assign({}, ownProps, stateProps, dispatchProps, 
-    {isEditMode: ownProps.item === stateProps.editItem})
-  }
-)(Item)
 
 export default Item

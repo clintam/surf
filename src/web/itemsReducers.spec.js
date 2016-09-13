@@ -17,11 +17,6 @@ describe('items reducer', () => {
     expect(reducer({}, {
       type: 'LOAD_ITEMS',
       items: items
-    })).to.eql({
-      items: {
-        items,
-        form: undefined
-      }
-    })
+    }).items.items).to.eql(items)
   })
 })
