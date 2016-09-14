@@ -16,7 +16,7 @@ describe('<ItemForm />', () => {
   before(() => {
     store = configureMockStore()({
     })
-    item = { _id: 1 }
+    item = { _id: '1' }
     actions = {
       saveItem: sinon.spy(),
       deleteItem: sinon.spy()

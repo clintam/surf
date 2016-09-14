@@ -10,19 +10,21 @@ const Item = ({item, isEditMode, actions}) => {
   const lastFetchHash = item.lastFetch && item.lastFetch.hash
   const lastFetchSuccess = lastFetchDate && !lastFetchError
   return (
-    <li key={item._id} className='list-group-item container'
-      onClick={focusItem} >
+    <li key={item._id} className='list-group-item container'>
       { isEditMode &&
         <ItemForm item={item} initialValues={item} actions={actions} />
       } {!isEditMode &&
         <div className='row'>
           <div className='col-sm-2'>
-            <span className='glyphicon glyphicon-edit' />
+            <button type='button' className='btn btn-default'
+              onClick={focusItem} >
+              <span className='glyphicon glyphicon-edit' />
+            </button>
           </div>
-          <div id={`name-${id}`} className='col-sm-8'>
+          <div id={`name-${id}`} className='col-sm-5'>
             {item.name}
           </div>
-          <div className='col-sm-2'>
+          <div className='col-sm-5'>
             <a target='new' href={item.url} className='url'>
               {item.url}
             </a>
