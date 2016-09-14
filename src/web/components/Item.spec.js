@@ -1,4 +1,4 @@
-/* global describe it*/
+/* global describe it before*/
 
 import React from 'react'
 import { expect } from 'chai'
@@ -7,18 +7,22 @@ import { shallow } from 'enzyme'
 import sinon from 'sinon'
 
 describe('<Item />', () => {
-  const item = { _id: 1 }
-  const actions = {
-    saveItem: sinon.spy()
-  }
-  const wrapper = shallow(<Item
-    item={item}
-    actions={actions}
-    itemForm={{}}
-    />)
+  let wrapper, item, actions
 
-  it('can toggle done with button click', () => {
-    wrapper.find('#toggle-1').simulate('click', {stopPropagation: sinon.spy()})
-    expect(actions.saveItem).to.have.property('callCount', 1)
+  before(() => {
+    item = { _id: '1' }
+    actions = {
+      focusItem: sinon.spy()
+    }
+    wrapper = shallow(<Item
+      item={item}
+      isEditMode={false}
+      actions={actions}
+      />)
+  })
+
+  it('can focus with click', () => {
+    wrapper.find('#focus-1').simulate('click', { stopPropagation: sinon.spy() })
+    expect(actions.focusItem.calledOnce).to.equal(true)
   })
 })

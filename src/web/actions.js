@@ -1,15 +1,11 @@
 import ItemClient from '../common/itemClient'
 const client = new ItemClient('items')
 
-export function updateForm(item) {
-  return { type: 'UPDATE_FORM', item }
-}
-
 export function saveItem(item) {
   return (dispatch) => {
     const createOrUpdate = item._id ? client.update(item) : client.create(item)
-    createOrUpdate.then(() => {
-      dispatch({ type: 'SAVED_ITEM' })
+    createOrUpdate.then((item) => {
+      dispatch({ type: 'SAVED_ITEM', item })
     })
   }
 }
@@ -38,6 +34,10 @@ export function listItems() {
 
 export function focusItem(item) {
   return { type: 'FOCUS_ITEM', item }
+}
+
+export function unFocusItem(item) {
+  return { type: 'UNFOCUS_ITEM', item }
 }
 
 export function addItem(item) {

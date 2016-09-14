@@ -51,10 +51,10 @@
             "name": "web-fvt",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/node_modules/webdriverio/bin/wdio",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/web-fvt/wdio.conf.js"
+                "build/web-fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -62,7 +62,10 @@
             "runtimeArgs": [
                 "--nolazy"
             ],
-            "externalConsole": false
+            "externalConsole": false,
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/build",
+            "trace": "sm"
         },
         {
             "name": "chatbot-fvt",

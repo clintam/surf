@@ -1,24 +1,38 @@
-/* global describe it*/
+/* global describe it before*/
 
 import React from 'react'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import { expect } from 'chai'
 import ItemForm from './ItemForm'
-import { shallow } from 'enzyme'
 import sinon from 'sinon'
+import { mount } from 'enzyme'
+import jsdom from 'mocha-jsdom'
 
 describe('<ItemForm />', () => {
-  const form = {item: {_id: 1}}
-  const actions = {
-    saveItem: sinon.spy(),
-    deleteItem: sinon.spy()
-  }
-  const wrapper = shallow(<ItemForm
-    actions={actions}
-    form={form}
-    />)
+  jsdom()
+
+  let store, connectedApp, actions, item
+  before(() => {
+    store = configureMockStore()({
+    })
+    item = { _id: '1' }
+    actions = {
+      saveItem: sinon.spy(),
+      deleteItem: sinon.spy()
+    }
+
+    connectedApp = mount(<Provider store={store}>
+      <ItemForm
+        actions={actions}
+        item={item}
+        initialValues={item}
+        />
+    </Provider>)
+  })
 
   it('can toggle delete with button click', () => {
-    wrapper.find('#delete-1').simulate('click')
-    expect(actions.deleteItem).to.have.property('callCount', 1)
+    connectedApp.find('#delete-1').simulate('click')
+    expect(actions.deleteItem.calledOnce).to.equal(true)
   })
 })

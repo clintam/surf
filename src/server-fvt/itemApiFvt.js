@@ -4,20 +4,18 @@ const uuid = require('uuid')
 var client = new ItemClient()
 
 describe('/items/', () => {
-  it('should list', (done) => {
-    client.list()
+  it('should list', () => {
+    return client.list()
       .then((items) => {
         expect(items.length).to.be.a.int
-        done()
       })
-      .catch(done)
   })
 
-  it('should CRUD', (done) => {
+  it('should CRUD', () => {
     const toCreate = {
       name: `test-${uuid.v1()}`
     }
-    client.create(toCreate)
+    return client.create(toCreate)
       .then((created) => {
         expect(created._id).to.exist
         expect(created.__v).to.exist
@@ -34,19 +32,22 @@ describe('/items/', () => {
       .then((deleted) => {
         expect(deleted.ok).to.be.defined
       })
-      .then(done)
-      .catch(done)
   })
 
   it('should stream events', (done) => {
     const toCreate = {
       name: `test-${uuid.v1()}`
     }
+    const updatedName = toCreate.name + '-updated'
 
-    client.openRTM((event) => {
-      if (event.type === 'item_created' && event.item.name === toCreate.name) {
-        client.delete(event.item)
-          .then(() => done())
+    client.openRTM(({ type, item }) => {
+      if (type === 'item_created' && item.name === toCreate.name) {
+        item.name = updatedName
+        client.update(item)
+      } else if (type === 'item_updated' && item.name === updatedName) {
+        client.delete(item)
+      } else if (type === 'item_deleted' && item.name === updatedName) {
+        done()
       }
     })
 

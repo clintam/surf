@@ -23,7 +23,7 @@ describe('chat bot', function () {
     return slackApi.waitForMessage('I can keep track')
   })
 
-  it('should list items', () => {
+  it('should list questions', () => {
     const newItem = {
       name: `chat-fvt-${uuid.v1()}`
     }
@@ -32,12 +32,12 @@ describe('chat bot', function () {
       .then((x) => { createdItem = x })
       .then(() => slackApi.ensureUserInChannel(testBotName, testChannelName))
       .then(({user, channel}) =>
-        slackApi.sendMessage(`<@${user.id}> list items`, testChannelName))
+        slackApi.sendMessage(`<@${user.id}> questions`, testChannelName))
 
     // Wait for success
     return slackApi.waitForMessage('I know about')
       .then((message) => {
-        var attachement = message.attachments.find((a) => a.title === newItem.name)
+        var attachement = message.attachments.find((a) => a.title.includes(newItem.name))
         expect(attachement).to.exist
       })
       .then(() => client.delete(createdItem))

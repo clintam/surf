@@ -1,37 +1,44 @@
-const mongoose = require('mongoose')
-const itemDomain = require('../../common/itemDomain')
+import mongoose from 'mongoose'
+import {initialItems} from './initialItems'
+
+
+mongoose.Promise = global.Promise
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
 
-const schema = {
+const storeTimeStamps = {
+  timestamps: true
+}
+const schema = new mongoose.Schema({
   name: String,
-  color: {
-    type: String,
-    default: '#000000',
-    validate: {
-      validator: function (v) {
-        return itemDomain.validColors().includes(v)
-      },
-      message: '{VALUE} is not a valid color'
-    }
-  },
-  done: {
-    type: Boolean,
-    default: false
-  }
+  url: String,
+  selector: String,
+  title: String,
+  fullText: String,
+  fetchDate: Date,
+  fetchError: String,
+  lastFetch: mongoose.Schema.Types.Mixed, // Should we give this more shape?
+  image: Buffer // TODO
+}, storeTimeStamps)
+
+const Item = mongoose.model('Item', schema)
+
+export const initialize = () => {
+  Item.count({}).exec()
+    .then(n => {
+      if (n === 0) {
+        console.log(`Populating ${initialItems.length} initial items.`)
+        initialItems.forEach(item => Item.create(item))
+      }
+    })
 }
 
-const Item = mongoose.model('Item',
-  new mongoose.Schema(schema, {
-    timestamps: true
-  }))
-
-exports.findAll = (req, res) => {
-  Item.find().sort({ done: 1, createdAt: -1 }).exec((e, items) => {
+export const findAll = (req, res) => {
+  Item.find().exec((e, items) => {
     res.send(items)
   })
 }
 
-exports.add = (req, res) => {
+export const add = (req, res) => {
   const item = req.body
 
   Item.create(item)
@@ -44,11 +51,14 @@ exports.add = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+export const get = (id) => Item.findOne({ _id: id }).lean().exec()
+
+export const update = (req, res) => {
   const id = req.params.id
   const item = req.body
-  Item.update({ _id: id }, item)
-    .then(() => {
+  Item.update({ _id: id }, { $set: item })
+    .then(() => get(id))
+    .then((item) => {
       res.send(item)
       afterUpdate(item)
     })
@@ -57,48 +67,95 @@ exports.update = (req, res) => {
     })
 }
 
-exports.delete = (req, res) => {
+export const remove = (req, res) => {
   const id = req.params.id
-  const itemShell = { _id: id }
 
-  Item.remove(itemShell)
-    .then(() => {
-      res.send({ ok: true })
-      afterDelete(itemShell)
+  get(id)
+    .then((item) => {
+      Item.remove({ _id: id })
+        .then(() => res.send({ ok: true }))
+      return item
     })
+    .then(afterDelete)
     .catch((e) => {
       res.status(500).send(e)
     })
 }
+const fs = require('fs')
 
-const eventListeners = []
+export const updateImage = (req, res) => {
+  const id = req.params.id
+  // const item = {
+  //   _id: id,
+  //   image: req.rawBody
+  // }
+  // return Item.update({ _id: id }, item)
+  //   .then(() => {
+  //     res.send(item)
+  //     afterUpdate(item)
+  //   })
+  //   .catch((e) => {
+  //     res.status(500).send(e)
+  //   })
+  fs.writeFile(`images/${id}.png`, req.rawBody, (e) => {
+    res.status(500).send(e)
+  })
+}
+
+export const getImage = (req, res) => {
+  const id = req.params.id
+  // return Item.findOne({ _id: id })
+  //   .exec((e, item) => {
+  //     if (e) {
+  //       res.status(500).send(e)
+  //       return
+  //     }
+  //     if (!item) {
+  //       res.status(404).send('not found')
+  //       return
+  //     }
+  //     //const base64 = (item.image.toString('base64')
+  //     res.contentType('image/png')
+  //     res.send(item.image)
+  //   })
+
+  fs.readFile(`images/${id}.png`, (e, data) => {
+    if (e) {
+      res.status(500).send(e)
+      return
+    }
+    res.contentType('image/png')
+    res.send(data)
+  })
+}
 
 const afterCreate = (item) => {
-  eventListeners.forEach((l) => l.created(item))
+  dispatch('item_created', item)
 }
 
 const afterDelete = (item) => {
-  eventListeners.forEach((l) => l.deleted(item))
+  dispatch('item_deleted', item)
 }
 
 const afterUpdate = (item) => {
-  eventListeners.forEach((l) => l.updated(item))
+  dispatch('item_updated', item)
 }
 
-exports.pipeEvents = (ws) => {
-  const sendEvent = (type) => (item) => {
-    ws.emit('event', {
-      type: type,
-      item: item
-    })
-  }
-  const listener = {
-    created: sendEvent('item_created'),
-    deleted: sendEvent('item_deleted'),
-    updated: sendEvent('item_updated')
-  }
-  eventListeners.push(listener)
+const dispatch = (type, item) => {
+  console.log(`Dispatching to ${webSockets.length}`)
+  webSockets.forEach(ws => ws.emit('event', {
+    type,
+    item
+  }))
+}
+
+const webSockets = []
+export const pipeEvents = (ws) => {
+  console.log(`item connected to websocket ${ws.id}`)
+  webSockets.push(ws)
   ws.on('disconnect', () => {
-    eventListeners.splice(eventListeners.indexOf(listener))
+    console.log(`disconnecting websocket ${ws.id}`)
+    webSockets.splice(webSockets.indexOf(ws))
   })
+  ws.on('reconnect', () => console.log('FIXME socket reconnect not handled'))
 }
