@@ -3,7 +3,7 @@ const webdriverio = require('webdriverio')
 const uuid = require('uuid')
 
 describe('main page', function () {
-  this.timeout(60000)
+  this.timeout(30000)
   const baseUrl = `http://${process.env.SERVER_HOST || 'server'}:8080`
   const options = {
     desiredCapabilities: {
@@ -26,7 +26,7 @@ describe('main page', function () {
 
   it('creates and deletes new item', function () {
     const name = `web-fvt-${uuid.v1()}`
-    const itemRow = `div.row*=${name}`
+    const itemRow = `div.list-group-item-heading*=${name}`
     return webdriver.click('#create')
       .then(() => webdriver.waitForVisible('#name'))
       .then(() => webdriver.setValue('#name', name))

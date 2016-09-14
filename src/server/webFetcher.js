@@ -3,6 +3,7 @@ import hash from 'object-hash'
 import ItemClient from '../common/itemClient'
 import {scheduleJob, cancelJob} from './jobManager'
 import cheerio from 'cheerio'
+import url from 'url'
 const webdriverio = require('webdriverio')
 
 const itemClient = new ItemClient()
@@ -55,13 +56,10 @@ const fetchItem = (item) => {
   const webdriver = webdriverio.remote(options)
   return webdriver.init()
     .then(() => webdriver.url(item.url).getTitle())
-    .then((title) => {
-      itemToUpdate.title = title
-    })
     .then(() => webdriver.saveScreenshot())
     .then((buffer) => itemClient.updateImage(item._id, buffer))
-    .then(() => webdriver.getHTML('body'))
-    .then((html) => parseHtml(html, item.selector, itemToUpdate))
+    .then(() => webdriver.getHTML('html'))
+    .then((html) => parseHtml(html, item, itemToUpdate))
     .catch((e) => {
       console.error(e)
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
@@ -70,21 +68,38 @@ const fetchItem = (item) => {
     .finally(() => webdriver.end())
 }
 
-const parseHtml = (html, selector, itemToUpdate) => {
-  const $ = cheerio.load(html)
+const parseHtml = (html, item, itemToUpdate) => {
+  const $ = cheerio.load(html, {
+    normalizeWhitespace: true
+  })
+  const normalizeImage = (src) => {
+    if (!src) {
+      return
+    }
+    if (src.startsWith('//')) {
+      return src.substring(2)
+    } else if (src.startsWith('/')) {
+      return url(item.url).host + src
+    }
+    return src
+  }
   const result = []
-
-  $(selector).map((i, e) => {
+  const title = $('head > title').text()
+  $(item.selector).map((i, e) => {
     const text = $(e).text().trim()
     const anchor = $(e).find('a')
     const href = anchor && anchor.attr('href')
+    const img = $(e).find('img')
+    const imgSrc = img && normalizeImage(img.attr('src'))
     if (text || href) {
       return result.push({
         text,
-        href
+        href,
+        imgSrc
       })
     }
   })
+  itemToUpdate.lastFetch.title = title
   itemToUpdate.lastFetch.result = result
 }
 

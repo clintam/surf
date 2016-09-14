@@ -7,7 +7,7 @@ describe('/items/', () => {
   it('should list', () => {
     return client.list()
       .then((items) => {
-        expect(items.length).to.be.a.int
+        expect(items.length).to.be.a('number')
       })
   })
 
@@ -17,11 +17,11 @@ describe('/items/', () => {
     }
     return client.create(toCreate)
       .then((created) => {
-        expect(created._id).to.exist
-        expect(created.__v).to.exist
-        expect(created.updatedAt).to.exist
-        expect(created.createdAt).to.exist
-        expect(created.name).to.equal(toCreate.name)
+        expect(created).to.have.property('_id')
+        expect(created).to.have.property('__v')
+        expect(created).to.have.property('updatedAt')
+        expect(created).to.have.property('createdAt')
+        expect(created).to.have.property('name', toCreate.name)
         created.name = `${created.name}-updated`
         return client.update(created)
       })
@@ -30,11 +30,11 @@ describe('/items/', () => {
         return client.delete(updated)
       })
       .then((deleted) => {
-        expect(deleted.ok).to.be.defined
+        expect(deleted).to.have.property('ok')
       })
   })
 
-  it('should stream events', (done) => {
+  it('should stream CRUD events over websocket', (done) => {
     const toCreate = {
       name: `test-${uuid.v1()}`
     }
@@ -47,6 +47,7 @@ describe('/items/', () => {
       } else if (type === 'item_updated' && item.name === updatedName) {
         client.delete(item)
       } else if (type === 'item_deleted' && item.name === updatedName) {
+        expect(item).to.have.property('_id')
         done()
       }
     })

@@ -36,7 +36,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
             const listItemText = (r) => {
               let text = `\u2022 ${r.text}`
               if (r.href) {
-                text += `: ${r.href}`
+                text += ` <${r.href}| link>`
               }
               return text
             }
@@ -47,7 +47,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
               text = '...er nothing there yet...'
             }
             return {
-              title: `${item.name} (${resultLength} results from ${item.url})`,
+              title: `<${item.url}|${item.name}> (${resultLength} results)`,
               text: text
             }
           })
