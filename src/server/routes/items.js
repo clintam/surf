@@ -1,4 +1,6 @@
 import mongoose from 'mongoose'
+import {initialItems} from './initialItems'
+
 
 mongoose.Promise = global.Promise
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
@@ -20,6 +22,17 @@ const schema = new mongoose.Schema({
 }, storeTimeStamps)
 
 const Item = mongoose.model('Item', schema)
+
+export const initialize = () => {
+  Item.count({}).exec()
+    .then(n => {
+      if (n === 0) {
+        console.log(`Populating ${initialItems.length} initial items.`)
+        initialItems.forEach(item => Item.create(item))
+      }
+    })
+}
+
 
 export const findAll = (req, res) => {
   Item.find().exec((e, items) => {

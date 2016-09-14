@@ -69,4 +69,6 @@ io.sockets.on('connection', function (socket) {
 // Also spawn chatbot and fetch service (this also be deployed as indepdent proccesses (a. la microservices))
 require('../chatbot/bot')
 webFetcher.initialize()
+items.initialize()
+
 exports.app = app
