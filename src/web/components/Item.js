@@ -16,7 +16,7 @@ const Item = ({item, isEditMode, actions}) => {
       } {!isEditMode &&
         <div className='row'>
           <div className='col-sm-2'>
-            <button type='button' className='btn btn-default'
+            <button type='button' id={`focus-${id}`} className='btn btn-default'
               onClick={focusItem} >
               <span className='glyphicon glyphicon-edit' />
             </button>

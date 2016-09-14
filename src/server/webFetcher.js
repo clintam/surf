@@ -76,7 +76,7 @@ const parseHtml = (html, selector, itemToUpdate) => {
   const result = []
 
   $(selector).map((i, e) => {
-    const text = $(e).text()
+    const text = $(e).text().trim()
     const anchor = $(e).find('a')
     const href = anchor && anchor.attr('href')
     if (text || href) {

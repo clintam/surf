@@ -10,7 +10,7 @@ describe('<Item />', () => {
   let wrapper, item, actions
 
   before(() => {
-    item = { _id: 1 }
+    item = { _id: '1' }
     actions = {
       focusItem: sinon.spy()
     }
@@ -22,7 +22,7 @@ describe('<Item />', () => {
   })
 
   it('can focus with click', () => {
-    wrapper.find('li').simulate('click', { stopPropagation: sinon.spy() })
+    wrapper.find('#focus-1').simulate('click', { stopPropagation: sinon.spy() })
     expect(actions.focusItem.calledOnce).to.equal(true)
   })
 })
