@@ -43,12 +43,16 @@ const Item = ({item, isEditMode, actions}) => {
               {lastFetchError}
             </div>
           }
-          {lastFetchSuccess &&
+          {lastFetchSuccess && item.lastFetch.result &&
             <div className='well' style={{
               maxHeight: '300px',
               overflowY: 'auto'
             }}>
-              {item.fullText}
+              <ul>
+                { item.lastFetch.result.map((r, i) =>
+                  <li key={i}>{r.text}</li>
+                ) }
+              </ul>
             </div>
           }
         </div>

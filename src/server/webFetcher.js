@@ -2,6 +2,9 @@ import moment from 'moment'
 import hash from 'object-hash'
 import ItemClient from '../common/itemClient'
 import {scheduleJob, cancelJob} from './jobManager'
+import cheerio from 'cheerio'
+const webdriverio = require('webdriverio')
+
 
 const itemClient = new ItemClient()
 const fetchItervalInMinutes = 10
@@ -32,8 +35,6 @@ const scheduleFetch = (item) => {
     .catch(e => console.log(e))
 }
 
-const webdriverio = require('webdriverio')
-
 const options = {
   desiredCapabilities: {
     browserName: 'chrome'
@@ -60,17 +61,32 @@ const fetchItem = (item) => {
     })
     .then(() => webdriver.saveScreenshot())
     .then((buffer) => itemClient.updateImage(item._id, buffer))
-    .then(() => webdriver.getText(item.selector || 'body'))
-    .then((text) => {
-      itemToUpdate.fullText = text
-      itemToUpdate.result = text
-    })
+    .then(() => webdriver.getHTML('body'))
+    .then((html) => parseHtml(html, item.selector, itemToUpdate))
     .catch((e) => {
       console.error(e)
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
     })
     .then(() => itemClient.update(itemToUpdate))
     .finally(() => webdriver.end())
+}
+
+const parseHtml = (html, selector, itemToUpdate) => {
+  const $ = cheerio.load(html)
+  const result = []
+
+  $(selector).map((i, e) => {
+    const text = $(e).text()
+    const anchor = $(e).find('a')
+    const href = anchor && anchor.attr('href')
+    if (text || href) {
+      return result.push({
+        text,
+        href
+      })
+    }
+  })
+  itemToUpdate.lastFetch.result = result
 }
 
 export function initialize() {

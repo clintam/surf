@@ -16,8 +16,7 @@ const schema = new mongoose.Schema({
   fullText: String,
   fetchDate: Date,
   fetchError: String,
-  lastFetch: mongoose.Schema.Types.Mixed,
-  result: mongoose.Schema.Types.Mixed,
+  lastFetch: mongoose.Schema.Types.Mixed, // Should we give this more shape?
   image: Buffer // TODO
 }, storeTimeStamps)
 
