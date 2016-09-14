@@ -17,7 +17,7 @@ const FetchResult = ({item}) => {
         <div className='col-sm-12'>
           <span className='text-muted'>
             {lastFetchDate
-              ? `Last updated: ${lastFetchDate.fromNow()}`
+              ? `Last updated ${lastFetchDate.fromNow()}`
               : 'Not yet processed'}
           </span>
 

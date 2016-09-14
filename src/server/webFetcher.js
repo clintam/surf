@@ -72,25 +72,26 @@ const parseHtml = (html, item, itemToUpdate) => {
   const $ = cheerio.load(html, {
     normalizeWhitespace: true
   })
-  const normalizeImage = (src) => {
+  const normalizeUrl = (src) => {
     if (!src) {
       return
     }
     if (src.startsWith('//')) {
-      return src.substring(2)
+      return src.substring(2) // i.e, img src
     } else if (src.startsWith('/')) {
-      return url(item.url).host + src
+      const baseUrl = url.parse(item.url)
+      return `${baseUrl.protocol}//${baseUrl.host}${src}`
     }
     return src
   }
   const result = []
   const title = $('head > title').text()
-  $(item.selector).map((i, e) => {
+  $(item.selector || 'body').map((i, e) => {
     const text = $(e).text().trim()
-    const anchor = $(e).find('a')
-    const href = anchor && anchor.attr('href')
-    const img = $(e).find('img')
-    const imgSrc = img && normalizeImage(img.attr('src'))
+    const anchor = e.name === 'a' ? $(e) : $(e).find('a')
+    const href = anchor && normalizeUrl(anchor.attr('href'))
+    const img = e.name === 'img' ? $(e) : $(e).find('img')
+    const imgSrc = img && normalizeUrl(img.attr('src'))
     if (text || href) {
       return result.push({
         text,

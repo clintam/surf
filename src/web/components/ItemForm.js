@@ -49,7 +49,7 @@ export const ItemForm = ({actions, item, handleSubmit}) => {
         </div>
         <span className='help-block'>
           Use a CSS selector to pick out the answer(s) to your question.
-          <a target='new' href='http://webdriver.io/guide/usage/selectors.html'>
+          <a target='new' href='https://api.jquery.com/category/selectors/'>
             More details
           </a>
         </span>
