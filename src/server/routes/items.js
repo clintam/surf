@@ -32,7 +32,6 @@ export const initialize = () => {
     })
 }
 
-
 export const findAll = (req, res) => {
   Item.find().exec((e, items) => {
     res.send(items)

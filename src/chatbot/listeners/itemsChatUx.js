@@ -1,4 +1,5 @@
-const ItemClient = require('../../common/itemClient')
+import ItemClient from '../../common/itemClient'
+
 var client = new ItemClient()
 
 export function initialize(controller) {
@@ -6,7 +7,7 @@ export function initialize(controller) {
     'direct_message,direct_mention,mention', (bot, message) => {
       bot.reply(message,
         `I can keep track of a list of items!
-Ask me to 'list items' or 'add' somethng :metal:
+Ask me 'questions' to see what I know, or 'add' something new :metal:
 `)
     })
 
@@ -22,24 +23,32 @@ Ask me to 'list items' or 'add' somethng :metal:
     })
   }
 
-  controller.hears(['list items', 'what you know'], 'direct_message,direct_mention', (bot, message) => {
+  controller.hears(['questions', 'what you know'], 'direct_message,direct_mention', (bot, message) => {
     react(bot, message)
 
     client.list()
       .then((items) => {
         var reply = {
-          text: `I know about ${items.length} items`,
+          text: `I know about ${items.length} things`,
           attachments: items.map((item) => {
-            const result = item.result instanceof Array ? item.result : [item.result]
+            const result = item.lastFetch && item.lastFetch.result
+            const resultLength = result && result.length || 0
+            const listItemText = (r) => {
+              let text = `\u2022 ${r.text}`
+              if (r.href) {
+                text += `: ${r.href}`
+              }
+              return text
+            }
+            let text
+            if (result && result.length > 0) {
+              text = item.lastFetch.result.map(listItemText).join('\n')
+            } else {
+              text = '...er nothing there yet...'
+            }
             return {
-              title: item.name,
-              text: `Pulling from ${item.url}`,
-              fields: result.map((r, i) => {
-                return {
-                  title: i + 1,
-                  value: r
-                }
-              })
+              title: `${item.name} (${resultLength} results from ${item.url})`,
+              text: text
             }
           })
         }
@@ -51,7 +60,7 @@ Ask me to 'list items' or 'add' somethng :metal:
     const item = {
       name: message.match[1]
     }
-
+    // TODO, this becomes a conversation
     bot.startTyping(message)
     client.create(item)
       .then(() => {

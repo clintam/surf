@@ -5,7 +5,6 @@ import {scheduleJob, cancelJob} from './jobManager'
 import cheerio from 'cheerio'
 const webdriverio = require('webdriverio')
 
-
 const itemClient = new ItemClient()
 const fetchItervalInMinutes = 10
 
