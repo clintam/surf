@@ -14,10 +14,19 @@ export const ItemForm = ({actions, item, handleSubmit}) => {
   return (
     <form onSubmit={handleSubmit(onSubmit) } className='form-horizontal'>
       <div className='form-group'>
-        <div className='col-xs-offset-9 col-xs-2 col-md-offset-10 col-md-1'>
-          <button type='button' id={`delete-${id}`} className='btn btn-link'
+        <div className='col-xs-6 col-md-4'>
+          <button id='save' type='submit' className='btn btn-primary'>
+            Save
+          </button>
+          <button type='button' id='cancel' className='btn btn-default'
+            onClick={unFocusItem}>
+            Cancel
+          </button>
+        </div>
+        <div className='col-xs-offset-4 col-xs-1 col-md-offset-7 col-md-1'>
+          <button type='button' id={`delete-${id}`} className='btn btn-default'
             onClick={deleteItem} title='Delete'>
-            <span className='glyphicon glyphicon-remove-circle' />
+            <span className='glyphicon glyphicon-trash' />
           </button>
         </div>
       </div>
@@ -38,20 +47,12 @@ export const ItemForm = ({actions, item, handleSubmit}) => {
         <div className='col-sm-5'>
           <Field name='selector' component='input' type='text' className='form-control' />
         </div>
-        <div className='col-sm-5'>
+        <span className='help-block'>
+          Use a CSS selector to pick out the answer(s) to your question.
           <a target='new' href='http://webdriver.io/guide/usage/selectors.html'>
-            Selector Help
+            More details
           </a>
-        </div>
-      </div>
-      <div className='form-group'>
-        <div className='col-sm-offset-2 col-sm-4'>
-          <button id='save' type='submit' className='btn btn-default'>Submit</button>
-          <button type='button' id='cancel' className='btn btn-default'
-            onClick={unFocusItem}>
-            Cancel
-          </button>
-        </div>
+        </span>
       </div>
     </form>
   )

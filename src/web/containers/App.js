@@ -23,7 +23,8 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     items: state.items.items,
-    isEditingItem: (item) => item === state.items.editItem
+    isEditingItem: (item) => !!state.items.editItem &&
+      item._id === state.items.editItem._id
   }
 }
 

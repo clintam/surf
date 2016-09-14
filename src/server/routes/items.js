@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 
+mongoose.Promise = global.Promise
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
 
 const storeTimeStamps = {
@@ -7,13 +8,7 @@ const storeTimeStamps = {
 }
 const schema = new mongoose.Schema({
   name: String,
-  url: {
-    type: String,
-    validate: {
-      validator: (url) => true, // FIXME
-      message: '{VALUE} is not a valid URL'
-    }
-  },
+  url: String,
   selector: String,
   title: String,
   fullText: String,
@@ -21,24 +16,18 @@ const schema = new mongoose.Schema({
   fetchError: String,
   lastFetch: mongoose.Schema.Types.Mixed,
   result: mongoose.Schema.Types.Mixed,
-  image: Buffer, // TODO
-  done: {
-    type: Boolean,
-    default: false
-  }
+  image: Buffer // TODO
 }, storeTimeStamps)
 
 const Item = mongoose.model('Item', schema)
 
-// REVIEW: the mongoose model does not have json fields on it? How does json render
-const slimItem = (row) => row // Object.assign({}, row._doc, { image: null })
-exports.findAll = (req, res) => {
+export const findAll = (req, res) => {
   Item.find().exec((e, items) => {
-    res.send(items.map(slimItem))
+    res.send(items)
   })
 }
 
-exports.add = (req, res) => {
+export const add = (req, res) => {
   const item = req.body
 
   Item.create(item)
@@ -51,11 +40,14 @@ exports.add = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+export const get = (id) => Item.findOne({ _id: id }).lean().exec()
+
+export const update = (req, res) => {
   const id = req.params.id
   const item = req.body
   Item.update({ _id: id }, { $set: item })
-    .then((x) => {
+    .then(() => get(id))
+    .then((item) => {
       res.send(item)
       afterUpdate(item)
     })
@@ -64,22 +56,23 @@ exports.update = (req, res) => {
     })
 }
 
-exports.delete = (req, res) => {
+export const remove = (req, res) => {
   const id = req.params.id
-  const itemShell = { _id: id }
 
-  Item.remove(itemShell)
-    .then(() => {
-      res.send({ ok: true })
-      afterDelete(itemShell)
+  get(id)
+    .then((item) => {
+      Item.remove({ _id: id })
+        .then(() => res.send({ ok: true }))
+      return item
     })
+    .then(afterDelete)
     .catch((e) => {
       res.status(500).send(e)
     })
 }
 const fs = require('fs')
 
-exports.updateImage = (req, res) => {
+export const updateImage = (req, res) => {
   const id = req.params.id
   // const item = {
   //   _id: id,
@@ -98,7 +91,7 @@ exports.updateImage = (req, res) => {
   })
 }
 
-exports.getImage = (req, res) => {
+export const getImage = (req, res) => {
   const id = req.params.id
   // return Item.findOne({ _id: id })
   //   .exec((e, item) => {
@@ -125,36 +118,33 @@ exports.getImage = (req, res) => {
   })
 }
 
-const eventListeners = []
-
 const afterCreate = (item) => {
-  eventListeners.forEach((l) => l.created(item))
+  dispatch('item_created', item)
 }
 
 const afterDelete = (item) => {
-  eventListeners.forEach((l) => l.deleted(item))
+  dispatch('item_deleted', item)
 }
 
 const afterUpdate = (item) => {
-  eventListeners.forEach((l) => l.updated(item))
+  dispatch('item_updated', item)
 }
 
-exports.pipeEvents = (ws) => {
-  const sendEvent = (type) => (item) => {
-    console.log(`emitting ${type} to ${ws.id}`)
-    ws.emit('event', {
-      type: type,
-      item: item
-    })
-  }
-  const listener = {
-    created: sendEvent('item_created'),
-    deleted: sendEvent('item_deleted'),
-    updated: sendEvent('item_updated')
-  }
-  eventListeners.push(listener)
+const dispatch = (type, item) => {
+  console.log(`Dispatching to ${webSockets.length}`)
+  webSockets.forEach(ws => ws.emit('event', {
+    type,
+    item
+  }))
+}
+
+const webSockets = []
+export const pipeEvents = (ws) => {
+  console.log(`item connected to websocket ${ws.id}`)
+  webSockets.push(ws)
   ws.on('disconnect', () => {
-    console.log(`disconnecting from ${ws.id}`)
-    eventListeners.splice(eventListeners.indexOf(listener))
+    console.log(`disconnecting websocket ${ws.id}`)
+    webSockets.splice(webSockets.indexOf(ws))
   })
+  ws.on('reconnect', () => console.log('FIXME socket reconnect not handled'))
 }

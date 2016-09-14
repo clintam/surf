@@ -1,12 +1,13 @@
 import moment from 'moment'
 import hash from 'object-hash'
-const ItemClient = require('../common/itemClient')
-const client = new ItemClient()
+import ItemClient from '../common/itemClient'
+import {scheduleJob, cancelJob} from './jobManager'
 
+const itemClient = new ItemClient()
 const fetchItervalInMinutes = 10
-const fetchesById = {}
 
 const fetchHash = (item) => hash({ url: item.url, selector: item.selector })
+
 const scheduleFetch = (item) => {
   const getFetchDelay = () => {
     const now = moment()
@@ -26,12 +27,9 @@ const scheduleFetch = (item) => {
     return
   }
 
-  const oldFetch = fetchesById[item._id]
-  if (oldFetch) {
-    clearTimeout(oldFetch)
-  }
-  console.log(`Will fetch ${item.url} in ${getFetchDelay()}`)
-  fetchesById[item._id] = setTimeout(fetchItem(item), getFetchDelay())
+  scheduleJob(item._id, getFetchDelay())
+    .then(() => fetchItem(item))
+    .catch(e => console.log(e))
 }
 
 const webdriverio = require('webdriverio')
@@ -44,7 +42,7 @@ const options = {
   port: 4444
 }
 
-const fetchItem = (item) => () => {
+const fetchItem = (item) => {
   var itemToUpdate = {
     _id: item._id,
     lastFetch: {
@@ -61,7 +59,7 @@ const fetchItem = (item) => () => {
       itemToUpdate.title = title
     })
     .then(() => webdriver.saveScreenshot())
-    .then((buffer) => client.updateImage(item._id, buffer))
+    .then((buffer) => itemClient.updateImage(item._id, buffer))
     .then(() => webdriver.getText(item.selector || 'body'))
     .then((text) => {
       itemToUpdate.fullText = text
@@ -71,18 +69,21 @@ const fetchItem = (item) => () => {
       console.error(e)
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
     })
-    .then(() => client.update(itemToUpdate))
+    .then(() => itemClient.update(itemToUpdate))
     .finally(() => webdriver.end())
 }
 
 export function initialize() {
-  client.list()
+  itemClient.list()
     .then((items) => items.forEach(scheduleFetch))
-  client.openRTM((event) => {
+  itemClient.openRTM((event) => {
     switch (event.type) {
       case 'item_created':
       case 'item_updated':
-        scheduleFetch(event.item)
+        return scheduleFetch(event.item)
+      case 'item_deleted':
+        return cancelJob(event.item._id)
+
     }
   })
 }

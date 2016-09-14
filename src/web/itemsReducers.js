@@ -6,15 +6,12 @@ const initialState = {
 }
 
 const handleLoadItems = (state, action) => {
-  const itemForForm = state.editItem && action.items.find((i) => i._id === state.editItem.id)
-  // const unsavedItem = state.items.find((i) => !i._id)
-  var items = action.items
-  // if (unsavedItem) {
-  //   items = action.items.concat(unsavedItem)
-  // }
+  let items = action.items
+  if (state.editItem && !state.editItem._id) {
+    items = items.concat(state.editItem)
+  }
   return Object.assign({}, state, {
-    items: items,
-    editItem: itemForForm
+    items: items
   })
 }
 
@@ -34,8 +31,8 @@ const items = (state = initialState, action) => {
       })
     case 'UNFOCUS_ITEM':
       return Object.assign({}, state, { editItem: null })
-    // case 'SAVED_ITEM':
-    // return Object.assign({}, state, { form: validateForm(action.item), formItemId: action.item._id })
+    case 'SAVED_ITEM':
+      return Object.assign({}, state, { editItem: null, formItemId: action.item._id })
     default:
       return state
   }

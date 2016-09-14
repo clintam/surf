@@ -52,7 +52,7 @@ app.post('/items/:id/image', (x, y) => {
   console.log(x)
 }, items.updateImage)
 app.get('/items/:id/image.png', items.getImage)
-app.delete('/items/:id', items.delete)
+app.delete('/items/:id', items.remove)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {

@@ -12,31 +12,24 @@ const Item = ({item, isEditMode, actions}) => {
   return (
     <li key={item._id} className='list-group-item container'
       onClick={focusItem} >
-      <div className='row'>
-        { !isEditMode &&
+      { isEditMode &&
+        <ItemForm item={item} initialValues={item} actions={actions} />
+      } {!isEditMode &&
+        <div className='row'>
           <div className='col-sm-2'>
             <span className='glyphicon glyphicon-edit' />
           </div>
-        }
-        { isEditMode &&
-          <div className='col-sm-11'>
-            <ItemForm item={item} initialValues={item} actions={actions} />
-          </div>
-        } {!isEditMode &&
           <div id={`name-${id}`} className='col-sm-8'>
             {item.name}
           </div>
-        } {!isEditMode &&
           <div className='col-sm-2'>
             <a target='new' href={item.url} className='url'>
               {item.url}
             </a>
           </div>
-        }
-      </div>
-      <div className='row' style={{
-        maxHeight: '500px'
-      }}>
+        </div>
+      }
+      <div className='row'>
         <div className='col-sm-6'>
           <span>
             {lastFetchDate
@@ -49,7 +42,10 @@ const Item = ({item, isEditMode, actions}) => {
             </div>
           }
           {lastFetchSuccess &&
-            <div className='well'>
+            <div className='well' style={{
+              maxHeight: '300px',
+              overflowY: 'auto'
+            }}>
               {item.fullText}
             </div>
           }

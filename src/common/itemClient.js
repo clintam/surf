@@ -44,9 +44,10 @@ class ItemClient {
       reconnectionDelay: 500,
       reconnectionAttempts: 1000
     })
-    socket.on('event', function (data) {
-      onEvent(data)
-    })
+    console.log(`items RTM opening for ${socket.id}`)
+    socket.on('event', onEvent)
+    socket.on('disconnect', (data) => console.log(`items disconnect ${socket.id}`))
+    socket.on('reconnect', (data) => console.log(`items reconnect ${socket.id}`))
   }
 
 }
