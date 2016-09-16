@@ -81,7 +81,16 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
         if (item && item.lastFetch && item.lastFetch.result) {
           var reply = {
             text: `I know about ${item.lastFetch.result.length} things out it`,
-            attachments: [attachemtForItem(item)]
+            attachments: item.lastFetch.result.map(r => {
+              let text = `${r.text}`
+              if (r.href) {
+                text += ` <${r.href}| link>`
+              }
+              return {
+                text,
+                image_url: r.imgSrc
+              }
+            })
           }
           bot.reply(message, reply)
         }

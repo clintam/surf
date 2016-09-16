@@ -6,7 +6,7 @@ const normalizeUrl = (item, src) => {
     return
   }
   if (src.startsWith('//')) {
-    return `http://${src}`
+    return `http:${src}`
   } else if (src.startsWith('/')) {
     const baseUrl = url.parse(item.url)
     return `${baseUrl.protocol}//${baseUrl.host}${src}`
@@ -26,7 +26,7 @@ const parseHtml = (html, item) => {
       }
       const title = e.attribs && e.attribs.title
       if (title) {
-        return title
+        return title.trim()
       }
       return $(e).contents().map(collectText).get()
     }
