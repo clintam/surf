@@ -93,7 +93,7 @@
             ],
             "env": {
                 "NODE_ENV": "development",
-                "TEST_SLACK_TOKEN": "xoxb-78109031585-43uFjysL1Eu5rQTgMiDMbYVW"
+                "TEST_SLACK_TOKEN": "XXX"
             }
         },
         {
