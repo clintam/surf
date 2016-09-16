@@ -6,7 +6,7 @@ const initialize = (controller) => {
   controller.hears(['hello', 'hi', 'help', 'who are you'],
     'direct_message,direct_mention,mention', (bot, message) => {
       bot.reply(message,
-        `I can keep track of a list of items!
+        `I can keep track of a list of questions!
 Ask me 'questions' to see what I know, or 'add' something new :metal:
 `)
     })
@@ -23,6 +23,28 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
     })
   }
 
+  const attachemtForItem = (item) => {
+    const result = item.lastFetch && item.lastFetch.result
+    const resultLength = result && result.length || 0
+    const listItemText = (r) => {
+      let text = `\u2022 ${r.text}`
+      if (r.href) {
+        text += ` <${r.href}| link>`
+      }
+      return text
+    }
+    let text
+    if (result && result.length > 0) {
+      text = item.lastFetch.result.map(listItemText).join('\n')
+    } else {
+      text = '...er nothing there yet...'
+    }
+    return {
+      title: `<${item.url}|${item.name}> (${resultLength} results)`,
+      text: text
+    }
+  }
+
   controller.hears(['questions', 'what you know'], 'direct_message,direct_mention', (bot, message) => {
     react(bot, message)
 
@@ -30,27 +52,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
       .then((items) => {
         var reply = {
           text: `I know about ${items.length} things`,
-          attachments: items.map((item) => {
-            const result = item.lastFetch && item.lastFetch.result
-            const resultLength = result && result.length || 0
-            const listItemText = (r) => {
-              let text = `\u2022 ${r.text}`
-              if (r.href) {
-                text += ` <${r.href}| link>`
-              }
-              return text
-            }
-            let text
-            if (result && result.length > 0) {
-              text = item.lastFetch.result.map(listItemText).join('\n')
-            } else {
-              text = '...er nothing there yet...'
-            }
-            return {
-              title: `<${item.url}|${item.name}> (${resultLength} results)`,
-              text: text
-            }
-          })
+          attachments: items.map(attachemtForItem)
         }
         bot.reply(message, reply)
       })
@@ -68,6 +70,24 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
         react(bot, message, 'heavy_check_mark')
       })
   })
+
+  controller.hears(['(.*)'], 'direct_message,direct_mention,ambient', (bot, message) => {
+    const question = message.match[1]
+    const questionMatchesItem = (item) => question.trim().toLowerCase().includes(item.name.trim().toLowerCase())
+    bot.startTyping(message)
+    client.list()
+      .then(items => {
+        const item = items.find(questionMatchesItem)
+        if (item && item.lastFetch && item.lastFetch.result) {
+          var reply = {
+            text: `I know about ${item.lastFetch.result.length} things out it`,
+            attachments: [attachemtForItem(item)]
+          }
+          bot.reply(message, reply)
+        }
+      })
+      .catch(e => console.error(e)) // FIXME improve this pattern
+  })
 }
 
-module.exports = {initialize}
+module.exports = { initialize }

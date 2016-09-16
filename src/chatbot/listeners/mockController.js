@@ -16,7 +16,7 @@ class Controller {
     this.listeners.forEach((l) => {
       const match = l.patterns.some(p => message.match(p))
       if (match) {
-        l.callback(this.bot, {match})
+        l.callback(this.bot, { match })
       }
     })
   }
@@ -30,6 +30,8 @@ class Bot {
   reply(message, reply) {
     this.controller.replies.push(reply)
   }
+
+  startTyping() { }
 }
 
 module.exports = Controller

@@ -7,7 +7,6 @@ describe('itemsChatUx', () => {
   it('should listen for help', () => {
     const controller = new Controller()
     itemsChatUx.initialize(controller)
-    expect(controller.listeners.length).to.equal(3)
     controller.say('help')
     expect(controller.replies[0]).to.have.string('I can keep track')
   })

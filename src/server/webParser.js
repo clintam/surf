@@ -24,6 +24,10 @@ const parseHtml = (html, item) => {
       if (e.type === 'text') {
         return e.data.trim()
       }
+      const title = e.attribs && e.attribs.title
+      if (title) {
+        return title
+      }
       return $(e).contents().map(collectText).get()
     }
     const text = $(e).map(collectText).get().join(' ')

@@ -1,7 +1,7 @@
 exports.initialItems = [
   {
     'name': 'News',
-    'selector': '#top-news h2',
+    'selector': '#top-news article',
     'url': 'http://nytimes.com'
   },
   {
