@@ -7,6 +7,7 @@ const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('../webpack.config.js')
+const logger = require('winston')
 
 import * as webFetcher from './webFetcher'
 
@@ -41,24 +42,23 @@ const saveRawBody = function (req, res, buf, encoding) {
   }
 }
 
-app.use(bodyParser.json({ verify: saveRawBody }))
-app.use(bodyParser.urlencoded({ verify: saveRawBody, extended: true }))
+app.use(bodyParser.json({ verify: saveRawBody, limit: '50mb' }))
+app.use(bodyParser.urlencoded({ verify: saveRawBody, limit: '50mb', extended: true }))
 // app.use(bodyParser.raw({ verify: saveRawBody, type: () => true }))
 
 app.get('/items', items.findAll)
 app.post('/items', items.add)
 app.put('/items/:id', items.update)
-app.post('/items/:id/image', (x, y) => {
-  console.log(x)
-}, items.updateImage)
+app.post('/items/:id/image', items.updateImage)
 app.get('/items/:id/image.png', items.getImage)
 app.delete('/items/:id', items.remove)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
-    console.log(err)
+    logger.error(err)
+    return
   }
-  console.info('*** Listening on port 8080')
+  logger.info('*** Listening on port 8080')
 })
 
 const io = require('socket.io').listen(server)

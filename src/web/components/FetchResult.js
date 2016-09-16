@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import FetchResultImages from './FetchResultImages'
 
 const FetchResult = ({item}) => {
   const id = item._id
@@ -20,9 +21,9 @@ const FetchResult = ({item}) => {
               ? `Last updated ${lastFetchDate.fromNow()}`
               : 'Not yet processed'}
           </span>
-
         </div>
       </div>
+      {lastFetch && <FetchResultImages fetch={lastFetch} /> }
       <div className='row'>
         {lastFetchSuccess &&
           <div className='col-sm-4'>

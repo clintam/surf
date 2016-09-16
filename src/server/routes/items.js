@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import {initialItems} from './initialItems'
-
+const logger = require('winston')
 
 mongoose.Promise = global.Promise
 mongoose.connect(`mongodb://${process.env.MONGO_HOST || 'localhost'}/test`)
@@ -26,7 +26,7 @@ export const initialize = () => {
   Item.count({}).exec()
     .then(n => {
       if (n === 0) {
-        console.log(`Populating ${initialItems.length} initial items.`)
+        logger.info(`Populating ${initialItems.length} initial items.`)
         initialItems.forEach(item => Item.create(item))
       }
     })
@@ -142,7 +142,7 @@ const afterUpdate = (item) => {
 }
 
 const dispatch = (type, item) => {
-  console.log(`Dispatching to ${webSockets.length}`)
+  logger.info(`Dispatching to ${webSockets.length}`)
   webSockets.forEach(ws => ws.emit('event', {
     type,
     item
@@ -151,11 +151,11 @@ const dispatch = (type, item) => {
 
 const webSockets = []
 export const pipeEvents = (ws) => {
-  console.log(`item connected to websocket ${ws.id}`)
+  logger.info(`item connected to websocket ${ws.id}`)
   webSockets.push(ws)
   ws.on('disconnect', () => {
-    console.log(`disconnecting websocket ${ws.id}`)
+    logger.info(`disconnecting websocket ${ws.id}`)
     webSockets.splice(webSockets.indexOf(ws))
   })
-  ws.on('reconnect', () => console.log('FIXME socket reconnect not handled'))
+  ws.on('reconnect', () => logger.info('FIXME socket reconnect not handled'))
 }

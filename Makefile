@@ -23,7 +23,7 @@ up: docker_compose_images
 	docker-compose run --rm healthcheck
 
 dev: up
-	docker-compose logs -f --tail=10
+	docker-compose logs -f --tail=10 server
 
 all-tests: test server-fvt web-fvt chatbot-fvt
 
@@ -38,6 +38,12 @@ chatbot-fvt: up
 
 down:
 	docker-compose down -v
+
+dev-clean:
+	docker-compose kill server
+	docker-compose rm -fv server
+	echo 'rm -rf build' | docker-compose run --rm --entrypoint /bin/bash server # This wil rm -rf build that is created by docker user (root)
+
 
 clean: down
 	rm -rf build

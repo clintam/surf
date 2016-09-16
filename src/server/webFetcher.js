@@ -5,6 +5,8 @@ import {scheduleJob, cancelJob} from './jobManager'
 import cheerio from 'cheerio'
 import url from 'url'
 const webdriverio = require('webdriverio')
+const logger = require('winston')
+
 
 const itemClient = new ItemClient()
 const fetchItervalInMinutes = 10
@@ -32,7 +34,7 @@ const scheduleFetch = (item) => {
 
   scheduleJob(item._id, getFetchDelay())
     .then(() => fetchItem(item))
-    .catch(e => console.log(e))
+    .catch(e => logger.error(e))
 }
 
 const options = {
@@ -52,8 +54,9 @@ const fetchItem = (item) => {
       hash: fetchHash(item)
     }
   }
-  console.log(`Fetching: ${item.url}`)
+  logger.info(`Fetching: ${item.url}`)
   const webdriver = webdriverio.remote(options)
+  let error
   return webdriver.init()
     .then(() => webdriver.url(item.url).getTitle())
     .then(() => webdriver.saveScreenshot())
@@ -61,10 +64,16 @@ const fetchItem = (item) => {
     .then(() => webdriver.getHTML('html'))
     .then((html) => parseHtml(html, item, itemToUpdate))
     .catch((e) => {
-      console.error(e)
+      error = e
+      logger.error(e)
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
     })
     .then(() => itemClient.update(itemToUpdate))
+    .then(() => {
+      if (error) {
+        throw error
+      }
+    })
     .finally(() => webdriver.end())
 }
 
@@ -73,11 +82,11 @@ const parseHtml = (html, item, itemToUpdate) => {
     normalizeWhitespace: true
   })
   const normalizeUrl = (src) => {
-    if (!src) {
+    if (!src || src === '#') {
       return
     }
     if (src.startsWith('//')) {
-      return src.substring(2) // i.e, img src
+      return `http://${src}`
     } else if (src.startsWith('/')) {
       const baseUrl = url.parse(item.url)
       return `${baseUrl.protocol}//${baseUrl.host}${src}`
@@ -106,7 +115,7 @@ const parseHtml = (html, item, itemToUpdate) => {
 
 export function initialize() {
   itemClient.list()
-    .then((items) => items.forEach(scheduleFetch))
+    .then(items => items.forEach(scheduleFetch))
   itemClient.openRTM((event) => {
     switch (event.type) {
       case 'item_created':
@@ -116,5 +125,5 @@ export function initialize() {
         return cancelJob(event.item._id)
 
     }
-  })
+  }, 'webFetcher')
 }

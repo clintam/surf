@@ -35,7 +35,7 @@ class ItemClient {
     return http.delete(this.url + '/' + item._id).then(toJson)
   }
 
-  openRTM(onEvent) {
+  openRTM(onEvent, clientNameForLogging) {
     const url = urlApi.parse(this.url)
     const host = url.host || location.host
     const webSocketUrl = `http://${host}/`
@@ -44,10 +44,10 @@ class ItemClient {
       reconnectionDelay: 500,
       reconnectionAttempts: 1000
     })
-    console.log(`items RTM opening for ${socket.id}`)
+    console.log(`items RTM opening for ${socket.id} (${clientNameForLogging})`)
     socket.on('event', onEvent)
-    socket.on('disconnect', (data) => console.log(`items disconnect ${socket.id}`))
-    socket.on('reconnect', (data) => console.log(`items reconnect ${socket.id}`))
+    socket.on('disconnect', (data) => console.log(`items disconnect ${socket.id} (${clientNameForLogging})`))
+    socket.on('reconnect', (data) => console.log(`items reconnect ${socket.id} (${clientNameForLogging})`))
   }
 
 }
