@@ -44,10 +44,25 @@ class ItemClient {
       reconnectionDelay: 500,
       reconnectionAttempts: 1000
     })
-    console.log(`items RTM opening for ${socket.id} (${clientNameForLogging})`)
+
     socket.on('event', onEvent)
+    socket.on('connect', () => console.log(`items RTM open for ${socket.id} (${clientNameForLogging})`))
     socket.on('disconnect', (data) => console.log(`items disconnect ${socket.id} (${clientNameForLogging})`))
     socket.on('reconnect', (data) => console.log(`items reconnect ${socket.id} (${clientNameForLogging})`))
+    socket.on('reconnecting', (data) => console.log(`items reconnecting ${socket.id} (${clientNameForLogging})`))
+    socket.on('reconnect_error', (data) => console.log(`items reconnect_error ${socket.id} (${clientNameForLogging})`))
+    socket.on('reconnect_failed',
+      (data) => console.log(`items reconnect_failed ${socket.id} (${clientNameForLogging})`))
+    socket.on('connect_error',
+      (data) => console.log(`items connect_error ${socket.id} (${clientNameForLogging})`))
+
+    // HACK to keep socket open
+    setInterval(() => {
+      if (!socket.connected) {
+        console.log('Running my reconnect HACK???')
+        socket.io.connect()
+      }
+    }, 2000)
   }
 
 }
