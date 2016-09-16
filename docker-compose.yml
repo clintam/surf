@@ -9,11 +9,12 @@ services:
     volumes:
      - ./:/work/
      - /work/node_modules
-    env_file: common.env
     environment:
      MONGO_HOST: mongo
      WEBDRIVER_HOST: webdriver
      SERVER_HOST: server
+     SLACK_TOKEN:
+     TEST_SLACK_TOKEN:
   mongo:
     image: mongo:3.3.10
     ports:
