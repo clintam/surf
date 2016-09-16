@@ -9,7 +9,7 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('../webpack.config.js')
 const logger = require('winston')
 
-import * as webFetcher from './webFetcher'
+const webFetcher = require('./webFetcher')
 
 // Client side
 

@@ -1,12 +1,11 @@
-import moment from 'moment'
-import hash from 'object-hash'
-import ItemClient from '../common/itemClient'
-import {scheduleJob, cancelJob} from './jobManager'
-import cheerio from 'cheerio'
-import url from 'url'
+const moment = require('moment')
+const hash = require('object-hash')
+const ItemClient = require('../common/itemClient')
+const {scheduleJob, cancelJob} = require('./jobManager')
+const cheerio = require('cheerio')
+const url = require('url')
 const webdriverio = require('webdriverio')
 const logger = require('winston')
-
 
 const itemClient = new ItemClient()
 const fetchItervalInMinutes = 10
@@ -113,7 +112,7 @@ const parseHtml = (html, item, itemToUpdate) => {
   itemToUpdate.lastFetch.result = result
 }
 
-export function initialize() {
+const initialize = () => {
   itemClient.list()
     .then(items => items.forEach(scheduleFetch))
   itemClient.openRTM((event) => {
@@ -127,3 +126,5 @@ export function initialize() {
     }
   }, 'webFetcher')
 }
+
+module.exports = {initialize}

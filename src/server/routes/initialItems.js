@@ -1,4 +1,4 @@
-export const initialItems = [
+exports.initialItems = [
   {
     'name': 'News',
     'selector': '#top-news h2',

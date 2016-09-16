@@ -1,8 +1,8 @@
-import ItemClient from '../../common/itemClient'
+const ItemClient = require('../../common/itemClient')
 
-var client = new ItemClient()
+const client = new ItemClient()
 
-export function initialize(controller) {
+const initialize = (controller) => {
   controller.hears(['hello', 'hi', 'help', 'who are you'],
     'direct_message,direct_mention,mention', (bot, message) => {
       bot.reply(message,
@@ -69,3 +69,5 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
       })
   })
 }
+
+module.exports = {initialize}

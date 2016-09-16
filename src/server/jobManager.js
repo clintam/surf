@@ -1,4 +1,4 @@
-import bluebird from 'bluebird'
+const bluebird = require('bluebird')
 
 const promisesById = {}
 
@@ -6,7 +6,7 @@ bluebird.config({
   cancellation: true
 })
 
-export const scheduleJob = (id, delay) => {
+const scheduleJob = (id, delay) => {
   cancelJob(id)
   const promise = bluebird.delay(delay)
   promisesById[id] = promise
@@ -14,7 +14,7 @@ export const scheduleJob = (id, delay) => {
   return promise
 }
 
-export const cancelJob = (id) => {
+const cancelJob = (id) => {
   const oldPromise = promisesById[id]
   if (oldPromise) {
     console.log(`canceling old job for ${id}`)
@@ -23,3 +23,5 @@ export const cancelJob = (id) => {
   }
   return false
 }
+
+module.exports = {cancelJob, scheduleJob}

@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import {initialItems} from './initialItems'
+const mongoose = require('mongoose')
+const {initialItems} = require('./initialItems')
 const logger = require('winston')
 
 mongoose.Promise = global.Promise
@@ -22,7 +22,7 @@ const schema = new mongoose.Schema({
 
 const Item = mongoose.model('Item', schema)
 
-export const initialize = () => {
+const initialize = () => {
   Item.count({}).exec()
     .then(n => {
       if (n === 0) {
@@ -32,13 +32,13 @@ export const initialize = () => {
     })
 }
 
-export const findAll = (req, res) => {
+const findAll = (req, res) => {
   Item.find().exec((e, items) => {
     res.send(items)
   })
 }
 
-export const add = (req, res) => {
+const add = (req, res) => {
   const item = req.body
 
   Item.create(item)
@@ -51,9 +51,9 @@ export const add = (req, res) => {
     })
 }
 
-export const get = (id) => Item.findOne({ _id: id }).lean().exec()
+const get = (id) => Item.findOne({ _id: id }).lean().exec()
 
-export const update = (req, res) => {
+const update = (req, res) => {
   const id = req.params.id
   const item = req.body
   Item.update({ _id: id }, { $set: item })
@@ -67,7 +67,7 @@ export const update = (req, res) => {
     })
 }
 
-export const remove = (req, res) => {
+const remove = (req, res) => {
   const id = req.params.id
 
   get(id)
@@ -83,7 +83,7 @@ export const remove = (req, res) => {
 }
 const fs = require('fs')
 
-export const updateImage = (req, res) => {
+const updateImage = (req, res) => {
   const id = req.params.id
   // const item = {
   //   _id: id,
@@ -102,7 +102,7 @@ export const updateImage = (req, res) => {
   })
 }
 
-export const getImage = (req, res) => {
+const getImage = (req, res) => {
   const id = req.params.id
   // return Item.findOne({ _id: id })
   //   .exec((e, item) => {
@@ -150,7 +150,7 @@ const dispatch = (type, item) => {
 }
 
 const webSockets = []
-export const pipeEvents = (ws) => {
+const pipeEvents = (ws) => {
   logger.info(`item connected to websocket ${ws.id}`)
   webSockets.push(ws)
   ws.on('disconnect', () => {
@@ -159,3 +159,5 @@ export const pipeEvents = (ws) => {
   })
   ws.on('reconnect', () => logger.info('FIXME socket reconnect not handled'))
 }
+
+module.exports = {initialize, findAll, add, remove, update, updateImage, getImage, pipeEvents}

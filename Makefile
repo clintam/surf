@@ -42,11 +42,7 @@ down:
 dev-clean:
 	docker-compose kill server
 	docker-compose rm -fv server
-	echo 'rm -rf build' | docker-compose run --rm --entrypoint /bin/bash server # This wil rm -rf build that is created by docker user (root)
-
 
 clean: down
-	rm -rf build
-	mkdir build
 
 .PHONY: image

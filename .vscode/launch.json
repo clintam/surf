@@ -8,7 +8,9 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/**/*.spec.js"
+                "--compilers",
+                "js:babel-register",
+                "src/**/*.spec.js"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -18,11 +20,7 @@
             ],
             "env": {
                 "NODE_ENV": "development"
-            },
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build",
-            "trace": "sm"
+            }
         },
         {
             "name": "server-fvt",
@@ -31,7 +29,7 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/server-fvt"
+                "src/server-fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -41,11 +39,7 @@
             ],
             "env": {
                 "NODE_ENV": "development"
-            },
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build",
-            "trace": "sm"
+            }
         },
         {
             "name": "web-fvt",
@@ -54,18 +48,14 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/web-fvt"
+                "src/web-fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
-            ],
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build",
-            "trace": "sm"
+            ]
         },
         {
             "name": "chatbot-fvt",
@@ -74,7 +64,7 @@
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
             "args": [
-                "build/chatbot-fvt"
+                "src/chatbot-fvt"
             ],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -85,16 +75,13 @@
             "env": {
                 "NODE_ENV": "development",
                 "TEST_SLACK_TOKEN": "xoxb-78109031585-43uFjysL1Eu5rQTgMiDMbYVW"
-            },
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build"
+            }
         },
         {
             "name": "Launch local server",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/build/server/server.js",
+            "program": "${workspaceRoot}/src/server/server.js",
             "stopOnEntry": false,
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
@@ -104,10 +91,7 @@
             ],
             "env": {
                 "NODE_ENV": "development"
-            },
-            "externalConsole": false,
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build"
+            }
         },
         {
             "name": "Attach to Local (npm run dev)",
@@ -116,9 +100,7 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "localRoot": "${workspaceRoot}",
-            "sourceMaps": true,
-            "outDir": "${workspaceRoot}/build"
+            "localRoot": "${workspaceRoot}"
         },
         {
             "name": "Attach to Docker (make dev)",
@@ -127,9 +109,7 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "sourceMaps": true,
             "localRoot": "${workspaceRoot}",
-            "outDir": "${workspaceRoot}/build",
             "remoteRoot": "/work"
         },
         {
@@ -137,9 +117,7 @@
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:8080/",
-            "webRoot": "${workspaceRoot}",
-            "sourceMaps": true,
-            "trace": "sm"
+            "webRoot": "${workspaceRoot}"
         }
     ]
 }

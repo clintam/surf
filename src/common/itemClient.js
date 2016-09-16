@@ -1,6 +1,6 @@
 /* global location */
-var http = require('axios')
-var urlApi = require('url')
+const http = require('axios')
+const urlApi = require('url')
 
 const toJson = (res) => res.data
 
