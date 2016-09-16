@@ -2,10 +2,9 @@ const moment = require('moment')
 const hash = require('object-hash')
 const ItemClient = require('../common/itemClient')
 const {scheduleJob, cancelJob} = require('./jobManager')
-const cheerio = require('cheerio')
-const url = require('url')
 const webdriverio = require('webdriverio')
 const logger = require('winston')
+const {parseHtml} = require('./webParser')
 
 const itemClient = new ItemClient()
 const fetchItervalInMinutes = 10
@@ -61,7 +60,7 @@ const fetchItem = (item) => {
     .then(() => webdriver.saveScreenshot())
     .then((buffer) => itemClient.updateImage(item._id, buffer))
     .then(() => webdriver.getHTML('html'))
-    .then((html) => parseHtml(html, item, itemToUpdate))
+    .then((html) => Object.assign(itemToUpdate.lastFetch, parseHtml(html, item)))
     .catch((e) => {
       error = e
       logger.error(e)
@@ -74,42 +73,6 @@ const fetchItem = (item) => {
       }
     })
     .finally(() => webdriver.end())
-}
-
-const parseHtml = (html, item, itemToUpdate) => {
-  const $ = cheerio.load(html, {
-    normalizeWhitespace: true
-  })
-  const normalizeUrl = (src) => {
-    if (!src || src === '#') {
-      return
-    }
-    if (src.startsWith('//')) {
-      return `http://${src}`
-    } else if (src.startsWith('/')) {
-      const baseUrl = url.parse(item.url)
-      return `${baseUrl.protocol}//${baseUrl.host}${src}`
-    }
-    return src
-  }
-  const result = []
-  const title = $('head > title').text()
-  $(item.selector || 'body').map((i, e) => {
-    const text = $(e).text().trim()
-    const anchor = e.name === 'a' ? $(e) : $(e).find('a')
-    const href = anchor && normalizeUrl(anchor.attr('href'))
-    const img = e.name === 'img' ? $(e) : $(e).find('img')
-    const imgSrc = img && normalizeUrl(img.attr('src'))
-    if (text || href) {
-      return result.push({
-        text,
-        href,
-        imgSrc
-      })
-    }
-  })
-  itemToUpdate.lastFetch.title = title
-  itemToUpdate.lastFetch.result = result
 }
 
 const initialize = () => {
@@ -127,4 +90,4 @@ const initialize = () => {
   }, 'webFetcher')
 }
 
-module.exports = {initialize}
+module.exports = { initialize }

@@ -1,4 +1,7 @@
 {
-  "ignore": ["src/web"],
+  "ignore": [
+    "src/web",
+    "src/**/*.spec.js"
+    ],
   "verbose": true
 }
