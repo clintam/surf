@@ -14,7 +14,6 @@ services:
      MONGO_HOST: mongo
      WEBDRIVER_HOST: webdriver
      SERVER_HOST: server
-     
   mongo:
     image: mongo:3.3.10
     ports:
@@ -24,5 +23,7 @@ services:
     command: http://server:8080/items/
   webdriver:
     image: webdriver
+    volumes:
+    - /dev/shm:/dev/shm 
     ports:
      - 4444:4444
