@@ -13,11 +13,11 @@ class CrudRoute {
 
   mountApp(app) {
     this.initialize()
-    const baseUrl = this.routeName()
-    app.get(`/${baseUrl}`, CrudRoute.prototype.findAll.bind(this))
-    app.post(`/${baseUrl}`, CrudRoute.prototype.add.bind(this))
-    app.put(`/${baseUrl}/:id`, CrudRoute.prototype.update.bind(this))
-    app.delete(`/${baseUrl}/:id`, CrudRoute.prototype.remove.bind(this))
+    const baseUrl = `/api/${this.routeName()}`
+    app.get(`${baseUrl}`, CrudRoute.prototype.findAll.bind(this))
+    app.post(`${baseUrl}`, CrudRoute.prototype.add.bind(this))
+    app.put(`${baseUrl}/:id`, CrudRoute.prototype.update.bind(this))
+    app.delete(`${baseUrl}/:id`, CrudRoute.prototype.remove.bind(this))
   }
 
   findAll(req, res) {
@@ -88,20 +88,19 @@ class CrudRoute {
 
   dispatch(type, item) {
     logger.info(`Dispatching ${type} to ${this.webSockets.length}`)
-    this.webSockets.forEach(ws => ws.emit('event', {
-      type,
-      item
-    }))
+    const event = { type }
+    event[this.eventTypeName()] = item
+    this.webSockets.forEach(ws => ws.emit('event', event))
   }
 
   pipeEvents(ws) {
-    logger.info(`item connected to websocket ${ws.id}`)
+    logger.info(`${this.routeName()} connected to websocket ${ws.id}`)
     this.webSockets.push(ws)
     ws.on('disconnect', () => {
       logger.info(`disconnecting websocket ${ws.id}`)
       this.webSockets.splice(this.webSockets.indexOf(ws))
     })
-    ws.on('reconnect', () => logger.info('FIXME socket reconnect not handled'))
+    ws.on('connect', () => logger.info('FIXME socket reconnect not handled ${ws.id}'))
   }
 
 }

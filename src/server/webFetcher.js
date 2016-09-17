@@ -58,7 +58,7 @@ const fetchItem = (item) => {
   return webdriver.init()
     .then(() => webdriver.url(item.url).getTitle())
     .then(() => webdriver.saveScreenshot())
-    .then((buffer) => itemClient.updateImage(item._id, buffer))
+    .then((buffer) => itemClient.items().updateImage(item._id, buffer))
     .then(() => webdriver.getHTML('html'))
     .then((html) => Object.assign(itemToUpdate.lastFetch, parseHtml(html, item)))
     .catch((e) => {
@@ -66,7 +66,7 @@ const fetchItem = (item) => {
       logger.error(e)
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
     })
-    .then(() => itemClient.update(itemToUpdate))
+    .then(() => itemClient.items().update(itemToUpdate))
     .then(() => {
       if (error) {
         throw error
@@ -76,7 +76,7 @@ const fetchItem = (item) => {
 }
 
 const initialize = () => {
-  itemClient.list()
+  itemClient.items().list()
     .then(items => items.forEach(scheduleFetch))
   itemClient.openRTM((event) => {
     switch (event.type) {

@@ -19,7 +19,7 @@ test: image
 docker_compose_images: image base_images/wait-for-http.image base_images/webdriver.image
 
 up: docker_compose_images
-	mkdir images
+	mkdir -p images
 	docker-compose up -d
 	docker-compose run --rm healthcheck
 

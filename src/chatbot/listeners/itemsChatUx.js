@@ -1,8 +1,5 @@
-const ItemClient = require('../../common/itemClient')
 
-const client = new ItemClient()
-
-const initialize = (controller) => {
+const initialize = ({controller, client}) => {
   controller.hears(['hello', 'hi', 'help', 'who are you'],
     'direct_message,direct_mention,mention', (bot, message) => {
       bot.reply(message,
@@ -48,7 +45,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
   controller.hears(['questions', 'what you know'], 'direct_message,direct_mention', (bot, message) => {
     react(bot, message)
 
-    client.list()
+    client.items().list()
       .then((items) => {
         var reply = {
           text: `I know about ${items.length} things`,
@@ -64,7 +61,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
     }
     // TODO, this becomes a conversation
     bot.startTyping(message)
-    client.create(item)
+    client.items().create(item)
       .then(() => {
         bot.reply(message, 'got it')
         react(bot, message, 'heavy_check_mark')
@@ -75,7 +72,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
     const question = message.match[1]
     const questionMatchesItem = (item) => question.trim().toLowerCase().includes(item.name.trim().toLowerCase())
     bot.startTyping(message)
-    client.list()
+    client.items().list()
       .then(items => {
         const item = items.find(questionMatchesItem)
         if (item && item.lastFetch && item.lastFetch.result) {

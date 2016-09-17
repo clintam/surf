@@ -28,7 +28,7 @@ describe('chat bot', function () {
       name: `chat-fvt-${uuid.v1()}`
     }
     var createdItem
-    client.create(newItem)
+    client.items().create(newItem)
       .then((x) => { createdItem = x })
       .then(() => slackApi.ensureUserInChannel(testBotName, testChannelName))
       .then(({user, channel}) =>
@@ -40,7 +40,7 @@ describe('chat bot', function () {
         var attachement = message.attachments.find((a) => a.title.includes(newItem.name))
         expect(attachement).to.exist
       })
-      .then(() => client.delete(createdItem))
+      .then(() => client.items().delete(createdItem))
   })
 })
 

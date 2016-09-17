@@ -1,6 +1,6 @@
 /* global describe it*/
 import { expect } from 'chai'
-import reducer from './itemsReducers'
+import reducer from './reducers'
 
 describe('items reducer', () => {
   it('should return the initial state', () => {

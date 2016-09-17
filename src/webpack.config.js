@@ -6,7 +6,7 @@ module.exports = {
   devtool: '#inline-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    path.join(__dirname, '../src/web/index.js')
+    path.join(__dirname, './web/index.js')
   ],
   output: {
     path: path.join(__dirname, '/dist/'),

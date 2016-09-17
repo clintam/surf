@@ -4,11 +4,10 @@ const urlApi = require('url')
 
 const toJson = (res) => res.data
 
-class ItemClient {
+class Route {
   constructor(url) {
-    this.url = url || `http://${process.env.SERVER_HOST || 'localhost'}:8080/items`
+    this.url = url
   }
-
   list() {
     return http.get(this.url)
       .then(toJson)
@@ -22,6 +21,13 @@ class ItemClient {
     return http.put(this.url + '/' + item._id, item).then(toJson)
   }
 
+  delete(item) {
+    return http.delete(this.url + '/' + item._id).then(toJson)
+  }
+}
+
+class ItemRoute extends Route {
+
   updateImage(itemId, imageBuffer) {
     const fs = require('fs')
     const bluebird = require('bluebird')
@@ -30,9 +36,19 @@ class ItemClient {
     // FIXME could not get this to work over http.
     // return http.post(`${this.url}/${itemId}/image`, imageBuffer).then(toJson)
   }
+}
 
-  delete(item) {
-    return http.delete(this.url + '/' + item._id).then(toJson)
+class ItemClient {
+  constructor(url) {
+    this.url = url || `http://${process.env.SERVER_HOST || 'localhost'}:8080/api`
+  }
+
+  items() {
+    return new ItemRoute(`${this.url}/items`)
+  }
+
+  bots() {
+    return new Route(`${this.url}/bots`)
   }
 
   openRTM(onEvent, clientNameForLogging) {

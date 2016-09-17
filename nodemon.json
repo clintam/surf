@@ -1,6 +1,8 @@
 {
+  "verbose": true,
   "ignore": [
     "src/web",
-    "src/**/*.spec.js"
+    "src/**/*.spec.js",
+    "src/*-fvt"
     ]
 }
