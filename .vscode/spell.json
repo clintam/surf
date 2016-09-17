@@ -9,7 +9,8 @@
     "Docker",
     "TODO",
     "UX",
-    "reducers"
+    "reducers",
+    "websockets"
   ],
   "mistakeTypeToStatus": {
     "Passive voice": "Hint",

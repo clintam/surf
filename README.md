@@ -3,26 +3,33 @@ Surfing CI-fari
 [![Build Status](https://travis-ci.org/clintam/surf.svg)](https://travis-ci.org/clintam/surf#)
 ***
 
+
+#### Application
+
+Meet surfbot, the bot that surfs the web so you don't have to.
+Tell it about some websites, and a bot will visit them for you. 
+Important bits of the website are presented in a web ui as well as a (slack) chatbot. 
+
+Pretty basic functionality, but built with some tech bling:
+* Real time updates with websockets
+* A chat interface (slack)
+* Isomorphic javascript: same web client used in server and browser
+
 A sweet nodejs stack using mongo, react, socket.io, and botkit. 
 Infrastructure is managed with docker and make. 
+
+### Dev guide
 
 Developer sanity is achieved via:
 * Leveraging modern javascript (ES6)
 * Efficient hot-swapping for live development cycles
 * Reproducible, isolated environments for dev and testing
 * CI practices (linting, unit tests, and functional verification) 
-* Isomorphic codebase: abstractions shared for REST APIs, web UX, and chat UX
-
-#### Application
-
-YATL (yet another todo list), but with some tech bling:
-* Real time updates with websockets
-* A chat interface (slack)
 
 #### Quickstart
 
 * Install Docker
-* Build, test, bring up dev environment `make`
+* Build, bring up dev environment `make dev` 
 
 OR
 
@@ -30,11 +37,12 @@ OR
 * Build with `npm install`
 * Run with `npm run dev`
 
+
 #### Make + Docker 
 
 Simple Makefiles call out to Docker and express the dependencies. 
 Incremental-build optimizations are managed by docker/docker-compose.
-This combination enables for efficient testing in parallel with `make -j`
+This combination enables to run a parallel build with `make -j`
 
 * download/build base images (nodejs, mongo, webdriver)
 * build server image
@@ -45,6 +53,8 @@ This combination enables for efficient testing in parallel with `make -j`
   * test web UI
   * test chat UI
  
+ NOTES:
+ * seem to leak disk with dev process. Using `make docker-clean` to fix
 
 #### React
 
@@ -61,13 +71,14 @@ Evaluation
  * most side-effects (AJAX) happens in actions
 * enforcing a separation between view and state manipulation is "firm but fair"
 * JSX seems nice
-* TODO: Reducer eval. Is it tedious? 
 
-
-Notes: re-wiring action to get live editing w/websocket was a 10-liner 
-https://github.com/clintam/surf/commit/25417a55ec115094875d5740ddc6f26683a8e2d0
 
 #### Chat UX
 
 Bots test bots! FVT by using another bot to drive conversation with our chat UX bot
 
+Note: running chat FVT tests require some configuration:
+* Create two bots in your team and export the tokens
+in SLACK_TOKEN and TEST_SLACK_TOKEN
+* create a room called "testing"
+* invite both bots to the room   
