@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions'
 
-const App = (props) => {
+const ItemPage = (props) => {
   const { items, isEditingItem, actions } = props
   return (
     <div className='container'>
@@ -13,7 +13,7 @@ const App = (props) => {
   )
 }
 
-App.propTypes = {
+ItemPage.propTypes = {
   items: PropTypes.array.isRequired,
   isEditingItem: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
@@ -22,8 +22,8 @@ App.propTypes = {
 function mapStateToProps(state) {
   return {
     items: state.items.items,
-    isEditingItem: (item) => !!state.items.editItem &&
-      item._id === state.items.editItem._id
+    isEditingItem: (item) => !!state.items.edit &&
+      item._id === state.items.edit._id
   }
 }
 
@@ -36,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(ItemPage)

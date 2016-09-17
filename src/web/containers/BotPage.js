@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions'
 
-const Bot = (props) => {
+const BotPage = (props) => {
   const { bots, isEditing, actions } = props
   return (
     <div className='container'>
@@ -13,7 +13,7 @@ const Bot = (props) => {
   )
 }
 
-Bot.propTypes = {
+BotPage.propTypes = {
   bots: PropTypes.array.isRequired,
   isEditing: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
@@ -36,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Bot)
+)(BotPage)

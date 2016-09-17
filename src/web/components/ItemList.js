@@ -6,9 +6,7 @@ const ItemList = ({items, isEditingItem, actions}) => {
     <div>
       {items.length > 0 &&
         <div>
-          <span>
-            {items.length} questions are configured
-          </span>
+          {items.length} questions are configured
         </div>
       }
       <ul className='list-group'>
