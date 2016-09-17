@@ -1,20 +1,19 @@
 const express = require('express')
-
 const path = require('path')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('../webpack.config.js')
 const logger = require('winston')
+const bodyParser = require('body-parser')
+
 const DB = require('./db')
 const ItemsRoutes = require('./routes/items')
 const BotsRoutes = require('./routes/bots')
-const bodyParser = require('body-parser')
-
 const webFetcher = require('./webFetcher')
+const botScheduler = require('../chatbot/botScheduler')
 
 // Client side
-
 const compiler = webpack(config)
 const middleware = webpackMiddleware(compiler, {
   publicPath: config.output.publicPath,
@@ -65,10 +64,13 @@ const server = app.listen(8080, '0.0.0.0', (err) => {
 const io = require('socket.io').listen(server)
 io.sockets.on('connection', function (socket) {
   items.pipeEvents(socket)
+  bots.pipeEvents(socket)
 })
 
-// Also spawn chatbot and fetch service (this also be deployed as indepdent proccesses (a. la microservices))
-require('../chatbot/bot')
+// Spawn chatbot and website fetch services
+// NOTE: these could be deployed as indepdent proccesses
+// (a. la microservices) since they use http client
 webFetcher.initialize()
+botScheduler.initialize()
 
 exports.app = app

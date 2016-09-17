@@ -13,11 +13,11 @@ class CrudRoute {
 
   mountApp(app) {
     this.initialize()
-    const baseUrl = this.routeName()
-    app.get(`/${baseUrl}`, CrudRoute.prototype.findAll.bind(this))
-    app.post(`/${baseUrl}`, CrudRoute.prototype.add.bind(this))
-    app.put(`/${baseUrl}/:id`, CrudRoute.prototype.update.bind(this))
-    app.delete(`/${baseUrl}/:id`, CrudRoute.prototype.remove.bind(this))
+    const baseUrl = `/api/${this.routeName()}`
+    app.get(`${baseUrl}`, CrudRoute.prototype.findAll.bind(this))
+    app.post(`${baseUrl}`, CrudRoute.prototype.add.bind(this))
+    app.put(`${baseUrl}/:id`, CrudRoute.prototype.update.bind(this))
+    app.delete(`${baseUrl}/:id`, CrudRoute.prototype.remove.bind(this))
   }
 
   findAll(req, res) {
@@ -88,10 +88,9 @@ class CrudRoute {
 
   dispatch(type, item) {
     logger.info(`Dispatching ${type} to ${this.webSockets.length}`)
-    this.webSockets.forEach(ws => ws.emit('event', {
-      type,
-      item
-    }))
+    const event = { type }
+    event[this.eventTypeName()] = item
+    this.webSockets.forEach(ws => ws.emit('event', event))
   }
 
   pipeEvents(ws) {

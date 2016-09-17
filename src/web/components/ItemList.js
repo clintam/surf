@@ -5,15 +5,17 @@ const ItemList = ({items, isEditingItem, actions}) => {
   return (
     <div>
       {items.length > 0 &&
-        <span>
-          {items.length} questions are configured
-        </span>
+        <div>
+          <span>
+            {items.length} questions are configured
+          </span>
+        </div>
       }
       <ul className='list-group'>
         {items.map((item, i) => (
           <Item key={i}
             item={item}
-            isEditMode={isEditingItem(item)}
+            isEditMode={isEditingItem(item) }
             actions={actions} />
         )) }
       </ul>

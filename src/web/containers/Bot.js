@@ -1,29 +1,29 @@
 import React, { PropTypes } from 'react'
-import ItemList from '../components/ItemList'
+import BotList from '../components/BotList'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions'
 
-const App = (props) => {
-  const { items, isEditingItem, actions } = props
+const Bot = (props) => {
+  const { bots, isEditing, actions } = props
   return (
     <div className='container'>
-      <ItemList actions={actions} items={items} isEditingItem={isEditingItem} />
+      <BotList actions={actions} bots={bots} isEditing={isEditing} />
     </div>
   )
 }
 
-App.propTypes = {
-  items: PropTypes.array.isRequired,
-  isEditingItem: PropTypes.func.isRequired,
+Bot.propTypes = {
+  bots: PropTypes.array.isRequired,
+  isEditing: PropTypes.func.isRequired,
   actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
   return {
-    items: state.items.items,
-    isEditingItem: (item) => !!state.items.editItem &&
-      item._id === state.items.editItem._id
+    bots: state.bots.bots,
+    isEditing: (bot) => !!state.bots.edit &&
+      bot._id === state.bots.edit._id
   }
 }
 
@@ -36,4 +36,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(Bot)

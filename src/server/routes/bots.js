@@ -9,7 +9,9 @@ class Bots extends CrudRoute {
     }
     const schema = new db.mongoose.Schema({
       name: String,
-      token: String
+      token: String,
+      error: String,
+      lastStart: db.mongoose.Schema.Types.Mixed
     }, storeTimeStamps)
 
     const model = db.mongoose.model('Bot', schema)

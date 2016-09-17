@@ -5,7 +5,7 @@ var client = new ItemClient()
 
 describe('/items/', () => {
   it('should list', () => {
-    return client.list()
+    return client.items().list()
       .then((items) => {
         expect(items.length).to.be.a('number')
       })
@@ -15,7 +15,7 @@ describe('/items/', () => {
     const toCreate = {
       name: `test-${uuid.v1()}`
     }
-    return client.create(toCreate)
+    return client.items().create(toCreate)
       .then((created) => {
         expect(created).to.have.property('_id')
         expect(created).to.have.property('__v')
@@ -23,11 +23,11 @@ describe('/items/', () => {
         expect(created).to.have.property('createdAt')
         expect(created).to.have.property('name', toCreate.name)
         created.name = `${created.name}-updated`
-        return client.update(created)
+        return client.items().update(created)
       })
       .then((updated) => {
         expect(updated.name).to.equal(`${toCreate.name}-updated`)
-        return client.delete(updated)
+        return client.items().delete(updated)
       })
       .then((deleted) => {
         expect(deleted).to.have.property('ok')
@@ -43,15 +43,15 @@ describe('/items/', () => {
     client.openRTM(({ type, item }) => {
       if (type === 'item_created' && item.name === toCreate.name) {
         item.name = updatedName
-        client.update(item)
+        client.items().update(item)
       } else if (type === 'item_updated' && item.name === updatedName) {
-        client.delete(item)
+        client.items().delete(item)
       } else if (type === 'item_deleted' && item.name === updatedName) {
         expect(item).to.have.property('_id')
         done()
       }
     })
 
-    client.create(toCreate)
+    client.items().create(toCreate)
   })
 })

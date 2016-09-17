@@ -21,7 +21,7 @@ services:
      - 27017:27017
   healthcheck:
     image: wait-for-http
-    command: http://server:8080/items/
+    command: http://server:8080/api/items/
   webdriver:
     image: webdriver
     volumes:
