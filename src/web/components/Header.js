@@ -15,10 +15,10 @@ const Header = ({children, location}) => {
 
           <ul className='nav navbar-nav'>
             <li className={classNames({active: location.pathname === '/'})}>
-              <Link to={'/'}>Sites</Link>
+              <Link id='sites' to={'/'}>Sites</Link>
             </li>
             <li className={classNames({active: location.pathname === '/bots'})}>
-              <Link to={'/bots'}>Bots</Link>
+              <Link id='bots' to={'/bots'}>Bots</Link>
             </li>
           </ul>
         </div>
