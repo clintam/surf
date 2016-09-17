@@ -19,7 +19,7 @@ const parseHtml = (html, item) => {
   })
   const result = []
   const title = $('head > title').text()
-  $(item.selector || 'body').map((i, e) => {
+  $(item.selector || 'h1').map((i, e) => {
     const collectText = (i, e) => {
       if (e.type === 'text') {
         return e.data.trim()

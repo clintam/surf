@@ -94,13 +94,13 @@ class CrudRoute {
   }
 
   pipeEvents(ws) {
-    logger.info(`item connected to websocket ${ws.id}`)
+    logger.info(`${this.routeName()} connected to websocket ${ws.id}`)
     this.webSockets.push(ws)
     ws.on('disconnect', () => {
       logger.info(`disconnecting websocket ${ws.id}`)
       this.webSockets.splice(this.webSockets.indexOf(ws))
     })
-    ws.on('reconnect', () => logger.info('FIXME socket reconnect not handled'))
+    ws.on('connect', () => logger.info('FIXME socket reconnect not handled ${ws.id}'))
   }
 
 }

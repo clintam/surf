@@ -9,6 +9,9 @@ const controller = Botkit.slackbot({
 })
 
 const startBot = (botConfig) => {
+  if (!botConfig.token) {
+    return
+  }
   const slackBot = controller.spawn({
     token: botConfig.token
   })
@@ -34,7 +37,10 @@ const startBot = (botConfig) => {
   controller.on()
 }
 
-const needsUpdate = (botConfig) => botConfig.token !== botConfig.lastStart.token
+const needsUpdate = (botConfig) => {
+  const lastStartToken = botConfig.lastStart && botConfig.lastStart.token
+  return botConfig.token !== lastStartToken
+}
 
 const restartBot = (bot) => {
   cancelBot(bot)
@@ -44,7 +50,7 @@ const restartBot = (bot) => {
 const cancelBot = (bot) => {
   const slackBot = slackBotsByBotId[bot._id]
   slackBotsByBotId[bot._id] = null
-  slackBot.destroy()
+  slackBot && slackBot.destroy()
 }
 
 const initialize = () => {
@@ -63,4 +69,4 @@ const initialize = () => {
     .then(bots => bots.forEach(startBot))
 }
 
-module.exports = {initialize}
+module.exports = { initialize }
