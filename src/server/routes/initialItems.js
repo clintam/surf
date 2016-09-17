@@ -20,3 +20,10 @@ exports.initialItems = [
     url: 'https://github.com/clintam/surf/issues'
   }
 ]
+
+exports.initialBots = [
+  {
+    'name': 'Botbot',
+    'token': process.env.SLACK_TOKEN
+  }
+]

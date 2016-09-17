@@ -1,6 +1,4 @@
 const express = require('express')
-const items = require('./routes/items')
-const bodyParser = require('body-parser')
 
 const path = require('path')
 const webpack = require('webpack')
@@ -8,6 +6,10 @@ const webpackMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const config = require('../webpack.config.js')
 const logger = require('winston')
+const DB = require('./db')
+const ItemsRoutes = require('./routes/items')
+const BotsRoutes = require('./routes/bots')
+const bodyParser = require('body-parser')
 
 const webFetcher = require('./webFetcher')
 
@@ -46,12 +48,11 @@ app.use(bodyParser.json({ verify: saveRawBody, limit: '50mb' }))
 app.use(bodyParser.urlencoded({ verify: saveRawBody, limit: '50mb', extended: true }))
 // app.use(bodyParser.raw({ verify: saveRawBody, type: () => true }))
 
-app.get('/items', items.findAll)
-app.post('/items', items.add)
-app.put('/items/:id', items.update)
-app.post('/items/:id/image', items.updateImage)
-app.get('/items/:id/image.png', items.getImage)
-app.delete('/items/:id', items.remove)
+const db = new DB()
+const items = new ItemsRoutes(db)
+items.mountApp(app)
+const bots = new BotsRoutes(db)
+bots.mountApp(app)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
@@ -69,6 +70,5 @@ io.sockets.on('connection', function (socket) {
 // Also spawn chatbot and fetch service (this also be deployed as indepdent proccesses (a. la microservices))
 require('../chatbot/bot')
 webFetcher.initialize()
-items.initialize()
 
 exports.app = app

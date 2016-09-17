@@ -19,6 +19,7 @@ test: image
 docker_compose_images: image base_images/wait-for-http.image base_images/webdriver.image
 
 up: docker_compose_images
+	mkdir images
 	docker-compose up -d
 	docker-compose run --rm healthcheck
 
@@ -42,6 +43,11 @@ down:
 dev-clean:
 	docker-compose kill server
 	docker-compose rm -fv server
+
+docker-clean:
+	docker ps -q -f status=exited | xargs --no-run-if-empty docker rm 
+	docker volume ls -qf dangling=true |  xargs --no-run-if-empty docker volume rm 
+	docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi
 
 clean: down
 
