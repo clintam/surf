@@ -1,7 +1,10 @@
 const Botkit = require('botkit')
 const ItemClient = require('../common/itemClient')
 const itemsChatUx = require('./listeners/itemsChatUx')
+const SiteClassifier = require('./siteClassifier')
+
 const client = new ItemClient()
+const classifier = new SiteClassifier(client)
 
 const slackBotsByBotId = {}
 const controller = Botkit.slackbot({
@@ -32,7 +35,7 @@ const startBot = (botConfig) => {
     client.bots().update(bot)
   })
 
-  itemsChatUx.initialize({ controller, client })
+  itemsChatUx.initialize({ controller, client, classifier })
 
   controller.on()
 }
