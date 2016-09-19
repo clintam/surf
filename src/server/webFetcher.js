@@ -7,7 +7,7 @@ const logger = require('winston')
 const {parseHtml} = require('./webParser')
 
 const itemClient = new ItemClient()
-const fetchItervalInMinutes = 10
+const fetchItervalInMinutes = 60 * 2
 
 const fetchHash = (item) => hash({ url: item.url, selector: item.selector })
 

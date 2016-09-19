@@ -14,7 +14,7 @@ class SlackApi {
     this.channels = bluebird.promisifyAll(this.bot.api.channels)
     this.chat = bluebird.promisifyAll(this.bot.api.chat)
 
-    this.ready = this.waitForRTM()
+    this.ready = this.waitForRTM().delay(1000)
   }
 
   ensureUserInChannel(memberName, channelName) {

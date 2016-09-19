@@ -9,7 +9,7 @@ const SlackApi = require('./SlackApi')
 const slackApi = new SlackApi(process.env.TEST_SLACK_TOKEN)
 
 describe('chat bot', function () {
-  this.timeout(10000)
+  this.timeout(30000)
 
   beforeEach(() => slackApi.ready)
 

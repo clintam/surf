@@ -3,7 +3,9 @@ const ItemClient = require('../common/itemClient')
 const uuid = require('uuid')
 var client = new ItemClient()
 
-describe('Webservice API', () => {
+describe('Webservice API', function () {
+  this.timeout(10000)
+
   const testEndpoint = (name) => {
     const pluralName = `${name}s`
     const clientRoute = client[pluralName]()

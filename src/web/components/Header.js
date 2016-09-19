@@ -1,28 +1,28 @@
 import React from 'react'
-import { Link } from 'react-router'
+import {Navbar, Nav, NavItem} from 'react-bootstrap'
 import classNames from 'classnames'
 
 const Header = ({children, location}) => {
   return (
     <div>
-      <nav className='navbar navbar-default'>
-        <div className='container'>
-          <div className='navbar-header'>
-            <div className='navbar-brand'>
-              Surf bot
-            </div>
-          </div>
-
-          <ul className='nav navbar-nav'>
-            <li className={classNames({active: location.pathname === '/'})}>
-              <Link id='sites' to={'/'}>Sites</Link>
-            </li>
-            <li className={classNames({active: location.pathname === '/bots'})}>
-              <Link id='bots' to={'/bots'}>Bots</Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
+      <Navbar>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href='#/about'>Surf Bot</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav>
+            <NavItem id='sites' className={classNames({ active: location.pathname === '/' }) } href='#/'>
+              Sites
+            </NavItem>
+            <NavItem id='bots' className={classNames({ active: location.pathname === '/bots' }) } href='#/bots'>
+            Bots
+            </NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
       <div>{children}</div>
     </div >
   )

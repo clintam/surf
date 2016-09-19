@@ -1,4 +1,5 @@
 const logger = require('winston')
+const {expect} = require('chai')
 
 class CrudRoute {
   constructor(db, model) {
@@ -9,6 +10,20 @@ class CrudRoute {
 
   routeName() {
     return this.model.modelName.toLowerCase() + 's'
+  }
+
+  initialize() {
+
+  }
+
+  initializeDefaults(values) {
+    return this.model.count({}).exec()
+      .then(n => {
+        if (n === 0) {
+          logger.info(`Populating ${values.length} initial ${this.routeName()}.`)
+          values.forEach(v => this.model.create(v))
+        }
+      })
   }
 
   mountApp(app) {
@@ -97,8 +112,10 @@ class CrudRoute {
     logger.info(`${this.routeName()} connected to websocket ${ws.id}`)
     this.webSockets.push(ws)
     ws.on('disconnect', () => {
-      logger.info(`disconnecting websocket ${ws.id}`)
-      this.webSockets.splice(this.webSockets.indexOf(ws))
+      logger.info(`removing websocket ${ws.id} from ${this.routeName()} events`)
+      const i = this.webSockets.indexOf(ws)
+      expect(i).to.be.above(-1)
+      this.webSockets.splice(i, 1)
     })
     ws.on('connect', () => logger.info('FIXME socket reconnect not handled ${ws.id}'))
   }

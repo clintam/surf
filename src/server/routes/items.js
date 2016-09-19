@@ -1,6 +1,5 @@
 const {initialItems} = require('./initialItems')
 const CrudRoute = require('./crudRoute')
-const logger = require('winston')
 const fs = require('fs')
 
 class Items extends CrudRoute {
@@ -32,13 +31,7 @@ class Items extends CrudRoute {
   }
 
   initialize() {
-    this.model.count({}).exec()
-      .then(n => {
-        if (n === 0) {
-          logger.info(`Populating ${initialItems.length} initial items.`)
-          initialItems.forEach(item => this.model.create(item))
-        }
-      })
+    return super.initializeDefaults(initialItems)
   }
 
   updateImage(req, res) {
