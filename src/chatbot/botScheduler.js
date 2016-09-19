@@ -36,8 +36,6 @@ const startBot = (botConfig) => {
   })
 
   itemsChatUx.initialize({ controller, client, classifier })
-
-  controller.on()
 }
 
 const needsUpdate = (botConfig) => {

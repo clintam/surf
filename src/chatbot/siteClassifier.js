@@ -46,6 +46,7 @@ class SiteClassifier {
     const addIfPresent = (text) => text && this.classifier.addDocument(text, classifierId)
 
     addIfPresent(item.name)
+    addIfPresent(item.url)
     addIfPresent(item.lastFetch.title)
     item.lastFetch.result.forEach((result, rId) => {
       addIfPresent(result.text)
@@ -56,10 +57,12 @@ class SiteClassifier {
 
   classify(text) {
     const itemClassifications = this.classifier.getClassifications(text)
-    const itemHit = itemClassifications[0]
-    if (itemHit.value < 0.001) {
+    const features = this.classifier.textToFeatures(text)
+    const hasFeature = features.some(f => f)
+    if (!hasFeature) {
       return
     }
+    const itemHit = itemClassifications[0]
     const item = this.items.find(i => i._id === itemHit.label)
     const resultClassfifications = this.resultsClassifier(item).getClassifications(text)
     const bestMatch = resultClassfifications[0].value

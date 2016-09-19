@@ -122,7 +122,7 @@ describe('SiteClassifier', () => {
     expect(result.lastFetch.result).to.eql([item.lastFetch.result[1]])
   })
 
-  it('provides poor match rather than none (FIXME?)', () => {
-    expect(siteClassifier.classify('adsfasdf')).to.exist
+  it('provides no match rather than a poor one', () => {
+    expect(siteClassifier.classify('adsfasdf')).to.not.exist
   })
 })

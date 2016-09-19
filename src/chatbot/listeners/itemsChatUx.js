@@ -77,7 +77,7 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
         const item = classifier.classify(question)
         if (item && item.lastFetch && item.lastFetch.result) {
           var reply = {
-            text: `I know about ${item.lastFetch.result.length} things out it`,
+            text: `I found ${item.lastFetch.result.length} results in <${item.url}}|${item.name}>:`,
             attachments: item.lastFetch.result.map(r => {
               let text = `${r.text}`
               if (r.href) {
