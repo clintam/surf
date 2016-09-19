@@ -69,13 +69,6 @@ describe('SiteClassifier', () => {
   ]
   let client, siteClassifier
 
-  const expectClassifyItem = (text, item) => {
-    const result = siteClassifier.classify(text)
-    expect(result, `> ${text}`).to.exist
-    expect(result._id).to.equals(item._id)
-    return result
-  }
-
   beforeEach(() => {
     const itemsClient = {
       list: sinon.stub().returns(Promise.resolve(items))
@@ -88,41 +81,49 @@ describe('SiteClassifier', () => {
     return siteClassifier.train()
   })
 
-  it('should classify exact name matches', () => {
-    items.forEach(i => {
-      expectClassifyItem(i.name, i)
-    })
-  })
+  const expectClassifyItem = (text, item) => {
+    return siteClassifier.classify(text)
+      .then(result => {
+        expect(result, `> ${text}`).to.exist
+        expect(result._id).to.equals(item._id)
+        return result
+      })
+  }
+  it('should classify exact name matches', () =>
+    Promise.all(items.map(i => expectClassifyItem(i.name, i)))
+  )
 
-  it('should classify exact title matches', () => {
-    const i = items[0]
-    expectClassifyItem(i.lastFetch.title, i)
-    items.forEach(i => {
-      expectClassifyItem(i.lastFetch.title, i)
-    })
-  })
+  it('should classify exact title matches', () =>
+    Promise.all(items.map(i => expectClassifyItem(i.lastFetch.title, i)))
+  )
 
-  it('should classify result matches', () => {
-    expectClassifyItem('election', items[0])
-    expectClassifyItem('wed', items[1])
-    expectClassifyItem('pedal', items[2])
-  })
+  it('should classify result matches', () =>
+    Promise.all([
+      expectClassifyItem('election', items[0]),
+      expectClassifyItem('wed', items[1]),
+      expectClassifyItem('pedal', items[2])
+    ]))
 
-  it('should provide all results when only name/title match', () => {
-    const item = items[1]
-    const result = siteClassifier.classify('weather')
-    expect(result._id).to.equals(item._id)
-    expect(result.lastFetch.result).to.eql(item.lastFetch.result)
-  })
+  it('should provide all results when only name/title match', () =>
+    siteClassifier.classify('weather')
+      .then(result => {
+        const item = items[1]
+        expect(result._id).to.equals(item._id)
+        expect(result.lastFetch.result).to.eql(item.lastFetch.result)
+      })
+  )
 
-  it('should provide only relevnant results when possible', () => {
-    const item = items[0]
-    const result = siteClassifier.classify('election')
-    expect(result._id).to.equals(item._id)
-    expect(result.lastFetch.result).to.eql([item.lastFetch.result[1]])
-  })
+  it('should provide only relevnant results when possible', () =>
+    siteClassifier.classify('election')
+      .then((result) => {
+        const item = items[0]
+        expect(result._id).to.equals(item._id)
+        expect(result.lastFetch.result).to.eql([item.lastFetch.result[1]])
+      })
+  )
 
-  it('provides no match rather than a poor one', () => {
-    expect(siteClassifier.classify('adsfasdf')).to.not.exist
-  })
+  it('provides no match rather than a poor one', () =>
+    siteClassifier.classify('adsfasdf')
+      .then(r => expect(r).to.not.exist)
+  )
 })

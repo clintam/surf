@@ -72,9 +72,8 @@ Ask me 'questions' to see what I know, or 'add' something new :metal:
     const question = message.match[1]
 
     bot.startTyping(message)
-    client.items().list()
-      .then(items => {
-        const item = classifier.classify(question)
+    classifier.classify(question)
+      .then(item => {
         if (item && item.lastFetch && item.lastFetch.result) {
           var reply = {
             text: `I found ${item.lastFetch.result.length} results in <${item.url}}|${item.name}>:`,

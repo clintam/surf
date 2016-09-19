@@ -14,7 +14,10 @@ describe('itemsChatUx', () => {
         }
       }
     }
-    itemsChatUx.initialize({ controller, client })
+    const classifier = {
+      classify: sinon.stub().returns(Promise.resolve())
+    }
+    itemsChatUx.initialize({ controller, client, classifier })
     controller.say('help')
     expect(controller.replies[0]).to.have.string('I can keep track')
   })
