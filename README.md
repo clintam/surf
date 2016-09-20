@@ -10,15 +10,17 @@ Meet surfbot, the bot that surfs the web so you don't have to.
 Tell it about some websites, and a bot will visit them for you. 
 Important bits of the website are presented in a web ui as well as a (slack) chatbot. 
 
-Pretty basic functionality, but built with some tech bling:
-* Real time updates with websockets
-* A chat interface (slack)
-* Isomorphic javascript: same web client used in server and browser
+[[https://raw.githubusercontent.com/clintam/surf/master/demo.gif]]
+
+### Dev guide
 
 A sweet nodejs stack using mongo, react, socket.io, and botkit. 
 Infrastructure is managed with docker and make. 
 
-### Dev guide
+Pretty basic functionality, but built with some tech bling:
+* Real time updates with websockets
+* A chat interface (slack)
+* Isomorphic javascript: same web client used in server and browser
 
 Developer sanity is achieved via:
 * Leveraging modern javascript (ES6)
