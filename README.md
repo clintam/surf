@@ -10,7 +10,7 @@ Meet surfbot, the bot that surfs the web so you don't have to.
 Tell it about some websites, and a bot will visit them for you. 
 Important bits of the website are presented in a web ui as well as a (slack) chatbot. 
 
-[[https://raw.githubusercontent.com/clintam/surf/master/demo.gif]]
+![Demo](https://raw.githubusercontent.com/clintam/surf/master/demo.gif "Demo screen capture")
 
 ### Dev guide
 
