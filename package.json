@@ -62,6 +62,7 @@
     "eslint-plugin-promise": "^2.0.0",
     "eslint-plugin-react": "^6.0.0",
     "eslint-plugin-standard": "^2.0.0",
+    "jsdom": "^9.9.1",
     "mocha": "^3.0.2",
     "mocha-jsdom": "^1.1.0",
     "nodemon": "^1.10.2",
