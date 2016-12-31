@@ -1,0 +1,16 @@
+version: '2'
+services:
+  trainer:
+    build: .
+    image: tensor_training
+    volumes:
+     - training:/work/runs
+  server:
+    build:
+        context: ./
+        dockerfile: Dockerfile.serving
+    image: tensor_serving
+    volumes:
+     - training:/work/runs
+volumes:
+  training: {}

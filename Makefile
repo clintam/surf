@@ -10,6 +10,9 @@ base_images/%.image:
 image: base_images/nodejs.image
 	docker build -t ${IMAGE_NAME} .
 
+tensor_images: base_images/tensorflow.image base_images/tensorflow_serving_base.image  base_images/tensorflow_serving.image
+	make -C tensor
+
 lint: image
 	$(call RUN_DOCKER,lint)
 
