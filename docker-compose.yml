@@ -19,6 +19,8 @@ services:
     image: mongo:3.3.10
     ports:
      - 27017:27017
+    volumes:
+    - db:/data/db
   healthcheck:
     image: wait-for-http
     command: http://server:8080/api/items/
@@ -28,3 +30,5 @@ services:
     - /dev/shm:/dev/shm 
     ports:
      - 4444:4444
+volumes:
+  db: {}

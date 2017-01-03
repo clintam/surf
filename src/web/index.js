@@ -1,12 +1,13 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
+import {render} from 'react-dom'
+import {Provider} from 'react-redux'
 import configureStore from './configureStore'
 import ItemPage from './containers/ItemPage'
 import BotPage from './containers/BotPage'
 import AboutPage from './containers/AboutPage'
+import SentimentPage from './containers/SentimentPage'
 import {initialize} from './actions'
-import { Router, Route, IndexRoute, hashHistory } from 'react-router'
+import {Router, Route, IndexRoute, hashHistory} from 'react-router'
 import Header from './components/Header'
 
 let store = configureStore()
@@ -17,6 +18,7 @@ render(
       <Route path='/' component={Header} >
         <IndexRoute component={ItemPage} />
         <Route path='bots' component={BotPage} />
+        <Route path='sentiments' component={SentimentPage} />
         <Route path='about' component={AboutPage} />
       </Route>
     </Router>

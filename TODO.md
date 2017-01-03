@@ -1,1 +1,0 @@
-* store images in mongo (currently container fs)
