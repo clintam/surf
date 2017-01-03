@@ -1,15 +1,8 @@
 version: '2'
 services:
-  trainer:
+  prediction:
     build: .
-    image: tensor_training
-    volumes:
-     - training:/work/runs
-  server:
-    build:
-        context: ./
-        dockerfile: Dockerfile.serving
-    image: tensor_serving
+    image: prediction
     volumes:
      - training:/work/runs
 volumes:

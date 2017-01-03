@@ -8,7 +8,6 @@ import datetime
 import data_helpers
 from text_cnn import TextCNN
 from tensorflow.contrib import learn
-from tensorflow.contrib.session_bundle import exporter
 
 # Parameters
 # ==================================================
@@ -33,8 +32,6 @@ tf.flags.DEFINE_integer("checkpoint_every", 100, "Save model after this many ste
 # Misc Parameters
 tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
 tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
-
-tf.app.flags.DEFINE_integer('export_version', 1, 'version number of the model.')
 
 FLAGS = tf.flags.FLAGS
 FLAGS._parse_flags()
@@ -185,22 +182,3 @@ with tf.Graph().as_default():
             if current_step % FLAGS.checkpoint_every == 0:
                 path = saver.save(sess, checkpoint_prefix, global_step=current_step)
                 print("Saved model checkpoint to {}\n".format(path))
-
-                # WIP Export for tensorflow serving
-                export_path = '/work/runs/current'
-                print('Exporting trained model to %s' % export_path)
-                init_op = tf.group(tf.initialize_all_tables(), name='init_op')
-                #saver = tf.train.Saver(sharded=True)
-                model_exporter = exporter.Exporter(saver)
-                model_exporter.init(
-                    sess.graph.as_graph_def(),
-                    init_op=init_op,
-                    default_graph_signature=exporter.classification_signature(
-                        input_tensor=cnn.input_x,
-                        classes_tensor=cnn.predictions,
-                        scores_tensor=cnn.input_y),
-                    named_graph_signatures={
-                        'inputs': exporter.generic_signature({'words': cnn.input_x}),
-                        'outputs': exporter.generic_signature({'scores': cnn.input_y})})
-                model_exporter.export(export_path, tf.constant(FLAGS.export_version), sess)
-                print('Done exporting!')
