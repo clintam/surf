@@ -1,13 +1,10 @@
 
-all: training_image serving_image test
+all: image test
 
-training_image:
-	docker build -t tensor_training .
-
-serving_image:
-	docker build -t tensor_serving -f Dockerfile.serving .
+image:
+	docker build -t prediction .
 
 test: image
-	docker run --rm tensor_training nosetests -vs tests
+	docker run --rm prediction nosetests -vs tests
 
-.PHONY: image run test
+.PHONY: training_image run test

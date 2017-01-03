@@ -2,7 +2,7 @@ IMAGE_NAME = server
 RUN_DOCKER = docker run -t --rm ${IMAGE_NAME} npm run $(1) --silent
 RUN_DOCKER_COMPOSE = docker-compose run --rm --name $(1) ${IMAGE_NAME} npm run $(1) --silent
 
-all: image all-tests lint
+all: image all-tests lint tensor_images
 
 base_images/%.image:
 	docker build -t $* base_images/$*
@@ -10,7 +10,7 @@ base_images/%.image:
 image: base_images/nodejs.image
 	docker build -t ${IMAGE_NAME} .
 
-tensor_images: base_images/tensorflow.image base_images/tensorflow_serving_base.image  base_images/tensorflow_serving.image
+tensor_images: base_images/tensorflow.image
 	make -C tensor
 
 lint: image
