@@ -1,4 +1,4 @@
-FROM tensorflow_serving_base
+FROM clintmorgan/tensorflow:base
 
 RUN git clone --recursive https://github.com/tensorflow/serving
 
@@ -8,7 +8,6 @@ RUN /var/lib/dpkg/info/ca-certificates-java.postinst configure && cd serving/ten
     cd .. && \
     bazel build -c opt tensorflow_serving/...
 
-# FIXME below may not be needed if we don't run via python in this one?
 RUN cd serving/tensorflow && \
     bazel build -c opt //tensorflow/tools/pip_package:build_pip_package
 
