@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import trainer
+from ml import trainer
 
 t = trainer.Trainer(num_epochs=1)
 t.prepareData()

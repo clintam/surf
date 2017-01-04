@@ -4,7 +4,7 @@ const uuid = require('uuid')
 var client = new ItemClient()
 
 describe('Webservice API', function () {
-  this.timeout(10000)
+  this.timeout(60000)
 
   const testEndpoint = (name) => {
     const pluralName = `${name}s`
