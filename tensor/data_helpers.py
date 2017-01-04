@@ -44,6 +44,35 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     y = np.concatenate([positive_labels, negative_labels], 0)
     return [x_text, y]
 
+def load_json_data_and_labels(json_body):
+    """
+    Loads MR polarity data from json body, splits the data into words and generates labels.
+    Returns split sentences and labels.
+    """
+    applicable_labels = []
+    examples = []
+    labels = []
+
+    # Load data from json body
+    for key, value in json_body.items():
+        examples.append(value)
+
+        if key not in applicable_labels:
+            applicable_labels.append(key)
+
+        labels.append(applicable_labels.index(key))
+
+    examples = [s.strip() for s in examples]
+    examples = [clean_str(s) for s in examples]
+
+    num_labels = len(applicable_labels)
+
+    labels_arrays = []
+    for label_position in labels:
+        labels_arrays.append([1 if i == label_position else 0 for i in range(num_labels)])
+
+    y = np.array(labels_arrays)
+    return [examples, y]
 
 def batch_iter(data, batch_size, num_epochs, shuffle=True):
     """

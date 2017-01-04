@@ -8,14 +8,8 @@ class Predictor(object):
     Loads a trained model and makes predictions
     """
 
-    def __init__(self, *,
-                 positive_data_file="./data/rt-polaritydata/rt-polarity.pos",
-                 negative_data_file="./data/rt-polaritydata/rt-polarity.neg",
-                 eval_train=False):
-        self.positive_data_file = positive_data_file
-        self.negative_data_file = negative_data_file
+    def __init__(self):
         self.batch_size = 64
-        self.eval_train = eval_train
         self.allow_soft_placement = True
         self.log_device_placement = False
         # Output directory for models and summaries
