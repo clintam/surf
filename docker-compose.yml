@@ -1,20 +1,24 @@
 version: '2'
 services:
   server:
-    build: .
+    build: js
     image: server
     ports:
      - 8080:8080
      - 5858:5858
     volumes:
-     - ./:/work/
+     - ./js:/work/ # For dev-ing
+     - /work/images
      - /work/node_modules
     environment:
      MONGO_HOST: mongo
      WEBDRIVER_HOST: webdriver
      SERVER_HOST: server
-     SLACK_TOKEN:
-     TEST_SLACK_TOKEN:
+  prediction:
+   build: tensor
+   image: prediction
+   volumes:
+    - prediction:/work/runs
   mongo:
     image: mongo:3.3.10
     ports:
@@ -32,3 +36,4 @@ services:
      - 4444:4444
 volumes:
   db: {}
+  prediction: {}
