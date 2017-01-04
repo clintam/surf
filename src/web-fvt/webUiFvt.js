@@ -4,7 +4,7 @@ const Driver = require('./driver')
 
 describe('main page', function () {
   const driver = new Driver()
-  this.timeout(30000)
+  this.timeout(60000)
   before(() => {
     return driver.init()
   })
