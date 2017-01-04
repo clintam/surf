@@ -34,7 +34,7 @@ export function loadItems(items) {
 export function saveBot(bot) {
   return (dispatch) => {
     const createOrUpdate = bot._id ? client.bots().update(bot) : client.bots().create(bot)
-    createOrUpdate.then((item) => {
+    createOrUpdate.then(item => {
       dispatch({ type: 'SAVED_BOT', bot })
     })
   }
@@ -60,6 +60,14 @@ export function unFocusBot(bot) {
 
 export function addBot(bot) {
   return { type: 'ADD_BOT', bot }
+}
+
+export function doQuery(query) {
+  return (dispatch) => {
+    dispatch({type: 'QUERY_RESULT', result: undefined})
+    client.query().run(query)
+      .then(r => dispatch({type: 'QUERY_RESULT', result: r}))
+  }
 }
 
 export function initialize() {

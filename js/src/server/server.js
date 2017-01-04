@@ -10,6 +10,7 @@ const bodyParser = require('body-parser')
 const DB = require('./db')
 const ItemsRoutes = require('./routes/items')
 const BotsRoutes = require('./routes/bots')
+const QueryRoutes = require('./routes/query')
 const webFetcher = require('./webFetcher')
 const botScheduler = require('../chatbot/botScheduler')
 
@@ -52,6 +53,7 @@ const items = new ItemsRoutes(db)
 items.mountApp(app)
 const bots = new BotsRoutes(db)
 bots.mountApp(app)
+new QueryRoutes().mountApp(app)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
