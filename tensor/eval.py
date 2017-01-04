@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import predictor
+from ml import predictor
 
 prediction = predictor.Predictor()
 

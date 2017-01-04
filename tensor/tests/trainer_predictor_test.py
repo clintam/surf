@@ -1,6 +1,6 @@
 from nose.tools import assert_equals
-import trainer
-import predictor
+from ml import predictor
+from ml import trainer
 
 
 def test_train():
