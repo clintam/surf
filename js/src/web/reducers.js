@@ -37,12 +37,22 @@ const crudReducer = (name, newItem) => {
   }
 }
 
+const queryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case 'QUERY_RESULT':
+      return Object.assign({}, state, {result: action.result})
+    default:
+      return state
+  }
+}
+
 const items = crudReducer('item', { name: '', selector: 'h1' })
 const bots = crudReducer('bot', { name: 'SurfBot' })
 
 const rootReducer = combineReducers({
   items,
   bots,
+  query: queryReducer,
   form: formReducer
 })
 

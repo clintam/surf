@@ -38,6 +38,16 @@ class ItemRoute extends Route {
   }
 }
 
+class Query {
+  constructor(url) {
+    this.url = url
+  }
+
+  run(query) {
+    return http.post(this.url + '/run', query).then(toJson)
+  }
+}
+
 class ItemClient {
   constructor(url) {
     this.url = url || `http://${process.env.SERVER_HOST || 'localhost'}:8080/api`
@@ -49,6 +59,10 @@ class ItemClient {
 
   bots() {
     return new Route(`${this.url}/bots`)
+  }
+
+  query() {
+    return new Query(`${this.url}/query`)
   }
 
   openRTM(onEvent, clientNameForLogging) {
