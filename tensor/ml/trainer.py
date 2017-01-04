@@ -1,10 +1,13 @@
-import tensorflow as tf
+import datetime
+
 import numpy as np
 import os
-import datetime
-import data_helpers
-from text_cnn import TextCNN
+import tensorflow as tf
 from tensorflow.contrib import learn
+
+from ml import data_helpers
+from ml.text_cnn import TextCNN
+
 
 class Trainer(object):
     """
@@ -72,7 +75,7 @@ class Trainer(object):
 
     # TODO, make this work
     def restore(self, sess, dir):
-        vocab_path = os.path.join(self.checkpoint_dir, "..", "vocab")
+        vocab_path = os.path.join(self.out_dir, "..", "vocab")
         self.vocab_processor = learn.preprocessing.VocabularyProcessor.restore(vocab_path)
         checkpoint_file = tf.train.latest_checkpoint(dir)
         # Load the saved meta graph and restore variables
