@@ -7,16 +7,16 @@ services:
      - 8080:8080
      - 5858:5858
     volumes:
-     - ./js:/work/ # For dev-ing
-     - /work/images
-     - /work/node_modules
+     - ./js/src:/work/src/ # For dev-ing
     environment:
      MONGO_HOST: mongo
      WEBDRIVER_HOST: webdriver
      SERVER_HOST: server
-  prediction:
+  predictor:
    build: tensor
-   image: prediction
+   image: predictor
+   ports:
+    - 8081:8080
    volumes:
     - prediction:/work/runs
   mongo:

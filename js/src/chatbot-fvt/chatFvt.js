@@ -1,5 +1,5 @@
 const expect = require('chai').expect
-const ItemClient = require('../common/itemClient')
+const ItemClient = require('../common/apiClient')
 const uuid = require('uuid')
 
 const client = new ItemClient()

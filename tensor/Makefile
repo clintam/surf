@@ -2,12 +2,12 @@
 all: image test lint
 
 image:
-	docker build -t prediction .
+	docker build -t predictor .
 
 test: image
-	docker run --rm prediction nosetests -vs tests
+	docker run --rm predictor nosetests -vs tests
 
 lint: image
-	docker run --rm prediction ./pylint.sh
+	docker run --rm predictor ./pylint.sh
 
 .PHONY: training_image run test

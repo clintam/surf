@@ -2,18 +2,22 @@ IMAGE_NAME = server
 RUN_DOCKER = docker run -t --rm ${IMAGE_NAME} npm run $(1) --silent
 RUN_DOCKER_COMPOSE = docker-compose run --rm --name $(1) ${IMAGE_NAME} npm run $(1) --silent
 
-all: js_image tensor_image fvt
+all: js_image tensor_image test fvt
 
 base_images/%.image:
 	docker build -t $* base_images/$*
 
 js_image: base_images/nodejs.image
-	make -C js
+	make -C js image
 
 tensor_image: base_images/tensorflow.image
-	make -C tensor
+	make -C tensor image
 
-docker_compose_images: image base_images/wait-for-http.image base_images/webdriver.image
+test: js_image tensor_image
+	make -C js test
+	make -C tensor test
+
+docker_compose_images: js_image tensor_image base_images/wait-for-http.image base_images/webdriver.image
 
 up: docker_compose_images
 	mkdir -p images
@@ -21,7 +25,7 @@ up: docker_compose_images
 	docker-compose run --rm healthcheck
 
 dev: up
-	docker-compose logs -f --tail=10 server
+	docker-compose logs -f --tail=10
 
 fvt: up
 	make -C js fvt

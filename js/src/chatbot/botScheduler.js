@@ -1,5 +1,5 @@
 const Botkit = require('botkit')
-const ItemClient = require('../common/itemClient')
+const ItemClient = require('../common/apiClient')
 const itemsChatUx = require('./listeners/itemsChatUx')
 const SiteClassifier = require('./siteClassifier')
 

@@ -10,7 +10,6 @@ const bodyParser = require('body-parser')
 const DB = require('./db')
 const ItemsRoutes = require('./routes/items')
 const BotsRoutes = require('./routes/bots')
-const QueryRoutes = require('./routes/query')
 const webFetcher = require('./webFetcher')
 const botScheduler = require('../chatbot/botScheduler')
 
@@ -44,8 +43,8 @@ const saveRawBody = function (req, res, buf, encoding) {
   }
 }
 
-app.use(bodyParser.json({ verify: saveRawBody, limit: '50mb' }))
-app.use(bodyParser.urlencoded({ verify: saveRawBody, limit: '50mb', extended: true }))
+app.use(bodyParser.json({verify: saveRawBody, limit: '50mb'}))
+app.use(bodyParser.urlencoded({verify: saveRawBody, limit: '50mb', extended: true}))
 // app.use(bodyParser.raw({ verify: saveRawBody, type: () => true }))
 
 const db = new DB()
@@ -53,7 +52,14 @@ const items = new ItemsRoutes(db)
 items.mountApp(app)
 const bots = new BotsRoutes(db)
 bots.mountApp(app)
-new QueryRoutes().mountApp(app)
+
+const proxy = require('express-http-proxy')
+const predictHost = process.env.PREDICTION_HOST || 'predictor:8080'
+app.use('/api/query/run', proxy(predictHost, {
+  forwardPath: function (req, res) {
+    return 'predict'
+  }
+}))
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
