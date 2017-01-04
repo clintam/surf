@@ -29,7 +29,7 @@ up: docker_compose_images
 dev: up
 	docker-compose logs -f --tail=10 server
 
-all-tests: test server-fvt web-fvt chatbot-fvt
+all-tests: test server-fvt web-fvt
 
 server-fvt: up
 	$(call RUN_DOCKER_COMPOSE,server-fvt)
