@@ -15,11 +15,11 @@ class Trainer(object):
     """
 
     def __init__(self, *,
-                 positive_data_file="./data/rt-polaritydata/rt-polarity.pos",
-                 negative_data_file="./data/rt-polaritydata/rt-polarity.neg",
+                 x_text,
+                 y,
                  num_epochs=1):
-        self.positive_data_file = positive_data_file
-        self.negative_data_file = negative_data_file
+        self.x_text = x_text
+        self.y = y
         self.num_epochs = num_epochs
         self.dev_sample_percentage = .1
         self.embedding_dim = 128
@@ -38,23 +38,20 @@ class Trainer(object):
 
     # TODO, make this take some data from json payload (and write output?)
     def prepareData(self):
-        print("Loading data...")
-        x_text, y = data_helpers.load_data_and_labels(self.positive_data_file, self.negative_data_file)
-
         # Build vocabulary
-        max_document_length = max([len(x.split(" ")) for x in x_text])
+        max_document_length = max([len(x.split(" ")) for x in self.x_text])
         self.vocab_processor = learn.preprocessing.VocabularyProcessor(max_document_length)
-        x = np.array(list(self.vocab_processor.fit_transform(x_text)))
+        x = np.array(list(self.vocab_processor.fit_transform(self.x_text)))
 
         # Randomly shuffle data
         np.random.seed(10)
-        shuffle_indices = np.random.permutation(np.arange(len(y)))
+        shuffle_indices = np.random.permutation(np.arange(len(self.y)))
         x_shuffled = x[shuffle_indices]
-        y_shuffled = y[shuffle_indices]
+        y_shuffled = self.y[shuffle_indices]
 
         # Split train/test set
         # TODO: This is very crude, should use cross-validation
-        dev_sample_index = -1 * int(self.dev_sample_percentage * float(len(y)))
+        dev_sample_index = -1 * int(self.dev_sample_percentage * float(len(self.y)))
         self.x_train, self.x_dev = x_shuffled[:dev_sample_index], x_shuffled[dev_sample_index:]
         self.y_train, self.y_dev = y_shuffled[:dev_sample_index], y_shuffled[dev_sample_index:]
         print("Vocabulary Size: {:d}".format(len(self.vocab_processor.vocabulary_)))
