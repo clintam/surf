@@ -61,6 +61,14 @@ class SurfClient {
     return new Route(`${this.url}/bots`)
   }
 
+  predictions() {
+    return new Route(`${this.url}/predictions`)
+  }
+
+  data() {
+    return new Route(`${this.url}/datas`)
+  }
+
   query() {
     return new Query(`${this.url}/query`)
   }

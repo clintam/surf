@@ -39,7 +39,7 @@ const options = {
   desiredCapabilities: {
     browserName: 'chrome'
   },
-  host: 'webdriver',
+  host: process.env.WEBDRIVER_HOST || 'localhost',
   port: 4444
 }
 
@@ -52,22 +52,32 @@ const fetchItem = (item) => {
       hash: fetchHash(item)
     }
   }
+  const fetchAsData = (fetch) => fetch.result.map(data => {
+    return {
+      text: data.text,
+      href: data.href || item.url,
+      keys: [item.name]
+    }
+  })
   logger.info(`Fetching: ${item.url}`)
   const webdriver = webdriverio.remote(options)
   let error
   return webdriver.init()
-    .then(() => webdriver.url(item.url).getTitle())
-    .then(() => webdriver.saveScreenshot())
-    .then((buffer) => itemClient.items().updateImage(item._id, buffer))
-    .then(() => webdriver.getHTML('html'))
-    .then((html) => Object.assign(itemToUpdate.lastFetch, parseHtml(html, item)))
-    .catch((e) => {
+    .then(_ => webdriver.url(item.url).getTitle())
+    .then(_ => webdriver.saveScreenshot())
+    .then(buffer => itemClient.items().updateImage(item._id, buffer))
+    .then(_ => webdriver.getHTML('html'))
+    .then(html => Object.assign(itemToUpdate.lastFetch, parseHtml(html, item)))
+    .catch(e => {
       error = e
       logger.error(e)
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
     })
-    .then(() => itemClient.items().update(itemToUpdate))
-    .then(() => {
+    .then(lastFetch => {
+      lastFetch && fetchAsData(lastFetch).forEach(d => itemClient.data().create(d))
+      return itemClient.items().update(itemToUpdate)
+    })
+    .then(_ => {
       if (error) {
         throw error
       }

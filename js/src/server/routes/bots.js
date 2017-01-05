@@ -1,4 +1,4 @@
-const {initialBots} = require('./initialItems')
+const {initialBots} = require('./initialConfig')
 const CrudRoute = require('./crudRoute')
 
 class Bots extends CrudRoute {

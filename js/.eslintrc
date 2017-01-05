@@ -29,6 +29,7 @@
     ],
     "space-before-function-paren": 0,
     "react/jsx-curly-spacing": 0,
-    "mocha/no-exclusive-tests": "error"
+    "mocha/no-exclusive-tests": "error",
+    "no-trailing-spaces": 0
   }
 }

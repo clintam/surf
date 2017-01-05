@@ -1,8 +1,10 @@
 const logger = require('winston')
 const {expect} = require('chai')
+const Route = require('./route')
 
-class CrudRoute {
+class CrudRoute extends Route {
   constructor(db, model) {
+    super()
     this.mongoose = db.mongoose
     this.webSockets = []
     this.model = model
@@ -41,33 +43,36 @@ class CrudRoute {
     })
   }
 
+  beforeSave(item) {
+    return Promise.resolve({item})
+  }
+
   add(req, res) {
     const item = req.body
-
-    this.model.create(item)
+    this.beforeSave(item)
+      .then(toSave => toSave.item ? this.model.create(toSave.item) : toSave.result)
       .then((created) => {
         res.send(created)
         this.afterCreate(created)
       })
-      .catch((e) => {
-        res.status(500).send(e)
-      })
+      .catch(this.exposeError(res))
   }
 
-  get(id) { return this.model.findOne({ _id: id }).lean().exec() }
+  get(id) {
+    return this.model.findOne({_id: id}).lean().exec()
+  }
 
   update(req, res) {
     const id = req.params.id
     const item = req.body
-    this.model.update({ _id: id }, { $set: item })
+    this.beforeSave(item)
+      .then(toSave => toSave.item ? this.model.update({_id: id}, {$set: toSave.item}) : toSave.result)
       .then(() => this.get(id))
       .then((item) => {
         res.send(item)
         this.afterUpdate(item)
       })
-      .catch((e) => {
-        res.status(500).send(e)
-      })
+      .catch(this.exposeError(res))
   }
 
   remove(req, res) {
@@ -75,14 +80,12 @@ class CrudRoute {
 
     this.get(id)
       .then((item) => {
-        this.model.remove({ _id: id })
-          .then(() => res.send({ ok: true }))
+        this.model.remove({_id: id})
+          .then(() => res.send({ok: true}))
         return item
       })
       .then((item) => this.afterDelete(item))
-      .catch((e) => {
-        res.status(500).send(e)
-      })
+      .catch(this.exposeError(res))
   }
 
   eventTypeName() {
@@ -103,7 +106,7 @@ class CrudRoute {
 
   dispatch(type, item) {
     logger.info(`Dispatching ${type} to ${this.webSockets.length}`)
-    const event = { type }
+    const event = {type}
     event[this.eventTypeName()] = item
     this.webSockets.forEach(ws => ws.emit('event', event))
   }
