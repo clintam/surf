@@ -1,4 +1,4 @@
-import ItemClient from '../common/itemClient'
+import ItemClient from '../common/apiClient'
 const client = new ItemClient('api')
 
 export function saveItem(item) {
@@ -65,7 +65,7 @@ export function addBot(bot) {
 export function doQuery(query) {
   return (dispatch) => {
     dispatch({type: 'QUERY_RESULT', result: undefined})
-    client.query().run(query)
+    client.query().run({inputs: [query.input]})
       .then(r => dispatch({type: 'QUERY_RESULT', result: r}))
   }
 }

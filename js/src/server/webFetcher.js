@@ -1,6 +1,6 @@
 const moment = require('moment')
 const hash = require('object-hash')
-const ItemClient = require('../common/itemClient')
+const ItemClient = require('../common/apiClient')
 const {scheduleJob, cancelJob} = require('./jobManager')
 const webdriverio = require('webdriverio')
 const logger = require('winston')

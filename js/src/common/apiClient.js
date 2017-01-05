@@ -48,7 +48,7 @@ class Query {
   }
 }
 
-class ItemClient {
+class SurfClient {
   constructor(url) {
     this.url = url || `http://${process.env.SERVER_HOST || 'localhost'}:8080/api`
   }
@@ -97,4 +97,4 @@ class ItemClient {
 
 }
 
-module.exports = ItemClient
+module.exports = SurfClient
