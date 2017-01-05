@@ -1,4 +1,4 @@
-const {initialItems} = require('./initialItems')
+const {initialItems} = require('./initialConfig')
 const CrudRoute = require('./crudRoute')
 const fs = require('fs')
 
@@ -20,6 +20,9 @@ class Items extends CrudRoute {
     }, storeTimeStamps)
 
     const model = db.mongoose.model('Item', schema)
+    if (!fs.existsSync('images')) {
+      fs.mkdirSync('images')
+    }
     super(db, model)
   }
 

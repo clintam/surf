@@ -27,6 +27,9 @@ up: docker_compose_images
 dev: up
 	docker-compose logs -f --tail=10
 
+mongo:
+	docker-compose exec mongo mongo
+
 fvt: up
 	make -C js fvt
 

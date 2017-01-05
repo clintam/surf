@@ -24,7 +24,7 @@ export const QueryForm = ({actions, query, handleSubmit}) => {
       {
         query.result &&
         (<div className='alert alert-success'>
-          {query.result.result}
+          {query.result[0]}
         </div>)
       }
     </div>

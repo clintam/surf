@@ -10,6 +10,9 @@ const bodyParser = require('body-parser')
 const DB = require('./db')
 const ItemsRoutes = require('./routes/items')
 const BotsRoutes = require('./routes/bots')
+const PredictionRoutes = require('./routes/predictions')
+const QueryRoutes = require('./routes/query')
+const DataRoutes = require('./routes/data')
 const webFetcher = require('./webFetcher')
 const botScheduler = require('../chatbot/botScheduler')
 
@@ -43,8 +46,8 @@ const saveRawBody = function (req, res, buf, encoding) {
   }
 }
 
-app.use(bodyParser.json({verify: saveRawBody, limit: '50mb'}))
-app.use(bodyParser.urlencoded({verify: saveRawBody, limit: '50mb', extended: true}))
+app.use(bodyParser.json({ verify: saveRawBody, limit: '50mb' }))
+app.use(bodyParser.urlencoded({ verify: saveRawBody, limit: '50mb', extended: true }))
 // app.use(bodyParser.raw({ verify: saveRawBody, type: () => true }))
 
 const db = new DB()
@@ -52,14 +55,11 @@ const items = new ItemsRoutes(db)
 items.mountApp(app)
 const bots = new BotsRoutes(db)
 bots.mountApp(app)
-
-const proxy = require('express-http-proxy')
-const predictHost = process.env.PREDICTION_HOST || 'predictor:8080'
-app.use('/api/query/run', proxy(predictHost, {
-  forwardPath: function (req, res) {
-    return 'predict'
-  }
-}))
+const predictions = new PredictionRoutes(db)
+predictions.mountApp(app)
+const dataRoutes = new DataRoutes(db)
+dataRoutes.mountApp(app)
+new QueryRoutes(predictions.model).mountApp(app)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
@@ -76,7 +76,7 @@ io.sockets.on('connection', function (socket) {
 })
 
 // Spawn chatbot and website fetch services
-// NOTE: these could be deployed as indepdent proccesses
+// NOTE: these could be deployed as independent processes
 // (a. la microservices) since they use http client
 webFetcher.initialize()
 botScheduler.initialize()
