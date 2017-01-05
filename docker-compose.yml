@@ -12,6 +12,8 @@ services:
      MONGO_HOST: mongo
      WEBDRIVER_HOST: webdriver
      SERVER_HOST: server
+     PREDICTOR_HOST: predictor
+     PREDICTOR_PORT: 8080
   predictor:
    build: tensor
    image: predictor

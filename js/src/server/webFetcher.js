@@ -5,6 +5,7 @@ const {scheduleJob, cancelJob} = require('./jobManager')
 const webdriverio = require('webdriverio')
 const logger = require('winston')
 const {parseHtml} = require('./webParser')
+const {computePredictions} = require('./predictionService')
 
 const itemClient = new ItemClient()
 const fetchItervalInMinutes = 60 * 2
@@ -74,18 +75,37 @@ const fetchItem = (item) => {
       itemToUpdate.lastFetch.error = e.message || JSON.stringify(e)
     })
     .then(lastFetch => {
-      lastFetch && fetchAsData(lastFetch).forEach(d => itemClient.data().create(d))
-      return itemClient.items().update(itemToUpdate)
+      if (lastFetch) {
+        fetchAsData(lastFetch).forEach(d => itemClient.data().create(d))
+        return addPredictions(itemToUpdate)
+      }
+      return itemToUpdate
+    })
+    .then(item => {
+      return itemClient.items().update(item)
     })
     .then(_ => {
       if (error) {
         throw error
       }
     })
+    .catch(logger.error) // FIXME make this the default (and there is no stack w/this form)
     .finally(() => webdriver.end())
 }
 
-const initialize = () => {
+const addPredictions = (item) => {
+  return computePredictions(item.lastFetch.result.map(r => r.text), predictionModelPromise)
+    .then(predictions => {
+      predictions.forEach((p, i) => {
+        item.lastFetch.result[i].prediction = p
+      })
+      return item
+    })
+}
+
+let predictionModelPromise = null
+const initialize = (p) => {
+  predictionModelPromise = p
   itemClient.items().list()
     .then(items => items.forEach(scheduleFetch))
   itemClient.openRTM((event) => {

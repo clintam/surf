@@ -29,6 +29,8 @@
     ],
     "space-before-function-paren": 0,
     "react/jsx-curly-spacing": 0,
+    "react/jsx-space-before-closing": 0,
+    "react/jsx-indent-props": 0,
     "mocha/no-exclusive-tests": "error",
     "no-trailing-spaces": 0
   }

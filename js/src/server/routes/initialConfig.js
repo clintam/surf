@@ -25,8 +25,8 @@ exports.initialBots = [
 
 exports.initialPredictions = [
   {
-    name: 'Is it Rotten?',
-    tag: 'rotten',
-    keys: ['bad-review', 'positive-review']
+    name: 'Pos/Neg sentiment (RT reviews)',
+    tag: 'sentiment',
+    keys: ['negative', 'positive']
   }
 ]
