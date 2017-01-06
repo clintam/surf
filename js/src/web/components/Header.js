@@ -8,7 +8,7 @@ const Header = ({children, location}) => {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href='#/about'>Surf</a>
+            <a href='#/about' className={classNames({ active: location.pathname === '/about' }) }>Sentiment Surfer</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -17,12 +17,12 @@ const Header = ({children, location}) => {
             <NavItem id='sites' className={classNames({ active: location.pathname === '/' }) } href='#/'>
               Sites
             </NavItem>
-            <NavItem id='bots' className={classNames({ active: location.pathname === '/bots' }) } href='#/bots'>
-            Bots
+            <NavItem id='query' className={classNames({ active: location.pathname === '/query' }) }
+              href='#/query'>
+              Query
             </NavItem>
-            <NavItem id='sentiments' className={classNames({ active: location.pathname === '/sentiments' }) }
-              href='#/sentiments'>
-              Semtiment ML
+            <NavItem id='bots' className={classNames({ active: location.pathname === '/bots' }) } href='#/bots'>
+              Bots
             </NavItem>
           </Nav>
         </Navbar.Collapse>

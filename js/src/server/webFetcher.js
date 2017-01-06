@@ -27,7 +27,7 @@ const scheduleFetch = (item) => {
     return nextRun.valueOf() - now.valueOf()
   }
 
-  if (!item.url) {
+  if (!item || !item.url) {
     return
   }
 

@@ -5,7 +5,7 @@ import configureStore from './configureStore'
 import ItemPage from './containers/ItemPage'
 import BotPage from './containers/BotPage'
 import AboutPage from './containers/AboutPage'
-import SentimentPage from './containers/SentimentPage'
+import SentimentQueryPage from './containers/SentimentQueryPage'
 import {initialize} from './actions'
 import {Router, Route, IndexRoute, hashHistory} from 'react-router'
 import Header from './components/Header'
@@ -18,7 +18,7 @@ render(
       <Route path='/' component={Header} >
         <IndexRoute component={ItemPage} />
         <Route path='bots' component={BotPage} />
-        <Route path='sentiments' component={SentimentPage} />
+        <Route path='query' component={SentimentQueryPage} />
         <Route path='about' component={AboutPage} />
       </Route>
     </Router>

@@ -8,6 +8,7 @@ const BotPage = (props) => {
   const { bots, isEditing, actions } = props
   return (
     <div className='container'>
+      <h3> Configure bots to integrate with Slack </h3>
       <BotList actions={actions} bots={bots} isEditing={isEditing} />
     </div>
   )

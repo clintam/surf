@@ -8,6 +8,7 @@ const ItemPage = (props) => {
   const { items, isEditingItem, actions } = props
   return (
     <div className='container'>
+      <h3>Configure sites to analyze</h3>
       <ItemList actions={actions} items={items} isEditingItem={isEditingItem} />
     </div>
   )

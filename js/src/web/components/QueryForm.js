@@ -2,15 +2,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {compose} from 'redux'
 import { Field, reduxForm } from 'redux-form'
+import classNames from 'classnames'
 
 export const QueryForm = ({actions, query, handleSubmit}) => {
   const onSubmit = (input) => actions.doQuery(input)
+  const result = query.result && query.result[0]
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit) } className='form-horizontal'>
         <div className='form-group'>
-          <label htmlFor='name' className='col-sm-1 control-label'>Input</label>
+          <label htmlFor='name' className='col-sm-1 control-label'>Phrase</label>
           <div className='col-sm-8'>
             <Field id='input' name='input' component='input' type='text' className='form-control' />
           </div>
@@ -22,9 +24,13 @@ export const QueryForm = ({actions, query, handleSubmit}) => {
         </div>
       </form>
       {
-        query.result &&
-        (<div className='alert alert-success'>
-          {query.result[0]}
+        result &&
+        (<div className={classNames({
+          'alert': true,
+          'alert-success': result === 'positive',
+          'alert-warning': result === 'negative'
+        })}>
+          {result === 'positive' ? 'Seems positive' : 'Seems negative'}
         </div>)
       }
     </div>
@@ -38,6 +44,5 @@ QueryForm.propTypes = {
 }
 
 export default compose(
-  // use different form state for different items
   connect((state, props) => ({ form: 'query' })),
   reduxForm({}))(QueryForm)
