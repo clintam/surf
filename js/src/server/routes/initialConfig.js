@@ -1,17 +1,22 @@
 exports.initialItems = [
   {
-    name: 'nyt',
-    selector: '#top-news article',
-    url: 'http://nytimes.com'
+    name: 'happy-tweets',
+    url: 'https://twitter.com/hashtag/happy',
+    selector: '.js-tweet-text-container'
   },
   {
-    name: 'trump-tweets',
-    url: 'https://twitter.com/realDonaldTrump',
+    name: 'mad-tweets',
+    url: 'https://twitter.com/hashtag/mad',
     selector: '.js-tweet-text-container'
   },
   {
     name: 'obama-tweets',
     url: 'https://twitter.com/barackobama',
+    selector: '.js-tweet-text-container'
+  },
+  {
+    name: 'trump-tweets',
+    url: 'https://twitter.com/realDonaldTrump',
     selector: '.js-tweet-text-container'
   }
 ]
