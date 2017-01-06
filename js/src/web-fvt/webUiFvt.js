@@ -11,7 +11,7 @@ describe('main page', function () {
 
   it('provides title', function () {
     return driver.getTitle()
-      .then(title => assert.equal('Surfing CI-fari', title))
+      .then(title => assert.equal('Sentiment Surfer', title))
   })
 
   it('creates and deletes new item', function () {

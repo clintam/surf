@@ -31,7 +31,7 @@ export const ItemForm = ({actions, item, handleSubmit}) => {
         </div>
       </div>
       <div className='form-group'>
-        <label htmlFor='name' className='col-sm-1 control-label'>Question</label>
+        <label htmlFor='name' className='col-sm-1 control-label'>Tag</label>
         <div className='col-sm-5'>
           <Field id='name' name='name' component='input' type='text' className='form-control' />
         </div>

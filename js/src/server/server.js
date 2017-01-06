@@ -61,13 +61,13 @@ const dataRoutes = new DataRoutes(db)
 dataRoutes.mountApp(app)
 const predictionModelPromise = predictions.model.findOne({tag: 'sentiment'}) // TODO: make configurable
 new QueryRoutes(predictionModelPromise).mountApp(app)
-
-const server = app.listen(8080, '0.0.0.0', (err) => {
+const port = parseInt(process.env.PORT) || 8080
+const server = app.listen(port, '0.0.0.0', (err) => {
   if (err) {
     logger.error(err)
     return
   }
-  logger.info('*** Listening on port 8080')
+  logger.info(`*** Listening on port ${port}`)
 })
 
 const io = require('socket.io').listen(server)

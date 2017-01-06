@@ -2,16 +2,12 @@ import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../actions'
-import {Jumbotron} from 'react-bootstrap'
 import QueryForm from '../components/QueryForm'
 
 const SentimentPage = ({actions, query}) => {
   return (
     <div className='container'>
-      <Jumbotron>
-        <h1>I'm running some Tensorflow ML to classify the sites we have configured</h1>
-        <p>Type a phrase, and I will attempt to predict the site!</p>
-      </Jumbotron>
+      <h3>Give me a phrase, and I will give you its sentiment </h3>
       <QueryForm actions={actions} query={query} />
     </div>
   )
