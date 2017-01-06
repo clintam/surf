@@ -59,7 +59,8 @@ const predictions = new PredictionRoutes(db)
 predictions.mountApp(app)
 const dataRoutes = new DataRoutes(db)
 dataRoutes.mountApp(app)
-new QueryRoutes(predictions.model).mountApp(app)
+const predictionModelPromise = predictions.model.findOne({tag: 'sentiment'}) // TODO: make configurable
+new QueryRoutes(predictionModelPromise).mountApp(app)
 
 const server = app.listen(8080, '0.0.0.0', (err) => {
   if (err) {
@@ -78,7 +79,7 @@ io.sockets.on('connection', function (socket) {
 // Spawn chatbot and website fetch services
 // NOTE: these could be deployed as independent processes
 // (a. la microservices) since they use http client
-webFetcher.initialize()
+webFetcher.initialize(predictionModelPromise)
 botScheduler.initialize()
 
 exports.app = app

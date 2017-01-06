@@ -1,10 +1,10 @@
-const http = require('axios')
 const Route = require('./route')
+const {computePredictions} = require('../predictionService')
 
 class Query extends Route {
-  constructor(predictionModel) {
+  constructor(predictionModelPromise) {
     super()
-    this.predictionModel = predictionModel
+    this.predictionModelPromise = predictionModelPromise
   }
 
   mountApp(app) {
@@ -13,19 +13,8 @@ class Query extends Route {
   }
 
   run(req, res) {
-    const predictHost = process.env.PREDICTOR_HOST || 'predictor:8080'
-    const url = `http://${predictHost}/predict`
-
-    Promise.all(
-      [
-        this.predictionModel.findOne({tag: 'rotten'}),
-        http.post(url, req.body)
-      ]
-    )
-      .then(results => {
-        const predictionModel = results[0]
-        const predictionResults = results[1].data.result
-        const result = predictionResults.map(i => predictionModel.keys[i])
+    computePredictions(req.body.inputs, this.predictionModelPromise)
+      .then(result => {
         res.send(result)
       })
       .catch(this.exposeError(res))
