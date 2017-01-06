@@ -18,6 +18,7 @@ The website phrases and sentiments are expsoed in a web ui as well as a (slack) 
 A polyglot stack:
  * javascript backend and frontend with nodejs react, socket.io, botkit, and mongo. 
  * python backend with tensorflow and flask 
+ 
 Infrastructure is managed with docker and make. 
 
 Tech bling:
